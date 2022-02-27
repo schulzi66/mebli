@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "mebli-wbh": {
+      "hosting": {
+        "mebli": [
+          "mebli-wbh"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "mebli-wbh"
+  }
+}
