@@ -7,6 +7,7 @@
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main",
     "start": "nx serve",
     "build": "nx build",
+    "deploy": "firebase deploy",
     "test": "nx test"
   },
   "private": true,
@@ -20,12 +21,13 @@
     "@angular/platform-browser": "~13.2.0",
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
+    "@ngneat/transloco": "^3.1.4",
     "@nrwl/angular": "13.8.3",
     "firebase": "^9.6.7",
+    "rxfire": "^6.0.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.0.0",
-    "zone.js": "~0.11.4",
-    "rxfire": "^6.0.0"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.2.0",
