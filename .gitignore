@@ -44,5 +44,3 @@ Thumbs.db
 .firebase
 *-debug.log
 .runtimeconfig.json
-apps/mebli/src/environments/environment.ts
-apps/mebli/src/environments/environment.prod.ts
