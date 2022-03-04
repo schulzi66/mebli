@@ -1,7 +1,8 @@
 {
-  "version": 2,
-  "projects": {
-    "mebli": "apps/mebli",
-    "mebli-e2e": "apps/mebli-e2e"
-  }
+    "version": 2,
+    "projects": {
+        "auth": "libs/auth",
+        "mebli": "apps/mebli",
+        "mebli-e2e": "apps/mebli-e2e"
+    }
 }

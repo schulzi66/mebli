@@ -1,109 +1,97 @@
 {
-  "projectType": "application",
-  "root": "apps/mebli",
-  "sourceRoot": "apps/mebli/src",
-  "prefix": "mebli",
-  "targets": {
-    "build": {
-      "executor": "@angular-devkit/build-angular:browser",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "outputPath": "dist/apps/mebli",
-        "index": "apps/mebli/src/index.html",
-        "main": "apps/mebli/src/main.ts",
-        "polyfills": "apps/mebli/src/polyfills.ts",
-        "tsConfig": "apps/mebli/tsconfig.app.json",
-        "assets": [
-          "apps/mebli/src/favicon.ico",
-          "apps/mebli/src/assets"
-        ],
-        "styles": [
-          "apps/mebli/src/styles.css"
-        ],
-        "scripts": []
-      },
-      "configurations": {
-        "production": {
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+    "projectType": "application",
+    "root": "apps/mebli",
+    "sourceRoot": "apps/mebli/src",
+    "prefix": "mebli",
+    "targets": {
+        "build": {
+            "executor": "@angular-devkit/build-angular:browser",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/apps/mebli",
+                "index": "apps/mebli/src/index.html",
+                "main": "apps/mebli/src/main.ts",
+                "polyfills": "apps/mebli/src/polyfills.ts",
+                "tsConfig": "apps/mebli/tsconfig.app.json",
+                "assets": ["apps/mebli/src/favicon.ico", "apps/mebli/src/assets"],
+                "styles": ["apps/mebli/src/styles.css"],
+                "scripts": []
             },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
-            }
-          ],
-          "fileReplacements": [
-            {
-              "replace": "apps/mebli/src/environments/environment.ts",
-              "with": "apps/mebli/src/environments/environment.prod.ts"
-            }
-          ],
-          "outputHashing": "all"
+            "configurations": {
+                "production": {
+                    "budgets": [
+                        {
+                            "type": "initial",
+                            "maximumWarning": "500kb",
+                            "maximumError": "1mb"
+                        },
+                        {
+                            "type": "anyComponentStyle",
+                            "maximumWarning": "2kb",
+                            "maximumError": "4kb"
+                        }
+                    ],
+                    "fileReplacements": [
+                        {
+                            "replace": "apps/mebli/src/environments/environment.ts",
+                            "with": "apps/mebli/src/environments/environment.prod.ts"
+                        }
+                    ],
+                    "outputHashing": "all"
+                },
+                "development": {
+                    "buildOptimizer": false,
+                    "optimization": false,
+                    "vendorChunk": true,
+                    "extractLicenses": false,
+                    "sourceMap": true,
+                    "namedChunks": true
+                }
+            },
+            "defaultConfiguration": "production"
         },
-        "development": {
-          "buildOptimizer": false,
-          "optimization": false,
-          "vendorChunk": true,
-          "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true
-        }
-      },
-      "defaultConfiguration": "production"
-    },
-    "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
-      "configurations": {
-        "production": {
-          "browserTarget": "mebli:build:production"
+        "serve": {
+            "executor": "@angular-devkit/build-angular:dev-server",
+            "configurations": {
+                "production": {
+                    "browserTarget": "mebli:build:production"
+                },
+                "development": {
+                    "browserTarget": "mebli:build:development"
+                }
+            },
+            "defaultConfiguration": "development"
         },
-        "development": {
-          "browserTarget": "mebli:build:development"
+        "extract-i18n": {
+            "executor": "@angular-devkit/build-angular:extract-i18n",
+            "options": {
+                "browserTarget": "mebli:build"
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["apps/mebli/src/**/*.ts", "apps/mebli/src/**/*.html"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/apps/mebli"],
+            "options": {
+                "jestConfig": "apps/mebli/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "deploy": {
+            "executor": "@angular/fire:deploy",
+            "options": {
+                "prerender": false,
+                "ssr": false,
+                "browserTarget": "mebli:build:production",
+                "firebaseProject": "mebli-wbh",
+                "firebaseHostingSite": "mebli-wbh"
+            }
         }
-      },
-      "defaultConfiguration": "development"
     },
-    "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
-      "options": {
-        "browserTarget": "mebli:build"
-      }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "apps/mebli/src/**/*.ts",
-          "apps/mebli/src/**/*.html"
-        ]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/apps/mebli"
-      ],
-      "options": {
-        "jestConfig": "apps/mebli/jest.config.js",
-        "passWithNoTests": true
-      }
-    },
-    "deploy": {
-      "executor": "@angular/fire:deploy",
-      "options": {
-        "prerender": false,
-        "ssr": false,
-        "browserTarget": "mebli:build:production",
-        "firebaseProject": "mebli-wbh",
-        "firebaseHostingSite": "mebli-wbh"
-      }
-    }
-  },
-  "tags": []
+    "tags": []
 }
