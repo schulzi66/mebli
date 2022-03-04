@@ -1,0 +1,19 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      ".git": true,
+      ".angular": true,
+      ".vscode": true,
+      "bin": true,
+      "node_modules": true,
+      "**/dist": true,
+      "**/bin": true,
+      "**/obj": true
+    }
+  }
+}

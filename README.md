@@ -1,14 +1,26 @@
+<h1 align="center">Mebli</h1>
 
+## Table of Content
+- [Table of Content](#table-of-content)
+- [Getting Started](#getting-started)
+  - [Quick Start & Documentation](#quick-start--documentation)
+  - [Generate an application](#generate-an-application)
+  - [Generate a library](#generate-a-library)
+  - [Development server](#development-server)
+  - [Code scaffolding](#code-scaffolding)
+  - [Build](#build)
+  - [Running unit tests](#running-unit-tests)
+  - [Running end-to-end tests](#running-end-to-end-tests)
+  - [Understand your workspace](#understand-your-workspace)
+  - [Further help](#further-help)
+- [Contribution Workflow](#contribution-workflow)
+- [Team](#team)
 
-# Mebli
+## Getting Started
 
-This project was generated using [Nx](https://nx.dev).
+### Quick Start & Documentation
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
-
-🔎 **Smart, Fast and Extensible Build System**
-
-## Quick Start & Documentation
+> This project was generated using [Nx](https://nx.dev).
 
 [Nx Documentation](https://nx.dev/angular)
 
@@ -16,30 +28,7 @@ This project was generated using [Nx](https://nx.dev).
 
 [Interactive Tutorial](https://nx.dev/tutorial/01-create-application)
 
-## Adding capabilities to your workspace
-
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
-
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
-
-Below are our core plugins:
-
-- [Angular](https://angular.io)
-  - `ng add @nrwl/angular`
-- [React](https://reactjs.org)
-  - `ng add @nrwl/react`
-- Web (no framework frontends)
-  - `ng add @nrwl/web`
-- [Nest](https://nestjs.com)
-  - `ng add @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `ng add @nrwl/express`
-- [Node](https://nodejs.org)
-  - `ng add @nrwl/node`
-
-There are also many [community plugins](https://nx.dev/community) you could add.
-
-## Generate an application
+### Generate an application
 
 Run `ng g @nrwl/angular:app my-app` to generate an application.
 
@@ -47,7 +36,7 @@ Run `ng g @nrwl/angular:app my-app` to generate an application.
 
 When using Nx, you can create multiple applications and libraries in the same workspace.
 
-## Generate a library
+### Generate a library
 
 Run `ng g @nrwl/angular:lib my-lib` to generate a library.
 
@@ -55,51 +44,60 @@ Run `ng g @nrwl/angular:lib my-lib` to generate a library.
 
 Libraries are shareable across libraries and applications. They can be imported from `@mebli/mylib`.
 
-## Development server
+### Development server
 
 Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+### Code scaffolding
 
 Run `ng g component my-component --project=my-app` to generate a new component.
 
-## Build
+### Build
 
 Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
+### Running unit tests
 
 Run `ng test my-app` to execute the unit tests via [Jest](https://jestjs.io).
 
 Run `nx affected:test` to execute the unit tests affected by a change.
 
-## Running end-to-end tests
+### Running end-to-end tests
 
 Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
 
 Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
 
-## Understand your workspace
+### Understand your workspace
 
 Run `nx graph` to see a diagram of the dependencies of your projects.
 
-## Further help
+### Further help
 
 Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
 
 
+## Contribution Workflow
 
+To work on Mebli the following workflow should be followed:
 
+1. Make sure you are on the `main` branch by running `git checkout main` in the terminal
+2. Make sure you have the latest source code by running `git pull` in the terminal
+3. Create a new branch to develop your changes by running `git checkout -b feat/your-feature-name-or-description` in the terminal
+   - For feature implementations or adjustments please use `feat/`
+   - For bug fixes please use `fix/`
+   - To see the complete list of all branch and commit prefixes checkout [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+4. Develop your changes / features 
+5. Stage your changes via VS Code or in the terminal by running `git add <file>...`. You can see your changes either in VS Code or in the terminal by running `git status`
+6. To commit your staged changes, write a meaningful commit message starting again with the prefixes `feat:`, `fix:` etc. depending on the type of change. 
+7. Push your changes either via VS Code or by running `git push -u origin feat/your-feature-name-or-description`
+8. Go to the github repository and create a [Pull Request](https://github.com/schulzi66/mebli/pulls)
+9. The pipeline will run the unit tests and publish a preview page of the changes automatically, where the team can test them
+10. As soon as the pull request is approved, the changes will be deployed automatically to the live [Mebli Page](#https://mebli-wbh.web.app/)
 
+## Team
 
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+- Ilka Lübben
+- Marvin Nolte
+- Andreas Schwarzkopf
+- Marius Schulze
