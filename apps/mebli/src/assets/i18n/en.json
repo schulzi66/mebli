@@ -1,1 +1,11 @@
-{}
+{
+    "email": "Email",
+    "email_placeholder": "Your Email",
+    "password": "Password",
+    "password_placeholder": "Enter your password",
+    "is_required": "is required",
+    "login": "Login",
+    "register": "Register",
+    "login_alternative_seperator": "Or continue with",
+    "login_with_google": "Log in with Google"
+}
