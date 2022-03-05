@@ -94,7 +94,7 @@ To work on Mebli the following workflow should be followed:
    - To see the complete list of all branch and commit prefixes checkout [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 4. Develop your changes / features 
 5. Stage your changes via VS Code or in the terminal by running `git add <file>...`. You can see your changes either in VS Code or in the terminal by running `git status`
-6. To commit your staged changes, write a meaningful commit message starting again with the prefixes `feat:`, `fix:` etc. depending on the type of change with `git commit -m your-meaningfull-message`. 
+6. To commit your staged changes, write a meaningful commit message starting again with the prefixes `feat:`, `fix:` etc. depending on the type of change with `git commit -m "feat: your-meaningfull-message"`. 
 7. Push your changes either via VS Code or by running `git push -u origin feat/your-feature-name-or-description`
 8. Go to the github repository and create a [Pull Request](https://github.com/schulzi66/mebli/pulls)
 9. The pipeline will run the unit tests and publish a preview page of the changes automatically, where the team can test them
