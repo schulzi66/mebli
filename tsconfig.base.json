@@ -15,7 +15,8 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@mebli/auth": ["libs/auth/src/index.ts"]
+            "@mebli/auth": ["libs/auth/src/index.ts"],
+            "@mebli/my-library": ["libs/my-library/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

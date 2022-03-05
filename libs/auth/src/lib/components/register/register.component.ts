@@ -1,15 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+    selector: 'mebli-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
+    public email = '';
+    public password = '';
+    public passwordConfirm = '';
+    public passwordsMatch = true;
 
-  constructor() { }
+    public constructor(private readonly authService: AuthService) {}
 
-  ngOnInit() {
-  }
+    public async onRegister(): Promise<void> {
+        this.passwordsMatch = this.password === this.passwordConfirm;
+        if (this.passwordsMatch) {
+            await this.authService.registerUser(this.email, this.password);
+        }
+    }
 
+    public async onLoginWithGoogle(): Promise<void> {
+        await this.authService.loginWithGoogle();
+    }
 }

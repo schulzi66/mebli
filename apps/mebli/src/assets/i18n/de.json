@@ -2,9 +2,12 @@
     "email": "Email",
     "email_placeholder": "Deine Email Adresse",
     "password": "Passwort",
+    "password_confirm": "Passwort bestätigen",
+    "passwords_dont_match": "Passwörter stimmen nicht überein",
     "password_placeholder": "Gib dein Passwort ein",
     "is_required": "ist verpflichtend",
     "login": "Einloggen",
+    "back_to_login": "Anmelden",
     "register": "Registrieren",
     "login_alternative_seperator": "Oder",
     "login_with_google": "Mit Google anmelden"
