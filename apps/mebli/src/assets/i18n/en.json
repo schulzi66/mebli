@@ -2,9 +2,12 @@
     "email": "Email",
     "email_placeholder": "Your Email",
     "password": "Password",
+    "password_confirm": "Confirm Password",
+    "passwords_dont_match": "Passwords don't match",
     "password_placeholder": "Enter your password",
     "is_required": "is required",
     "login": "Login",
+    "back_to_login": "Login instead",
     "register": "Register",
     "login_alternative_seperator": "Or continue with",
     "login_with_google": "Log in with Google"

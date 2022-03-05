@@ -3,6 +3,7 @@
     "projects": {
         "auth": "libs/auth",
         "mebli": "apps/mebli",
-        "mebli-e2e": "apps/mebli-e2e"
+        "mebli-e2e": "apps/mebli-e2e",
+        "my-library": "libs/my-library"
     }
 }
