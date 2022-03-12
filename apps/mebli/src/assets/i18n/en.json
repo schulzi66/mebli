@@ -10,5 +10,12 @@
     "back_to_login": "Login instead",
     "register": "Register",
     "login_alternative_seperator": "Or continue with",
-    "login_with_google": "Log in with Google"
+    "login_with_google": "Log in with Google",
+    "my_library": "My Library",
+    "rental": "Rentals",
+    "media_search": "Media Search",
+    "releases": "Releases",
+    "profil": "Profil",
+    "impressum": "Impressum",
+    "about": "About"
 }

@@ -10,5 +10,12 @@
     "back_to_login": "Anmelden",
     "register": "Registrieren",
     "login_alternative_seperator": "Oder",
-    "login_with_google": "Mit Google anmelden"
+    "login_with_google": "Mit Google anmelden",
+    "my_library": "Meine Bibliothek",
+    "rental": "Verleih",
+    "media_search": "Mediensuche",
+    "releases": "Freigaben",
+    "profil": "Profil",
+    "impressum": "Impressum",
+    "about": "Über"
 }

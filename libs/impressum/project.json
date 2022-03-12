@@ -1,0 +1,23 @@
+{
+    "projectType": "library",
+    "root": "libs/impressum",
+    "sourceRoot": "libs/impressum/src",
+    "prefix": "mebli",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/impressum"],
+            "options": {
+                "jestConfig": "libs/impressum/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["libs/impressum/src/**/*.ts", "libs/impressum/src/**/*.html"]
+            }
+        }
+    },
+    "tags": []
+}
