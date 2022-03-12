@@ -1,9 +1,12 @@
 {
     "version": 2,
     "projects": {
+        "about": "libs/about",
         "auth": "libs/auth",
+        "impressum": "libs/impressum",
         "mebli": "apps/mebli",
         "mebli-e2e": "apps/mebli-e2e",
-        "my-library": "libs/my-library"
+        "my-library": "libs/my-library",
+        "start-page": "libs/start-page"
     }
 }
