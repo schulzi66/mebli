@@ -1,0 +1,23 @@
+{
+    "projectType": "library",
+    "root": "libs/rentals",
+    "sourceRoot": "libs/rentals/src",
+    "prefix": "mebli",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/rentals"],
+            "options": {
+                "jestConfig": "libs/rentals/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["libs/rentals/src/**/*.ts", "libs/rentals/src/**/*.html"]
+            }
+        }
+    },
+    "tags": []
+}

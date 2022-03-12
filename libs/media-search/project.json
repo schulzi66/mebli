@@ -1,0 +1,23 @@
+{
+    "projectType": "library",
+    "root": "libs/media-search",
+    "sourceRoot": "libs/media-search/src",
+    "prefix": "mebli",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/media-search"],
+            "options": {
+                "jestConfig": "libs/media-search/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["libs/media-search/src/**/*.ts", "libs/media-search/src/**/*.html"]
+            }
+        }
+    },
+    "tags": []
+}

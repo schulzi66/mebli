@@ -4,9 +4,14 @@
         "about": "libs/about",
         "auth": "libs/auth",
         "impressum": "libs/impressum",
+        "legal-footer": "libs/legal-footer",
         "mebli": "apps/mebli",
         "mebli-e2e": "apps/mebli-e2e",
+        "media-search": "libs/media-search",
         "my-library": "libs/my-library",
+        "profile": "libs/profile",
+        "releases": "libs/releases",
+        "rentals": "libs/rentals",
         "start-page": "libs/start-page"
     }
 }
