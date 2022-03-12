@@ -1,0 +1,23 @@
+{
+    "projectType": "library",
+    "root": "libs/legal-footer",
+    "sourceRoot": "libs/legal-footer/src",
+    "prefix": "mebli",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/legal-footer"],
+            "options": {
+                "jestConfig": "libs/legal-footer/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["libs/legal-footer/src/**/*.ts", "libs/legal-footer/src/**/*.html"]
+            }
+        }
+    },
+    "tags": []
+}
