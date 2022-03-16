@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Injectable } from '@angular/core';
 import { GoogleAuthProvider } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -32,7 +33,10 @@ export class AuthService {
     public async loginWithGoogle(): Promise<void> {
         try {
             const credentials = await this.auth.signInWithPopup(new GoogleAuthProvider());
-            await this.storeProfileData(credentials);
+            await this.storeProfileData({
+                uid: credentials.user!.uid!,
+                email: credentials.user!.email!,
+            });
             this.router.navigate(['/']);
         } catch (error: unknown) {
             console.error((error as FirebaseError).code);
@@ -41,18 +45,21 @@ export class AuthService {
 
     public async loginWithEmail(email: string, password: string): Promise<void> {
         try {
-            const credentials = await this.auth.signInWithEmailAndPassword(email, password);
-            await this.storeProfileData(credentials);
+            await this.auth.signInWithEmailAndPassword(email, password);
             this.router.navigate(['/']);
         } catch (error: unknown) {
             console.error((error as FirebaseError).code);
         }
     }
 
-    public async registerUser(email: string, password: string): Promise<void> {
+    public async registerUser(email: string, password: string, accountName: string): Promise<void> {
         try {
             const credentials = await this.auth.createUserWithEmailAndPassword(email, password);
-            await this.storeProfileData(credentials);
+            await this.storeProfileData({
+                uid: credentials.user!.uid!,
+                email: credentials.user!.email!,
+                accountName: accountName,
+            });
             this.router.navigate(['/']);
         } catch (error: unknown) {
             console.error((error as FirebaseError).code);
@@ -65,12 +72,7 @@ export class AuthService {
         location.reload();
     }
 
-    private async storeProfileData(credentials: any): Promise<void> {
-        const data = {
-            uid: credentials.user.uid,
-            email: credentials.user.email,
-            // displayName: credentials.user.displayName,
-        };
-        return this.db.setDoc<Profile>(DbPaths.PROFILES, credentials.user.uid, data, { merge: true });
+    private async storeProfileData(data: Profile): Promise<void> {
+        return this.db.setDoc<Profile>(DbPaths.PROFILES, data.uid, data, { merge: true });
     }
 }

@@ -3,6 +3,7 @@
 ## Table of Content
 - [Table of Content](#table-of-content)
 - [Getting Started](#getting-started)
+  - [Icons](#icons)
   - [Quick Start & Documentation](#quick-start--documentation)
   - [Generate an application](#generate-an-application)
   - [Generate a library](#generate-a-library)
@@ -22,6 +23,35 @@
 2. Make sure you have [node](https://nodejs.dev/) installed
 3. Run `npm install -g @angular/cli`
 4. Run `npm install` in the new `mebli` folder to install the node modules
+
+### Icons
+
+All icons are from [Heroicons](https://heroicons.com/). To use them just copy the svg from the page and create a new file under the folder [apps/mebli/src/assets/svg](apps/mebli/src/assets/svg/) and paste it in. 
+To use it in HTML files just use:
+
+```html
+<img src="./assets/svg/NAME_OF_SVG.svg" />
+```
+
+To use the icon in the navigation bar, just declare the name of the svg as the icon property of the `NavbarAction` as e.g. here for the search and add icon:
+
+```typescript
+this.navbarService.registerActions([
+    {
+        order: -1,
+        icon: 'search',
+        translationKey: 'search',
+        action: () => { ... },
+    },
+    {
+        order: 1,
+        icon: 'add',
+        translationKey: 'add',
+        action: () => { ... },
+    },
+]);
+```
+
 
 ### Quick Start & Documentation
 

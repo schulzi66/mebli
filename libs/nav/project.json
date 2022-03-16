@@ -1,0 +1,23 @@
+{
+    "projectType": "library",
+    "root": "libs/nav",
+    "sourceRoot": "libs/nav/src",
+    "prefix": "mebli",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/nav"],
+            "options": {
+                "jestConfig": "libs/nav/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["libs/nav/src/**/*.ts", "libs/nav/src/**/*.html"]
+            }
+        }
+    },
+    "tags": []
+}

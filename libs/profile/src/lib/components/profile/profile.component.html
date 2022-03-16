@@ -7,14 +7,12 @@
 <div>
   User:
   <div>
-    <!-- {{ t | async  | json }} -->
-    {{ (authService.profile$ | async)?.displayName }}
+    UID: {{ (authService.profile$ | async)?.uid }}
   </div>
   <div>
-    {{ (authService.profile$ | async)?.email }}
+    EMAIL: {{ (authService.profile$ | async)?.email }}
   </div>
-  <br>
   <div>
-    {{ (authService.userAuth$ | async | json) }}
+    ACCOUNT_NAME: {{ (authService.profile$ | async)?.accountName }}
   </div>
 </div>

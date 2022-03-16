@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, SetOptions } from '@angular/fire/compat/firestore';
 import { FieldPath, WhereFilterOp } from 'firebase/firestore';
-import { Observable } from 'rxjs';
+import { lastValueFrom, map, Observable, take } from 'rxjs';
 import { DbPaths } from '../models/db-paths.enum';
 
 @Injectable({
@@ -37,6 +37,25 @@ export class DbService {
                 return ref.where(fieldPath, whereFilter, value);
             })
             .valueChanges();
+    }
+
+    public docExists<T>(
+        path: DbPaths,
+        fieldPath: string | FieldPath,
+        whereFilter: WhereFilterOp,
+        value: unknown
+    ): Promise<boolean> {
+        return lastValueFrom(
+            this.firestore
+                .collection<T>(path, (ref) => {
+                    return ref.where(fieldPath, whereFilter, value);
+                })
+                .get()
+                .pipe(
+                    take(1),
+                    map((doc) => doc.size > 0)
+                )
+        );
     }
 
     private builPath(path: DbPaths, pathSegments: string): string {
