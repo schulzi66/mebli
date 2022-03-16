@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class RegisterComponent {
     public email = '';
+    public accountName = '';
     public password = '';
     public passwordConfirm = '';
     public passwordsMatch = true;

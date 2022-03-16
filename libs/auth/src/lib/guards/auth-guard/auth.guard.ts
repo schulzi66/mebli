@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { User } from 'firebase/auth';
-import { Observable, map } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { User } from '../../models/user';
 import { AuthService } from '../../services/auth.service';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
         _route: ActivatedRouteSnapshot,
         _state: RouterStateSnapshot
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        return this.authService.user$.pipe(
+        return this.authService.userAuth$.pipe(
             map((user: User | null) => {
                 if (user) {
                     return true;

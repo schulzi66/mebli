@@ -17,6 +17,7 @@
         "paths": {
             "@mebli/about": ["libs/about/src/index.ts"],
             "@mebli/auth": ["libs/auth/src/index.ts"],
+            "@mebli/db": ["libs/db/src/index.ts"],
             "@mebli/impressum": ["libs/impressum/src/index.ts"],
             "@mebli/legal-footer": ["libs/legal-footer/src/index.ts"],
             "@mebli/media-search": ["libs/media-search/src/index.ts"],

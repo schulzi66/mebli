@@ -3,6 +3,7 @@
     "projects": {
         "about": "libs/about",
         "auth": "libs/auth",
+        "db": "libs/db",
         "impressum": "libs/impressum",
         "legal-footer": "libs/legal-footer",
         "mebli": "apps/mebli",
