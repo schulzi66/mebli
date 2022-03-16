@@ -1,0 +1,23 @@
+<!-- <div class="flex justify-center w-full align-middle">
+  <section class="fixed bottom-0 z-10 w-5/6 h-12 bg-green-500">
+    Blubber
+  </section>
+</div> -->
+
+<section *ngIf="shown"
+         id="bottom-navigation"
+         class="fixed inset-x-0 bottom-0 z-10 block bg-white shadow">
+  <div id="tabs"
+       class="flex justify-between">
+    <button *ngFor="let action of (navbarService.navbarActions$ | async)"
+            (click)="action.action()"
+            type="button"
+            class="justify-center inline-block w-full pt-2 pb-1 text-center">
+
+      <img [src]="'./assets/svg/'+action.icon+'.svg'"
+           class="inline-block w-6 h-6 mb-1" />
+
+      <span class="block text-xs">{{action.translationKey | transloco }}</span>
+    </button>
+  </div>
+</section>

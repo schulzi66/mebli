@@ -10,6 +10,7 @@
         "mebli-e2e": "apps/mebli-e2e",
         "media-search": "libs/media-search",
         "my-library": "libs/my-library",
+        "nav": "libs/nav",
         "profile": "libs/profile",
         "releases": "libs/releases",
         "rentals": "libs/rentals",
