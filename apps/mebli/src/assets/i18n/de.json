@@ -1,6 +1,8 @@
 {
     "email": "Email",
     "email_placeholder": "Deine Email Adresse",
+    "account_name": "Account Name",
+    "account_placeholder": "Wähle einen Account Namen",
     "password": "Passwort",
     "password_confirm": "Passwort bestätigen",
     "passwords_dont_match": "Passwörter stimmen nicht überein",
