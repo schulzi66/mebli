@@ -3,27 +3,30 @@
     <h1 class="my-4 text-2xl font-bold text-center underline">Mebli</h1>
     <button type="button"
             [routerLink]="['/library']"
-            class="p-4 my-4 text-center border border-blue-500 rounded-lg disabled:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
+            class="p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300">
       {{'my_library' | transloco}}
     </button>
     <button type="button"
             [routerLink]="['/rentals']"
-            class="p-4 my-4 text-center border border-blue-500 rounded-lg disabled:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
+            [disabled]="!startPageService.hasAccountName"
+            class="p-4 my-4 text-center border border-blue-500 rounded-lg disabled:bg-gray-200 disabled:border-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300">
       {{'rental' | transloco}}
     </button>
     <button type="button"
             [routerLink]="['/media-search']"
-            class="p-4 my-4 text-center border border-blue-500 rounded-lg disabled:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
+            [disabled]="!startPageService.hasAccountName"
+            class="p-4 my-4 text-center border border-blue-500 rounded-lg disabled:bg-gray-200 disabled:border-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300">
       {{'media_search' | transloco}}
     </button>
     <button type="button"
             [routerLink]="['/releases']"
-            class="p-4 my-4 text-center border border-blue-500 rounded-lg disabled:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
+            [disabled]="!startPageService.hasAccountName"
+            class="p-4 my-4 text-center border border-blue-500 rounded-lg disabled:bg-gray-200 disabled:border-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300">
       {{'releases' | transloco}}
     </button>
     <button type="button"
             [routerLink]="['/profile']"
-            class="p-4 my-4 text-center border border-blue-500 rounded-lg disabled:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
+            class="p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300">
       {{'profil' | transloco}}
     </button>
   </div>
