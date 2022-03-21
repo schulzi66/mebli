@@ -23,6 +23,7 @@
             "@mebli/media-search": ["libs/media-search/src/index.ts"],
             "@mebli/my-library": ["libs/my-library/src/index.ts"],
             "@mebli/nav": ["libs/nav/src/index.ts"],
+            "@mebli/imdb-api": ["libs/imdb-api/src/index.ts"],
             "@mebli/profile": ["libs/profile/src/index.ts"],
             "@mebli/releases": ["libs/releases/src/index.ts"],
             "@mebli/rentals": ["libs/rentals/src/index.ts"],

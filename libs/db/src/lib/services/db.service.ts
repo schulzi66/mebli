@@ -14,7 +14,7 @@ export class DbService {
         return this.firestore.doc<T>(this.builPath(path, pathSegments)).valueChanges();
     }
 
-    public setDoc<T>(path: DbPaths, pathSegments: string, data: T, options?: SetOptions): Promise<void> {
+    public setDoc<T>(path: DbPaths, pathSegments: string | undefined, data: T, options?: SetOptions): Promise<void> {
         return this.firestore.doc<T>(this.builPath(path, pathSegments)).set(data, options ?? {});
     }
 
@@ -58,7 +58,7 @@ export class DbService {
         );
     }
 
-    private builPath(path: DbPaths, pathSegments: string): string {
-        return `${path}/${pathSegments}`;
+    private builPath(path: DbPaths, pathSegments: string | undefined): string {
+        return `${path}/${pathSegments ?? this.firestore.createId()}`;
     }
 }

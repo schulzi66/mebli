@@ -15,6 +15,7 @@ import { User } from '../models/user';
 export class AuthService {
     public profile$: Observable<Profile | undefined> = EMPTY;
     public readonly userAuth$: Observable<User | null> = EMPTY;
+    public uid: string | undefined;
 
     public constructor(
         private readonly auth: AngularFireAuth,
@@ -27,6 +28,7 @@ export class AuthService {
                 return;
             }
             this.profile$ = this.db.getDoc$<Profile>(DbPaths.PROFILES, user.uid);
+            this.uid = user.uid;
         });
     }
 

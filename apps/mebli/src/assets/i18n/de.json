@@ -20,5 +20,10 @@
     "profil": "Profil",
     "impressum": "Impressum",
     "about": "Über",
-    "home": "Startseite"
+    "home": "Startseite",
+    "search": "Suchen",
+    "add": "Hinzufügen",
+    "add_term_placeholder": "Suchbegriff",
+    "back": "Zurück",
+    "add_manual_title": "Füge Medien anhand des Titels hinzu:"
 }

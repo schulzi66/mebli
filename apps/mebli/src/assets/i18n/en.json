@@ -19,5 +19,10 @@
     "releases": "Releases",
     "profil": "Profil",
     "impressum": "Impressum",
-    "about": "About"
+    "about": "About",
+    "search": "Search",
+    "add": "Add",
+    "add_term_placeholder": "Search term",
+    "back": "Back",
+    "add_manual_title": "Add media by title:"
 }

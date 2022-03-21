@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavbarService } from '@mebli/nav';
+import { MyLibraryService } from '../../services/my-library.service';
 
 @Component({
     selector: 'mebli-my-library',
@@ -7,7 +9,11 @@ import { NavbarService } from '@mebli/nav';
     styleUrls: ['./my-library.component.css'],
 })
 export class MyLibraryComponent {
-    public constructor(private readonly navbarService: NavbarService) {
+    public constructor(
+        private readonly navbarService: NavbarService,
+        private readonly router: Router,
+        public readonly myLibraryService: MyLibraryService
+    ) {
         this.navbarService.registerActions([
             {
                 order: -1,
@@ -22,9 +28,11 @@ export class MyLibraryComponent {
                 icon: 'add',
                 translationKey: 'add',
                 action: () => {
-                    console.log('add clicked');
+                    // If scanning will work, change this and add a 'choose add method'-component
+                    this.router.navigate(['/library/add/manual']);
                 },
             },
         ]);
+        this.myLibraryService.getLibrary();
     }
 }

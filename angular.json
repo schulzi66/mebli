@@ -11,6 +11,7 @@
         "media-search": "libs/media-search",
         "my-library": "libs/my-library",
         "nav": "libs/nav",
+        "imdb-api": "libs/imdb-api",
         "profile": "libs/profile",
         "releases": "libs/releases",
         "rentals": "libs/rentals",

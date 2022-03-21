@@ -6,6 +6,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthModule } from '@mebli/auth';
+import { ImdbApiModule } from '@mebli/imdb-api';
 import { NavModule } from '@mebli/nav';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -25,6 +26,7 @@ import { TranslocoRootModule } from './transloco-root.module';
         TranslocoRootModule,
         AuthModule,
         NavModule,
+        ImdbApiModule
     ],
     bootstrap: [AppComponent],
 })
