@@ -1,0 +1,23 @@
+{
+    "projectType": "library",
+    "root": "libs/imdb-api",
+    "sourceRoot": "libs/imdb-api/src",
+    "prefix": "mebli",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/imdb-api"],
+            "options": {
+                "jestConfig": "libs/imdb-api/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["libs/imdb-api/src/**/*.ts", "libs/imdb-api/src/**/*.html"]
+            }
+        }
+    },
+    "tags": []
+}

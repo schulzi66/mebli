@@ -1,3 +1,19 @@
-<p>
-  Hier wird 'Meine Bibliothek' entstehen
-</p>
+<div class="flex flex-col items-center m-4">
+
+  <h3 class="my-4 text-lg font-bold text-center">{{'my_library' | transloco}}</h3>
+  <div class="w-full h-full mb-12 overflow-auto">
+    <div class="flex flex-col">
+      <div *ngFor="let media of myLibraryService.library"
+           class="flex w-full h-32 py-1"
+           [routerLink]="['/library/details', media.id]">
+        <img [src]="media.image"
+             [alt]="media.title"
+             class="max-h-32">
+        <div class="flex flex-col justify-around ml-4">
+          <div class="font-semibold">{{media.title}}</div>
+          <div>{{media.year}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

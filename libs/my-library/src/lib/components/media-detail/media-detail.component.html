@@ -1,0 +1,16 @@
+<div class="flex flex-col items-center m-4">
+  <h3 class="my-4 text-lg font-bold text-center">{{mediaDetails?.title}}</h3>
+  <div class="flex w-full h-32 py-1">
+    <img [src]="mediaDetails?.image"
+         [alt]="mediaDetails?.title"
+         class="max-h-32">
+    <div class="flex flex-col justify-around ml-4">
+      <div>{{mediaDetails?.stars}}</div>
+      <div>{{mediaDetails?.genres}}</div>
+      <div>{{mediaDetails?.year}}</div>
+    </div>
+  </div>
+  <p class="w-full py-1">
+    {{mediaDetails?.plotLocal ?? mediaDetails?.plot}}
+  </p>
+</div>
