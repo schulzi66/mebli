@@ -25,5 +25,8 @@
     "add": "Hinzufügen",
     "add_term_placeholder": "Suchbegriff",
     "back": "Zurück",
+    "comment": "Notiz",
+    "lend_movie": "Verleihen",
+    "delete": "Löschen",
     "add_manual_title": "Füge Medien anhand des Titels hinzu:"
 }

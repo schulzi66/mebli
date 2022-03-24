@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ImdbApiService, MediaDetails, MediaSearch } from '@mebli/imdb-api';
+import { DbPaths, DbService } from '@mebli/db';
+import { ImdbApiService, MediaDetails, MediaSearch, MediaSearchResult } from '@mebli/imdb-api';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -10,12 +11,26 @@ export class AddManualService {
     public mediaSearch: MediaSearch | undefined;
     public mediaDetailsBuffer: MediaDetails[] = [];
 
-    public constructor(private readonly imdbApiService: ImdbApiService) {}
+    public constructor(private readonly imdbApiService: ImdbApiService, private readonly db: DbService) {}
 
     public searchMedia(): void {
         if (this.term !== '') {
-            this.imdbApiService.getMediaByTitle(this.term).subscribe((results: MediaSearch) => {
-                this.mediaSearch = results;
+            // this.db.getDocs$<MediaSearchResult>(DbPaths.SEARCH, 'description', '<=', this.term).subscribe(
+            //     (mediaSearchResult: MediaSearchResult[]) =>
+            //         (this.mediaSearch = {
+            //             searchType: 'Manual',
+            //             expression: this.term,
+            //             errorMessage: '',
+            //             results: mediaSearchResult,
+            //         })
+            // );
+
+            this.imdbApiService.getMediaByTitle(this.term).subscribe((mediaSearch: MediaSearch) => {
+                this.mediaSearch = mediaSearch;
+
+                mediaSearch.results.forEach((searchResult: MediaSearchResult) => {
+                    this.db.setDoc(DbPaths.SEARCH, searchResult.id, searchResult, { merge: true });
+                });
             });
         }
     }

@@ -24,5 +24,8 @@
     "add": "Add",
     "add_term_placeholder": "Search term",
     "back": "Back",
+    "comment": "Note",
+    "lend_movie": "Lend",
+    "delete": "Delete",
     "add_manual_title": "Add media by title:"
 }

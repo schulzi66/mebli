@@ -14,7 +14,7 @@ export class DbService {
         return this.firestore.doc<T>(this.builPath(path, pathSegments)).valueChanges();
     }
 
-    public setDoc<T>(path: DbPaths, pathSegments: string | undefined, data: T, options?: SetOptions): Promise<void> {
+    public setDoc<T>(path: DbPaths, pathSegments: string, data: T, options?: SetOptions): Promise<void> {
         return this.firestore.doc<T>(this.builPath(path, pathSegments)).set(data, options ?? {});
     }
 
@@ -24,6 +24,20 @@ export class DbService {
 
     public deleteDocument<T>(path: DbPaths, pathSegments: string): Promise<void> {
         return this.firestore.doc<T>(this.builPath(path, pathSegments)).delete();
+    }
+
+    public deleteDocumentBy<T>(
+        path: DbPaths,
+        fieldPath: string | FieldPath,
+        whereFilter: WhereFilterOp,
+        value: unknown
+    ): Promise<void> {
+        return this.firestore
+            .collection<T>(path, (ref) => {
+                return ref.where(fieldPath, whereFilter, value);
+            })
+            .doc()
+            .delete();
     }
 
     public getDocs$<T>(
@@ -58,7 +72,11 @@ export class DbService {
         );
     }
 
-    private builPath(path: DbPaths, pathSegments: string | undefined): string {
-        return `${path}/${pathSegments ?? this.firestore.createId()}`;
+    public generateId(): string {
+        return this.firestore.createId();
+    }
+
+    private builPath(path: DbPaths, pathSegments: string): string {
+        return `${path}/${pathSegments}`;
     }
 }

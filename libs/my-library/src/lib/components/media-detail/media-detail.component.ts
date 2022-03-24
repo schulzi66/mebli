@@ -1,11 +1,10 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '@mebli/auth';
-import { DbPaths, DbService } from '@mebli/db';
+import { ActivatedRoute } from '@angular/router';
 import { MediaDetails } from '@mebli/imdb-api';
 import { NavbarService } from '@mebli/nav';
 import { Media } from '../../models/media';
+import { MyLibraryService } from '../../services/my-library.service';
 
 @Component({
     selector: 'mebli-media-detail',
@@ -16,12 +15,10 @@ export class MediaDetailComponent implements OnInit {
     public mediaDetails: MediaDetails | Media | undefined;
 
     public constructor(
-        private readonly router: Router,
         private readonly location: Location,
         private readonly navbarService: NavbarService,
         private readonly activatedRoute: ActivatedRoute,
-        private readonly db: DbService,
-        private readonly authService: AuthService
+        public readonly myLibraryService: MyLibraryService
     ) {}
 
     public ngOnInit(): void {
@@ -36,16 +33,6 @@ export class MediaDetailComponent implements OnInit {
             : (this.activatedRoute.snapshot.data['media'] as Media);
 
         console.log(this.mediaDetails);
-    }
-
-    private addToLibrary(): void {
-        if (this.mediaDetails && this.authService.uid) {
-            const media: Media = Object.assign({ uid: this.authService.uid }, this.mediaDetails);
-
-            this.db
-                .setDoc<MediaDetails>(DbPaths.MEDIA, undefined, media)
-                .then(() => this.router.navigate(['/library']));
-        }
     }
 
     private navigateBack(): void {
@@ -65,16 +52,35 @@ export class MediaDetailComponent implements OnInit {
                       order: 1,
                       icon: 'add',
                       translationKey: 'add',
-                      action: () => this.addToLibrary(),
+                      action: () => this.myLibraryService.addToLibrary(this.mediaDetails),
                   },
               ])
             : this.navbarService.registerActions([
                   {
-                      order: -1,
+                      order: -2,
                       icon: 'back',
                       translationKey: 'back',
                       action: () => this.navigateBack(),
                   },
-              ]); // Todo register actions for existing items
+                  {
+                      order: -1,
+                      icon: 'comment',
+                      translationKey: 'comment',
+                      action: () => console.log('comment'),
+                  },
+                  {
+                      order: 1,
+                      icon: 'up',
+                      translationKey: 'lend_movie',
+                      action: () => console.log('lend'),
+                  },
+                  
+                  {
+                    order: 2,
+                    icon: 'trash',
+                    translationKey: 'delete',
+                    action: () => this.myLibraryService.deleteFromLibrary(this.mediaDetails as Media),
+                },
+              ]);
     }
 }
