@@ -3,7 +3,11 @@ module.exports = {
       "./**/*.{html,ts}",
     ],
     theme: {
-      extend: {},
+      extend: {
+          maxWidth: {
+              '20': '5rem' 
+          }
+      },
     },
     plugins: [],
   }

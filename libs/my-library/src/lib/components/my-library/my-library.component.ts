@@ -33,6 +33,6 @@ export class MyLibraryComponent {
                 },
             },
         ]);
-        this.myLibraryService.getLibrary();
+        this.myLibraryService.queryLibrary();
     }
 }
