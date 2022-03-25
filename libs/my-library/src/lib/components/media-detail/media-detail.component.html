@@ -1,16 +1,46 @@
 <div class="flex flex-col items-center m-4">
-  <h3 class="my-4 text-lg font-bold text-center">{{mediaDetails?.title}}</h3>
+  <h3 class="my-4 text-lg font-bold text-center">{{media?.title}}</h3>
   <div class="flex w-full h-32 py-1">
-    <img [src]="mediaDetails?.image"
-         [alt]="mediaDetails?.title"
+    <img [src]="media?.image"
+         [alt]="media?.title"
          class="max-h-32 max-w-20">
     <div class="flex flex-col justify-around ml-4">
-      <div>{{mediaDetails?.stars}}</div>
-      <div>{{mediaDetails?.genres}}</div>
-      <div>{{mediaDetails?.year}}</div>
+      <div>{{media?.stars}}</div>
+      <div>{{media?.genres}}</div>
+      <div>{{media?.year}}</div>
     </div>
   </div>
-  <p class="w-full py-1">
-    {{mediaDetails?.plotLocal ?? mediaDetails?.plot}}
-  </p>
+  <div class="w-full py-1">
+    <div class="italic">
+      {{'plot' | transloco}}:
+    </div>
+    <p>
+      {{media?.plotLocal ?? media?.plot}}
+    </p>
+  </div>
+  <div *ngIf="media?.comment" class="w-full py-1">
+    <div class="italic">
+      {{'comment' | transloco}}:
+    </div>
+    <p>
+      {{media?.comment}}
+    </p>
+  </div>
 </div>
+
+<ng-template #commentTemplate
+             let-data="data"
+             let-close="close">
+  <div class="m-4">
+    <h2 class="mb-4 text-lg font-bold text-center">{{'add_comment_title' | transloco}}</h2>
+    <input id="comment"
+           name="comment"
+           type="text"
+           class="w-full px-5 py-3 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+           [(ngModel)]="data.comment">
+    <button class="w-full p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
+            (click)="close()">
+      {{'add' | transloco}}
+    </button>
+  </div>
+</ng-template>

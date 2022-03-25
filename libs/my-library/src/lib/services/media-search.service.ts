@@ -6,7 +6,7 @@ import { Observable, tap } from 'rxjs';
 @Injectable({
     providedIn: 'root',
 })
-export class AddManualService {
+export class MediaSearchService {
     public term = '';
     public mediaSearch: MediaSearch | undefined;
     public mediaDetailsBuffer: MediaDetails[] = [];
