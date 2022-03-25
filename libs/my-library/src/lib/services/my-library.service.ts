@@ -31,11 +31,15 @@ export class MyLibraryService {
         }
     }
 
-    public deleteFromLibrary(mediaDetails: Media | undefined): void {
-        if (mediaDetails && this.authService.uid) {
-            this.db
-                .deleteDocument<Media>(DbPaths.MEDIA, mediaDetails.pathId)
-                .then(() => this.router.navigate(['/library']));
+    public updateMedia(media: Media | undefined): void {
+        if (media && media.pathId) {
+            this.db.updateDocument<Media>(DbPaths.MEDIA, media.pathId, media);
+        }
+    }
+
+    public deleteFromLibrary(media: Media | undefined): void {
+        if (media && media.pathId && this.authService.uid) {
+            this.db.deleteDocument<Media>(DbPaths.MEDIA, media.pathId).then(() => this.router.navigate(['/library']));
         }
     }
 }

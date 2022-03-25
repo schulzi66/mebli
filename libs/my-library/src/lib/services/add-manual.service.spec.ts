@@ -1,16 +1,16 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
-import { AddManualService } from './add-manual.service';
+import { inject, TestBed } from '@angular/core/testing';
+import { MediaSearchService } from './media-search.service';
 
-describe('Service: AddManual', () => {
+describe('Service: MediaSearchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AddManualService]
+      providers: [MediaSearchService]
     });
   });
 
-  it('should ...', inject([AddManualService], (service: AddManualService) => {
+  it('should ...', inject([MediaSearchService], (service: MediaSearchService) => {
     expect(service).toBeTruthy();
   }));
 });

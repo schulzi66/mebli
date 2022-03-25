@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ImdbApiModule } from '@mebli/imdb-api';
 import { TranslocoModule } from '@ngneat/transloco';
+import { NgOverlayContainerModule } from 'ng-overlay-container';
 import { AddManualComponent } from './components/add-manual/add-manual.component';
 import { MediaDetailComponent } from './components/media-detail/media-detail.component';
 import { MyLibraryComponent } from './components/my-library/my-library.component';
@@ -16,6 +17,7 @@ import { MediaResolver } from './resolvers/media.resolver';
         FormsModule,
         TranslocoModule,
         ImdbApiModule,
+        NgOverlayContainerModule,
         RouterModule,
         RouterModule.forChild([
             {
@@ -47,7 +49,7 @@ import { MediaResolver } from './resolvers/media.resolver';
                 },
             },
             
-        ]),
+        ])
     ],
     declarations: [MyLibraryComponent, AddManualComponent, MediaDetailComponent],
     exports: [MyLibraryComponent, AddManualComponent, MediaDetailComponent],

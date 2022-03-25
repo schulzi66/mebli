@@ -5,11 +5,11 @@
          type="text"
          class="w-full px-5 py-3 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
          [placeholder]="'add_term_placeholder' | transloco"
-         [(ngModel)]="addManualService.term">
+         [(ngModel)]="mediaSearchService.term">
 
   <div class="w-full h-full mt-2 mb-12 overflow-auto">
-    <ng-container *ngIf="addManualService.mediaSearch">
-      <div *ngFor="let mediaSearchResults of addManualService.mediaSearch.results"
+    <ng-container *ngIf="mediaSearchService.mediaSearch">
+      <div *ngFor="let mediaSearchResults of mediaSearchService.mediaSearch.results"
            class="flex w-full h-32 py-1"
            [routerLink]="['/library/add/details', mediaSearchResults.id]">
         <img [src]="mediaSearchResults.image"

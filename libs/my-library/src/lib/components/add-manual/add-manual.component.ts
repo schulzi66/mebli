@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavbarService } from '@mebli/nav';
-import { AddManualService } from '../../services/add-manual.service';
+import { MediaSearchService } from '../../services/media-search.service';
 
 @Component({
     selector: 'mebli-add-manual',
@@ -12,7 +12,7 @@ export class AddManualComponent {
     public constructor(
         private readonly navbarService: NavbarService,
         private readonly router: Router,
-        public readonly addManualService: AddManualService
+        public readonly mediaSearchService: MediaSearchService
     ) {
         this.navbarService.registerActions([
             {
@@ -25,7 +25,7 @@ export class AddManualComponent {
                 order: 1,
                 icon: 'search',
                 translationKey: 'search',
-                action: () => this.addManualService.searchMedia(),
+                action: () => this.mediaSearchService.searchMedia(),
             },
         ]);
 

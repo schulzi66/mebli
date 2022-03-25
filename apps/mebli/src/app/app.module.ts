@@ -16,17 +16,17 @@ import { TranslocoRootModule } from './transloco-root.module';
 @NgModule({
     declarations: [AppComponent],
     imports: [
+        AngularFireAuthModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFirestoreModule,
+        AppRoutingModule,
+        AuthModule,
         BrowserModule,
         FormsModule,
-        AppRoutingModule,
-        AngularFireModule.initializeApp(environment.firebase),
-        AngularFireAuthModule,
-        AngularFirestoreModule,
         HttpClientModule,
-        TranslocoRootModule,
-        AuthModule,
+        ImdbApiModule,
         NavModule,
-        ImdbApiModule
+        TranslocoRootModule,
     ],
     bootstrap: [AppComponent],
 })
