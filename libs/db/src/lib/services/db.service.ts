@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, SetOptions } from '@angular/fire/compat/firestore';
-import { FieldPath, WhereFilterOp } from 'firebase/firestore';
+import { FieldPath, OrderByDirection, WhereFilterOp } from 'firebase/firestore';
 import { lastValueFrom, map, Observable, take } from 'rxjs';
 import { DbPaths } from '../models/db-paths.enum';
 
@@ -44,11 +44,15 @@ export class DbService {
         path: DbPaths,
         fieldPath: string | FieldPath,
         whereFilter: WhereFilterOp,
-        value: unknown
+        value: unknown,
+        orderByPath?: string | FieldPath,
+        directionStr?: OrderByDirection
     ): Observable<T[]> {
         return this.firestore
             .collection<T>(path, (ref) => {
-                return ref.where(fieldPath, whereFilter, value);
+                return orderByPath === undefined
+                    ? ref.where(fieldPath, whereFilter, value)
+                    : ref.where(fieldPath, whereFilter, value).orderBy(orderByPath, directionStr);
             })
             .valueChanges();
     }

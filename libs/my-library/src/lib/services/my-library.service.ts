@@ -10,6 +10,8 @@ import { Media } from '../models/media';
 })
 export class MyLibraryService {
     public library: Media[] = [];
+    public filteredLibrary: Media[] = [];
+
     public constructor(
         private readonly db: DbService,
         private readonly authService: AuthService,
@@ -17,9 +19,12 @@ export class MyLibraryService {
     ) {}
 
     public queryLibrary(): void {
-        this.db.getDocs$<Media>(DbPaths.MEDIA, 'uid', '==', this.authService.uid).subscribe((media: Media[]) => {
-            this.library = media;
-        });
+        this.db
+            .getDocs$<Media>(DbPaths.MEDIA, 'uid', '==', this.authService.uid, 'title', 'asc')
+            .subscribe((media: Media[]) => {
+                this.library = media;
+                this.filteredLibrary = media;
+            });
     }
 
     public addToLibrary(mediaDetails: MediaDetails | Media | undefined): void {
@@ -29,6 +34,18 @@ export class MyLibraryService {
 
             this.db.setDoc<MediaDetails>(DbPaths.MEDIA, pathId, media).then(() => this.router.navigate(['/library']));
         }
+    }
+
+    public search(searchTerm: string): void {
+        this.filteredLibrary = this.library.filter(
+            (media: Media) =>
+                media.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                media.description?.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }
+
+    public clearSearch(): void {
+        this.filteredLibrary = this.library;
     }
 
     public updateMedia(media: Media | undefined): void {

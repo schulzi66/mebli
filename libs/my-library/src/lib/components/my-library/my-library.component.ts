@@ -9,6 +9,9 @@ import { MyLibraryService } from '../../services/my-library.service';
     styleUrls: ['./my-library.component.css'],
 })
 export class MyLibraryComponent {
+    public searchMode = false;
+    public searchTerm = '';
+
     public constructor(
         private readonly navbarService: NavbarService,
         private readonly router: Router,
@@ -19,9 +22,7 @@ export class MyLibraryComponent {
                 order: -1,
                 icon: 'search',
                 translationKey: 'search',
-                action: () => {
-                    console.log('search clicked');
-                },
+                action: () => this.searchMode = !this.searchMode,
             },
             {
                 order: 1,
@@ -34,5 +35,12 @@ export class MyLibraryComponent {
             },
         ]);
         this.myLibraryService.queryLibrary();
+    }
+
+    public clearSearch(event: any): void {
+        // Clear Button Event has no inputType
+        if (!event.inputType) {
+           this.myLibraryService.clearSearch();
+        }
     }
 }

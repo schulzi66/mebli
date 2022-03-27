@@ -1,6 +1,7 @@
 export interface MediaDetails {
     id: string;
     title: string;
+    description?: string;
     originalTitle?: string;
     fullTitle?: string;
     type?: string;
