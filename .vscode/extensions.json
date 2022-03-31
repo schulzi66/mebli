@@ -7,6 +7,7 @@
         "dbaeumer.vscode-eslint",
         "bradlc.vscode-tailwindcss",
         "alexiv.vscode-angular2-files",
-        "heybourn.headwind"
+        "heybourn.headwind",
+        "vscode-icons-team.vscode-icons"
     ]
 }

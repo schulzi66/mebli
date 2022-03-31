@@ -30,5 +30,5 @@
             "@mebli/start-page": ["libs/start-page/src/index.ts"]
         }
     },
-    "exclude": ["node_modules", "tmp"]
+    "exclude": ["node_modules", "tmp", "dist"]
 }
