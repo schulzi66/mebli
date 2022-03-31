@@ -5,7 +5,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { DbPaths, DbService } from '@mebli/db';
 import { FirebaseError } from 'firebase/app';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, filter, Observable } from 'rxjs';
 import { Profile } from '../models/profile';
 import { User } from '../models/user';
 
@@ -16,6 +16,7 @@ export class AuthService {
     public profile$: Observable<Profile | undefined> = EMPTY;
     public readonly userAuth$: Observable<User | null> = EMPTY;
     public uid: string | undefined;
+    private email: string | undefined | null;
 
     public constructor(
         private readonly auth: AngularFireAuth,
@@ -29,6 +30,7 @@ export class AuthService {
             }
             this.profile$ = this.db.getDoc$<Profile>(DbPaths.PROFILES, user.uid);
             this.uid = user.uid;
+            this.email = user.email;
         });
     }
 
@@ -72,6 +74,25 @@ export class AuthService {
         await this.auth.signOut();
         await this.router.navigate(['/login']);
         location.reload();
+    }
+
+    public async changeAccountName(newName: string): Promise<void> {
+        if (this.uid && this.email) {
+            await this.storeProfileData({
+                uid: this.uid,
+                email: this.email,
+                accountName: newName,
+            });
+        }
+    }
+
+    public async changePassword(newPassword: string): Promise<void> {
+        this.userAuth$.pipe(filter((user: User | null) => !!user?.uid)).subscribe(async (user: User | null) => {
+            if (!user?.uid) {
+                return;
+            }
+            user.updatePassword(newPassword);
+        });
     }
 
     private async storeProfileData(data: Profile): Promise<void> {
