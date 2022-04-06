@@ -4,7 +4,7 @@ export interface MediaDetails {
     description?: string;
     originalTitle?: string;
     fullTitle?: string;
-    type?: string;
+    type?: MediaType;
     year?: string;
     image?: string;
     releaseDate?: Date;
@@ -48,6 +48,8 @@ export interface MediaDetails {
     tvEpisodeInfo?: null;
     errorMessage?: null;
 }
+
+export type MediaType = 'Movie' | 'TVSeries';
 
 export interface ActorList {
     id?: string;

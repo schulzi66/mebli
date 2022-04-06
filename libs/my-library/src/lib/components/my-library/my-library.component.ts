@@ -34,7 +34,6 @@ export class MyLibraryComponent {
                 },
             },
         ]);
-        this.myLibraryService.queryLibrary();
     }
 
     public clearSearch(event: any): void {

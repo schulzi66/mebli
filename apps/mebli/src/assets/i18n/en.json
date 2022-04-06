@@ -34,5 +34,7 @@
     "lend_movie": "Lend",
     "delete": "Delete",
     "add_manual_title": "Add media by title:",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "my_movies": "My Movies",
+    "my_series": "My Series"
 }

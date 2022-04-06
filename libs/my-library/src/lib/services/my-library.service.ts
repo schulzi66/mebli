@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@mebli/auth';
 import { DbPaths, DbService } from '@mebli/db';
-import { MediaDetails } from '@mebli/imdb-api';
+import { MediaDetails, MediaType } from '@mebli/imdb-api';
 import { Media } from '../models/media';
 
 @Injectable({
@@ -11,19 +11,29 @@ import { Media } from '../models/media';
 export class MyLibraryService {
     public library: Media[] = [];
     public filteredLibrary: Media[] = [];
+    public currentSelection: MediaType = 'Movie';
+    public movies: Media[] = [];
+    public series: Media[] = [];
 
     public constructor(
         private readonly db: DbService,
         private readonly authService: AuthService,
         private readonly router: Router
-    ) {}
+    ) {
+        this.queryLibrary();
+    }
 
     public queryLibrary(): void {
         this.db
             .getDocs$<Media>(DbPaths.MEDIA, 'uid', '==', this.authService.uid, 'title', 'asc')
             .subscribe((media: Media[]) => {
                 this.library = media;
-                this.filteredLibrary = media;
+                this.movies = [];
+                this.series = [];
+                media.forEach((media: Media) => {
+                    media.type === 'Movie' ? this.movies.push(media) : this.series.push(media);
+                });
+                this.clearSearch();
             });
     }
 
@@ -36,16 +46,29 @@ export class MyLibraryService {
         }
     }
 
+    public switchSelection(selection: MediaType) {
+        this.currentSelection = selection;
+        this.currentSelection === 'Movie' ? (this.filteredLibrary = this.movies) : (this.filteredLibrary = this.series);
+    }
+
     public search(searchTerm: string): void {
-        this.filteredLibrary = this.library.filter(
-            (media: Media) =>
-                media.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                media.description?.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        if (this.currentSelection === 'Movie') {
+            this.filteredLibrary = this.movies.filter(
+                (media: Media) =>
+                    media.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    media.description?.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        } else if (this.currentSelection === 'TVSeries') {
+            this.filteredLibrary = this.series.filter(
+                (media: Media) =>
+                    media.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    media.description?.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
     }
 
     public clearSearch(): void {
-        this.filteredLibrary = this.library;
+        this.filteredLibrary = this.currentSelection === 'Movie' ? this.movies : this.series;
     }
 
     public updateMedia(media: Media | undefined): void {
