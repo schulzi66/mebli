@@ -33,5 +33,6 @@
     "add_comment_title": "Add a note",
     "lend_movie": "Lend",
     "delete": "Delete",
-    "add_manual_title": "Add media by title:"
+    "add_manual_title": "Add media by title:",
+    "privacy": "Privacy"
 }

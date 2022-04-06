@@ -33,6 +33,10 @@ const routes: Routes = [
         canActivate: [AuthGuard],
     },
     {
+        path: 'privacy',
+        loadChildren: () => import('@mebli/privacy').then((m) => m.PrivacyModule),
+    },
+    {
         path: 'impressum',
         loadChildren: () => import('@mebli/impressum').then((m) => m.ImpressumModule),
     },

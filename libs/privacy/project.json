@@ -1,0 +1,23 @@
+{
+    "projectType": "library",
+    "root": "libs/privacy",
+    "sourceRoot": "libs/privacy/src",
+    "prefix": "mebli",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/privacy"],
+            "options": {
+                "jestConfig": "libs/privacy/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["libs/privacy/src/**/*.ts", "libs/privacy/src/**/*.html"]
+            }
+        }
+    },
+    "tags": []
+}
