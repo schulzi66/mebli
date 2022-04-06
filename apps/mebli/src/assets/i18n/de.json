@@ -35,5 +35,7 @@
     "lend_movie": "Verleihen",
     "delete": "Löschen",
     "add_manual_title": "Füge Medien anhand des Titels hinzu:",
-    "privacy": "Datenschutz"
+    "privacy": "Datenschutz",
+    "my_movies": "Meine Filme",
+    "my_series": "Meine Serien"
 }
