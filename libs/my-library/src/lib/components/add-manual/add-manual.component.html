@@ -10,15 +10,21 @@
 
   <div class="w-full h-full mb-12 overflow-auto">
     <ng-container *ngIf="mediaSearchService.mediaSearch">
-      <div *ngFor="let mediaSearchResults of mediaSearchService.mediaSearch.results"
-           class="flex w-full h-32 py-1"
-           [routerLink]="['/library/add/details', mediaSearchResults.id]">
-        <img [src]="mediaSearchResults.image"
-             [alt]="mediaSearchResults.title"
-             class="max-h-32 max-w-20">
-        <div class="flex flex-col justify-around ml-4">
-          <div class="font-semibold">{{mediaSearchResults.title}}</div>
-          <div>{{mediaSearchResults.description}}</div>
+      <div *ngFor="let mediaSearchResult of mediaSearchService.mediaSearch.results"
+           class="flex w-full h-32 py-1">
+        <img [src]="mediaSearchResult.image"
+             [alt]="mediaSearchResult.title"
+             class="max-h-32 max-w-20"
+             [routerLink]="['/library/add/details', mediaSearchResult.id]">
+        <div class="flex flex-col justify-around flex-1 w-full ml-4"
+             [routerLink]="['/library/add/details', mediaSearchResult.id]">
+          <div class="font-semibold">{{mediaSearchResult.title}}</div>
+          <div>{{mediaSearchResult.description}}</div>
+        </div>
+        <div class="flex items-center ml-4">
+          <input class="w-4 h-4"
+                 type="checkbox"
+                 (click)="selectMediaSearchResult(mediaSearchResult)">
         </div>
       </div>
     </ng-container>
