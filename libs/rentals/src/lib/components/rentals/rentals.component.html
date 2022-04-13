@@ -1,3 +1,20 @@
-<p>
-  rentals works!
-</p>
+<h3 class="w-full my-4 text-lg font-bold text-center">{{'rental' | transloco}}</h3>
+<div class="flex flex-col m-4">
+  <div class="flex w-full mb-4">
+    <div class="w-1/5">{{'name' | transloco}}</div>
+    <div class="w-1/5">{{'type' | transloco}}</div>
+    <div class="w-1/5">{{'to' | transloco}}</div>
+    <div class="w-1/5">{{'at' | transloco}}</div>
+    <div class="w-1/5">{{'deadline' | transloco}}</div>
+    <!-- <div class="w-1/6">{{'comment' | transloco}}</div> -->
+  </div>
+  <div class="flex w-full mb-2 text-sm"
+       *ngFor="let rental of rentalService.rentals">
+    <div class="w-1/5">{{rental.mediaTitle}}</div>
+    <div class="w-1/5">{{rental.blueray ? 'BluRay' : 'DvD'}}</div>
+    <div class="w-1/5">{{rental.borrowerName}}</div>
+    <div class="w-1/5">{{rental.lendingDate}}</div>
+    <div class="w-1/5">{{rental.lendingDeadline}}</div>
+    <!-- <div class="w-1/6">{{rental.comment}}</div> -->
+  </div>
+</div>

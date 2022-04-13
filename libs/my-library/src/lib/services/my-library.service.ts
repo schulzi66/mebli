@@ -4,6 +4,7 @@ import { AuthService } from '@mebli/auth';
 import { DbPaths, DbService } from '@mebli/db';
 import { MediaDetails, MediaType } from '@mebli/imdb-api';
 import { Media } from '../models/media';
+import { SortingSelection } from '../models/sorting-selection';
 
 @Injectable({
     providedIn: 'root',
@@ -12,6 +13,7 @@ export class MyLibraryService {
     public library: Media[] = [];
     public filteredLibrary: Media[] = [];
     public currentSelection: MediaType = 'Movie';
+    public currentSortingSelection: SortingSelection = 'title';
     public movies: Media[] = [];
     public series: Media[] = [];
 
@@ -23,9 +25,9 @@ export class MyLibraryService {
         this.queryLibrary();
     }
 
-    public queryLibrary(): void {
+    public queryLibrary(orderBy: SortingSelection = 'title'): void {
         this.db
-            .getDocs$<Media>(DbPaths.MEDIA, 'uid', '==', this.authService.uid, 'title', 'asc')
+            .getDocs$<Media>(DbPaths.MEDIA, 'uid', '==', this.authService.uid, orderBy, 'asc')
             .subscribe((media: Media[]) => {
                 this.library = media;
                 this.movies = [];
@@ -81,5 +83,10 @@ export class MyLibraryService {
         if (media && media.pathId && this.authService.uid) {
             this.db.deleteDocument<Media>(DbPaths.MEDIA, media.pathId).then(() => this.router.navigate(['/library']));
         }
+    }
+
+    public sortBy(sortBy: SortingSelection): void {
+        this.currentSortingSelection = sortBy;
+        this.queryLibrary(sortBy);
     }
 }

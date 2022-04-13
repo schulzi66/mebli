@@ -36,6 +36,7 @@ export class MyLibraryComponent {
         ]);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public clearSearch(event: any): void {
         // Clear Button Event has no inputType
         if (!event.inputType) {
