@@ -1,8 +1,8 @@
 import { Location } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavbarService } from '@mebli/nav';
-import { NgOverlayContainerService } from 'ng-overlay-container';
+import { NgOverlayContainerService, NgPopoverCloseEvent } from 'ng-overlay-container';
 import { Media } from '../../models/media';
 import { MyLibraryService } from '../../services/my-library.service';
 
@@ -13,10 +13,16 @@ import { MyLibraryService } from '../../services/my-library.service';
 })
 export class MediaDetailComponent implements OnInit {
     public media: Media | undefined;
+    public isNewMedia: boolean | undefined;
+    public selectedSeries: string[] | undefined;
+    private initialMedia: Media | undefined;
+
     @ViewChild('commentTemplate') private commentTemplate!: TemplateRef<any>;
+    @ViewChild('addTemplate') private addTemplate!: TemplateRef<any>;
 
     public constructor(
         private readonly location: Location,
+        private readonly router: Router,
         private readonly navbarService: NavbarService,
         private readonly activatedRoute: ActivatedRoute,
         private readonly ngOverlayContainerService: NgOverlayContainerService,
@@ -28,21 +34,30 @@ export class MediaDetailComponent implements OnInit {
             this.navigateBack();
         }
 
-        this.registerActions(this.activatedRoute.snapshot.data['isNewMedia']);
+        this.isNewMedia = this.activatedRoute.snapshot.data['isNewMedia'];
 
-        this.media = this.activatedRoute.snapshot.data['isNewMedia']
+        this.registerActions();
+
+        this.media = this.isNewMedia
             ? (this.activatedRoute.snapshot.data['mediaDetails'] as Media)
             : (this.activatedRoute.snapshot.data['media'] as Media);
 
+        if (
+            this.media &&
+            this.media.type === 'TVSeries' &&
+            (this.isNewMedia || (!this.isNewMedia && this.media.ownedSeasons === undefined))
+        ) {
+            this.media.ownedSeasons = [];
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            this.media.tvSeriesInfo?.seasons?.forEach((_, i) => (this.media!.ownedSeasons[i] = false));
+        }
+
+        this.initialMedia = { ...this.media };
         console.log(this.media);
     }
 
-    private navigateBack(): void {
-        this.location.back();
-    }
-
     public openCommentPopup(): void {
-        const ngPopoverRef = this.ngOverlayContainerService.open<Media | undefined, void>({
+        this.ngOverlayContainerService.open<Media | undefined, void>({
             content: this.commentTemplate,
             data: this.media,
             configuration: {
@@ -53,51 +68,95 @@ export class MediaDetailComponent implements OnInit {
                 backdropClass: 'cdk-overlay-dark-backdrop',
             },
         });
-        ngPopoverRef.afterClosed$.subscribe(() => this.myLibraryService.updateMedia(this.media));
     }
 
-    private registerActions(isNewMedia: boolean | undefined): void {
-        isNewMedia
-            ? this.navbarService.registerActions([
-                  {
-                      order: -1,
-                      icon: 'back',
-                      translationKey: 'back',
-                      action: () => this.navigateBack(),
-                  },
-                  {
-                      order: 1,
-                      icon: 'add',
-                      translationKey: 'add',
-                      action: () => this.myLibraryService.addToLibrary(this.media),
-                  },
-              ])
-            : this.navbarService.registerActions([
-                  {
-                      order: -2,
-                      icon: 'back',
-                      translationKey: 'back',
-                      action: () => this.navigateBack(),
-                  },
-                  {
-                      order: -1,
-                      icon: 'comment',
-                      translationKey: 'comment',
-                      action: () => this.openCommentPopup(),
-                  },
-                  {
-                      order: 1,
-                      icon: 'up',
-                      translationKey: 'lend_movie',
-                      action: () => console.log('lend'),
-                  },
+    public openAddPopup(): void {
+        const ngPopoverRef = this.ngOverlayContainerService.open<Media | undefined, { addMedia: boolean }>({
+            content: this.addTemplate,
+            data: this.media,
+            configuration: {
+                useGlobalPositionStrategy: true,
+                width: '90vw',
+                height: '90vh',
+                isResizable: false,
+                backdropClass: 'cdk-overlay-dark-backdrop',
+            },
+        });
+        
+        ngPopoverRef.afterClosed$.subscribe((event: NgPopoverCloseEvent<{ addMedia: boolean }>) => {
+            if (event.data.addMedia) {
+                this.myLibraryService.addToLibrary(this.media);
+            }
+        });
+    }
 
-                  {
-                      order: 2,
-                      icon: 'trash',
-                      translationKey: 'delete',
-                      action: () => this.myLibraryService.deleteFromLibrary(this.media),
-                  },
-              ]);
+    private navigateBack(): void {
+        this.location.back();
+    }
+
+    private updateMediaIfChanged(): void {
+        if (this.initialMedia !== this.media) {
+            this.myLibraryService.updateMedia(this.media);
+        }
+    }
+
+    private registerActions(): void {
+        if (this.isNewMedia) {
+            this.navbarService.registerActions([
+                {
+                    order: -1,
+                    icon: 'back',
+                    translationKey: 'back',
+                    action: () => this.navigateBack(),
+                },
+                {
+                    order: 1,
+                    icon: 'add',
+                    translationKey: 'add',
+                    action: () => this.openAddPopup(),
+                },
+            ]);
+        } else {
+            this.navbarService.resetActions();
+            this.navbarService.registerActions([
+                {
+                    order: -2,
+                    icon: 'back',
+                    translationKey: 'back',
+                    action: () => {
+                        this.updateMediaIfChanged();
+                        this.navigateBack();
+                    },
+                },
+                {
+                    order: -1,
+                    icon: 'comment',
+                    translationKey: 'comment',
+                    action: () => this.openCommentPopup(),
+                },
+                {
+                    order: 0,
+                    icon: 'home',
+                    translationKey: 'home',
+                    action: () => {
+                        this.updateMediaIfChanged();
+                        this.router.navigate(['/']);
+                    },
+                },
+                {
+                    order: 1,
+                    icon: 'up',
+                    translationKey: 'lend_movie',
+                    action: () => console.log('lend'),
+                },
+
+                {
+                    order: 2,
+                    icon: 'trash',
+                    translationKey: 'delete',
+                    action: () => this.myLibraryService.deleteFromLibrary(this.media),
+                },
+            ]);
+        }
     }
 }

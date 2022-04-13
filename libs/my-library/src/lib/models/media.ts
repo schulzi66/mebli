@@ -4,4 +4,6 @@ export interface Media extends MediaDetails {
     uid?: string;
     pathId?: string;
     comment?: string;
+    blueray?: boolean;
+    ownedSeasons: boolean[];
 }

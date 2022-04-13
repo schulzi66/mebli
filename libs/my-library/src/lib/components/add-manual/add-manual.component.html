@@ -5,7 +5,8 @@
          type="text"
          class="w-full px-5 py-3 mb-2 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
          [placeholder]="'add_term_placeholder' | transloco"
-         [(ngModel)]="mediaSearchService.term">
+         [(ngModel)]="mediaSearchService.term"
+         (keyup.enter)="mediaSearchService.searchMedia()">
 
   <div class="w-full h-full mb-12 overflow-auto">
     <ng-container *ngIf="mediaSearchService.mediaSearch">

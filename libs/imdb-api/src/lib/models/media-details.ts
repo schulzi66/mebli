@@ -83,8 +83,8 @@ export interface Similar {
 }
 
 export interface TvSeriesInfo {
-    yearEnd?:     string;
-    creators?:    string;
+    yearEnd?: string;
+    creators?: string;
     creatorList?: CompanyListElement[];
-    seasons?:     string[];
+    seasons?: string[];
 }
