@@ -42,6 +42,10 @@ export class MediaDetailComponent implements OnInit {
             ? (this.activatedRoute.snapshot.data['mediaDetails'] as Media)
             : (this.activatedRoute.snapshot.data['media'] as Media);
 
+        if (this.media === undefined) {
+            this.navigateBack();
+        }
+
         if (
             this.media &&
             this.media.type === 'TVSeries' &&
@@ -82,7 +86,7 @@ export class MediaDetailComponent implements OnInit {
                 backdropClass: 'cdk-overlay-dark-backdrop',
             },
         });
-        
+
         ngPopoverRef.afterClosed$.subscribe((event: NgPopoverCloseEvent<{ addMedia: boolean }>) => {
             if (event.data.addMedia) {
                 this.myLibraryService.addToLibrary(this.media);
@@ -146,8 +150,8 @@ export class MediaDetailComponent implements OnInit {
                 {
                     order: 1,
                     icon: 'up',
-                    translationKey: 'lend_movie',
-                    action: () => console.log('lend'),
+                    translationKey: 'lend',
+                    action: () => this.router.navigate(['./library/lend', this.media?.id]),
                 },
 
                 {

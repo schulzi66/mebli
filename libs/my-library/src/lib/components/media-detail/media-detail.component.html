@@ -27,7 +27,7 @@
     <span class="flex self-start py-2 italic">
       {{'seasons' | transloco}}:
     </span>
-    <div class="flex w-full overflow-x-scroll">
+    <div class="flex w-full overflow-auto">
       <div *ngFor="let season of media.tvSeriesInfo?.seasons; index as i"
            class="mr-2">
         <input type="checkbox"
@@ -96,7 +96,7 @@
         <span class="flex self-start py-2">
           {{'seasons' | transloco}}
         </span>
-        <div class="flex w-full overflow-x-scroll">
+        <div class="flex w-full overflow-auto">
           <div *ngFor="let season of data.tvSeriesInfo?.seasons; index as i"
                class="mr-2">
             <input type="checkbox"
