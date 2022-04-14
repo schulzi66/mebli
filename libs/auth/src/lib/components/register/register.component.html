@@ -21,7 +21,7 @@
                  [(ngModel)]="email">
           <div [hidden]="emailModel.valid || emailModel.pristine"
                class="w-full text-red-500">
-            {{'email' | transloco}} {{'is_required' | transloco}} und gültige E-Mail Adresse eingeben
+               {{'valid' | transloco}}{{' email' | transloco}} {{'is_required' | transloco}} 
           </div>
         </div>
         <div class="flex flex-col m-4">
@@ -45,6 +45,7 @@
                  id="password"
                  name="password"
                  type="password"
+                 (keyup)="onKey($event, 'password')" 
                  [placeholder]="'password_placeholder' | transloco"
                  required
                  autocomplete="password"
@@ -52,8 +53,53 @@
                  [(ngModel)]="password">
           <div [hidden]="passwordModel.valid || passwordModel.pristine"
                class="w-full text-red-500">
-            {{'password' | transloco}} {{'is_required' | transloco}}, min. 8 Zeichen (Groß-,Kleinbuchstaben, Zahl und Sonderzeichen)
+            {{'password' | transloco}} 
+           {{'is_required' | transloco}}
           </div>
+          <div class="flex items-center w-full h-4 mb-4">
+          Das Password muss diese Anforderungen erfüllen: </div>
+         
+          <div *ngIf="number else one_number_false" class="flex items-center w-full h-2 mb-4 ">
+          <img 	 src="./assets/svg/badge-check-true.svg"    class=" >w-6 h-6 ">   <div class="ml-4 text-green-500">{{'one_number' | transloco}}</div> </div>
+           
+          <ng-template #one_number_false>
+          <div class="flex items-center w-full h-2 mb-4 ">
+            <img 	 src="./assets/svg/badge-check.svg"    class=" >w-6 h-6 ">   <div class="ml-4">{{'one_number' | transloco}}</div> </div>
+            </ng-template>
+
+          <div *ngIf="uppercase else one_upper_false" class="flex items-center w-full h-2 mb-4 ">
+            <img 	 src="./assets/svg/badge-check-true.svg"    class=" >w-6 h-6 ">   <div class="ml-4 text-green-500">{{'one_upper' | transloco}}</div> </div>
+               
+          <ng-template #one_upper_false>
+              <div class="flex items-center w-full h-2 mb-4 ">
+                <img 	 src="./assets/svg/badge-check.svg"    class=" >w-6 h-6 ">   <div class="ml-4">{{'one_upper' | transloco}}</div> </div>
+                </ng-template>
+
+
+                <div *ngIf="lowercase else one_lower_false" class="flex items-center w-full h-2 mb-4 ">
+                  <img 	 src="./assets/svg/badge-check-true.svg"    class=" >w-6 h-6 ">   <div class="ml-4 text-green-500">{{'one_lower' | transloco}}</div> </div>
+                     
+                <ng-template #one_lower_false>
+                    <div class="flex items-center w-full h-2 mb-4 ">
+                      <img 	 src="./assets/svg/badge-check.svg"    class=" >w-6 h-6 ">   <div class="ml-4">{{'one_lower' | transloco}}</div> </div>
+                      </ng-template>
+                
+
+          <div *ngIf="lenght else lenght_false" class="flex items-center w-full h-2 mb-4 ">
+            <img 	 src="./assets/svg/badge-check-true.svg"    class=" >w-6 h-6 ">   <div class="ml-4 text-green-500">{{'eight_chars' | transloco}}</div> </div>
+             
+            <ng-template #lenght_false>
+            <div class="flex items-center w-full h-2 mb-4 ">
+              <img 	 src="./assets/svg/badge-check.svg"    class=" >w-6 h-6 ">   <div class="ml-4">{{'eight_chars' | transloco}}</div> </div>
+              </ng-template>
+
+              <div *ngIf="specialcase else spcialcase_false" class="flex items-center w-full h-2 mb-4 ">
+                <img 	 src="./assets/svg/badge-check-true.svg"    class=" >w-6 h-6 ">   <div class="ml-4 text-green-500">{{'special_char' | transloco}}</div> </div>
+                 
+                <ng-template #spcialcase_false>
+                <div class="flex items-center w-full h-2 mb-4 ">
+                  <img 	 src="./assets/svg/badge-check.svg"    class=" >w-6 h-6 ">   <div class="ml-4">{{'special_char' | transloco}}</div> </div>
+                  </ng-template>
         </div>
         <div class="flex flex-col m-4">
           <label for="passwordConfirm"

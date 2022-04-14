@@ -12,9 +12,14 @@ export class RegisterComponent {
     public email = '';
     public accountName = '';
     public password = '';
+    public number = false;
+    public lenght = false;
+    public uppercase = false;
+    public lowercase = false;
     public passwordConfirm = '';
     public passwordsMatch = true;
-
+    public specialcase = false;
+    
     public constructor(private readonly authService: AuthService, private readonly db: DbService) {}
 
     public async onRegister(): Promise<void> {
@@ -35,6 +40,46 @@ export class RegisterComponent {
             console.error('Account already taken', this.accountName);
         }
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onKey(event: any, type: string) {
+     if (type === 'password') {
+            this.password = event.target.value;
+        } 
+        if (this.password.length>7)
+    {
+        this.lenght=true; 
+    }
+    else  this.lenght=false; 
+     if(this.password.match("(?=.*[0-9])"))
+    {
+        this.number=true;
+    }
+    else this.number=false;
+
+    if(this.password.match("(?=.*[A-Z])"))
+    {
+        this.uppercase=true;
+    }
+    else this.uppercase=false;
+
+    if(this.password.match("(?=.*[a-z])"))
+    {
+        this.lowercase=true;
+    }
+    else this.lowercase=false;
+
+
+    if(this.password.match("(?=.*\\W)"))
+    {
+        this.specialcase=true;
+    }
+    else this.specialcase=false;
+    
+    }
+    
+
+  
 
     public async onLoginWithGoogle(): Promise<void> {
         await this.authService.loginWithGoogle();
