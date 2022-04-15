@@ -94,8 +94,24 @@ export class AuthService {
                 return;
             }
             user.updatePassword(newPassword);
+            if (user.getIdToken !== null) 
+        console.log("user id: " + user.uid);
+        console.log(user)
         });
     }
+
+    public async deleteProfil()
+    {
+        this.userAuth$.pipe(filter((user: User | null) => !!user?.uid)).subscribe(async (user: User | null) => {
+            if (!user?.uid) {
+                return;
+            }
+            user.delete();
+            console.log(user)
+            if (user.getIdToken == null) 
+        console.log("user delete ");
+        });
+}
 
     private async storeProfileData(data: Profile): Promise<void> {
         return this.db.setDoc<Profile>(DbPaths.PROFILES, data.uid, data, { merge: true });

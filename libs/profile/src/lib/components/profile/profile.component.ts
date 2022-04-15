@@ -40,7 +40,7 @@ export class ProfileComponent {
             configuration: {
                 useGlobalPositionStrategy: true,
                 width: '90vw',
-                height: '25vh',
+                height: '40vh',
                 isResizable: false,
                 backdropClass: 'cdk-overlay-dark-backdrop',
             },
