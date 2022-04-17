@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Injectable } from '@angular/core';
-import { GoogleAuthProvider } from '@angular/fire/auth';
+import { GoogleAuthProvider } from '@angular/fire/auth'
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { DbPaths, DbService } from '@mebli/db';
@@ -51,10 +51,21 @@ export class AuthService {
 
     public async loginWithEmail(email: string, password: string): Promise<void> {
         try {
-            await this.auth.signInWithEmailAndPassword(email, password);
+            await this.auth.signInWithEmailAndPassword(email, password).catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                if (errorCode == 'auth/wrong-password') {
+                    window.alert('The password is wrong');
+                    console.log("Wrong Passwort");
+                } else {
+                    window.alert(errorMessage);
+                }  console.log(error);
+            }
+            );
             this.router.navigate(['/']);
         } catch (error: unknown) {
             console.error((error as FirebaseError).code);
+            window.alert("Login Fehlgeschlagen");
         }
     }
 
@@ -93,6 +104,7 @@ export class AuthService {
             if (!user?.uid) {
                 return;
             }
+                     
             user.updatePassword(newPassword);
             if (user.getIdToken !== null) 
         console.log("user id: " + user.uid);
@@ -100,7 +112,7 @@ export class AuthService {
         });
     }
 
-    public async deleteProfil()
+    public async deleteProfile()
     {
         this.userAuth$.pipe(filter((user: User | null) => !!user?.uid)).subscribe(async (user: User | null) => {
             if (!user?.uid) {
@@ -110,6 +122,7 @@ export class AuthService {
             console.log(user)
             if (user.getIdToken == null) 
         console.log("user delete ");
+        await this.router.navigate(['/login']);
         });
 }
 
