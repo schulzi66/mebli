@@ -57,6 +57,25 @@ export class DbService {
             .valueChanges();
     }
 
+    public getDocBy<T>(
+        path: DbPaths,
+        fieldPath: string | FieldPath,
+        whereFilter: WhereFilterOp,
+        value: unknown
+    ): Promise<T> {
+        return lastValueFrom(
+            this.firestore
+                .collection<T>(path, (ref) => {
+                    return ref.where(fieldPath, whereFilter, value);
+                })
+                .valueChanges()
+                .pipe(
+                    take(1),
+                    map((doc) => doc[0])
+                )
+        );
+    }
+
     public docExists<T>(
         path: DbPaths,
         fieldPath: string | FieldPath,
