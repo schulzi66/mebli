@@ -19,12 +19,15 @@ export class RegisterComponent {
     public passwordConfirm = '';
     public passwordsMatch = true;
     public specialcase = false;
+    public PasswordInvalid=false;
     
     public constructor(private readonly authService: AuthService, private readonly db: DbService) {}
 
     public async onRegister(): Promise<void> {
         this.passwordsMatch = this.password === this.passwordConfirm;
-        if (!this.passwordsMatch) {
+        if (!this.passwordsMatch || !this.specialcase || !this.lowercase || !this.uppercase || !this.number) {
+            console.log("invalid passwort")
+            this.PasswordInvalid=true;
             return;
         }
 
@@ -41,11 +44,8 @@ export class RegisterComponent {
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onKey(event: any, type: string) {
-     if (type === 'password') {
-            this.password = event.target.value;
-        } 
+   
+    public onKey(): void  {
         if (this.password.length>7)
     {
         this.lenght=true; 
