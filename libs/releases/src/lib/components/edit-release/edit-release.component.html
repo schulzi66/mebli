@@ -1,0 +1,33 @@
+<div class="flex flex-col items-center m-4">
+  <h3 class="w-full my-4 text-lg font-bold text-center">{{'edit_release' | transloco}}</h3>
+
+  <div *ngIf="ownRelease" class="w-full">
+    <div class="flex flex-col w-full mb-2">
+      <div>{{'user' | transloco}}:</div>
+      <input id="accountName"
+             name="accountName"
+             type="search"
+             readonly
+             class="px-5 py-3 mb-2 text-base placeholder-gray-300 border border-gray-300 rounded-sm focus:outline-none"
+             [ngModel]="ownRelease.accountName">
+    </div>
+
+    <div class="flex flex-col w-full mb-2">
+      <div>{{'rating' | transloco}}:</div>
+      <input id="rating"
+             name="rating"
+             type="text"
+             class="px-5 py-3 mb-2 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+             [(ngModel)]="ownRelease.rating">
+    </div>
+
+    <div class="flex flex-col w-full mb-2">
+      <div>{{'comment' | transloco}}:</div>
+      <input id="comment"
+             name="comment"
+             type="text"
+             class="px-5 py-3 mb-2 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+             [(ngModel)]="ownRelease.comment">
+    </div>
+  </div>
+</div>

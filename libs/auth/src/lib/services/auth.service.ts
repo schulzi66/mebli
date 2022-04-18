@@ -16,6 +16,7 @@ export class AuthService {
     public profile$: Observable<Profile | undefined> = EMPTY;
     public readonly userAuth$: Observable<User | null> = EMPTY;
     public uid: string | undefined;
+    public accountName: string | undefined;
     private email: string | undefined | null;
 
     public constructor(
@@ -29,6 +30,7 @@ export class AuthService {
                 return;
             }
             this.profile$ = this.db.getDoc$<Profile>(DbPaths.PROFILES, user.uid);
+            this.profile$.subscribe((profile: Profile | undefined) => (this.accountName = profile?.accountName));
             this.uid = user.uid;
             this.email = user.email;
         });

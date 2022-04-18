@@ -1,3 +1,54 @@
-<p>
-  releases works!
-</p>
+<div class="flex flex-col items-center m-4">
+  <h3 class="w-full my-4 text-lg font-bold text-center">{{'releases' | transloco}}</h3>
+  <div class="flex w-full m-4 justify-evenly">
+    <div [ngClass]="{'font-bold' : releasesService.currentSelection === 'Foreign'}"
+         (click)="switchSelection('Foreign')">{{'foreign_libraries' | transloco}}
+      ({{releasesService.userReleases?.foreignLibraryReleases?.length ?? 0}})
+    </div>
+    <div [ngClass]="{'font-bold' : releasesService.currentSelection === 'Own'}"
+         (click)="switchSelection('Own')">{{'own_releases' | transloco}}
+      ({{releasesService.userReleases?.ownReleases?.length ?? 0}})
+    </div>
+  </div>
+  <div class="flex flex-col w-full m-4"
+       *ngIf="releasesService.currentSelection === 'Foreign'">
+    <div class="flex w-full mb-4">
+      <div class="w-1/4">{{'user' | transloco}}</div>
+      <div class="w-1/2">{{'rating' | transloco}}</div>
+      <div class="w-1/4"></div>
+    </div>
+    <div class="flex w-full mb-2 text-sm"
+         *ngFor="let release of releasesService.userReleases?.foreignLibraryReleases">
+      <div class="w-1/4">{{release.accountName}}</div>
+      <div class="w-1/2">{{release.rating}}</div>
+      <div class="w-1/4">
+        <img src="./assets/svg/trash.svg"
+             class="w-6 h-6"
+             (click)="removeForeignRelease(release)" />
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col w-full m-4"
+       *ngIf="releasesService.currentSelection === 'Own'">
+    <div class="flex w-full mb-4">
+      <div class="w-1/4">{{'user' | transloco}}</div>
+      <div class="w-1/4">{{'rating' | transloco}}</div>
+      <div class="w-1/4">{{'comment' | transloco}}</div>
+      <div class="w-1/4"></div>
+    </div>
+    <div class="flex w-full mb-2 text-sm"
+         *ngFor="let release of releasesService.userReleases?.ownReleases">
+      <div class="w-1/4">{{release.accountName}}</div>
+      <div class="w-1/4">{{release.rating}}</div>
+      <div class="w-1/4">{{release.comment}}</div>
+      <div class="flex justify-center w-1/4">
+        <img src="./assets/svg/edit.svg"
+             class="w-6 h-6 mr-2"
+             (click)="editOwnRelease(release)" />
+        <img src="./assets/svg/trash.svg"
+             class="w-6 h-6"
+             (click)="removeOwnRelease(release)" />
+      </div>
+    </div>
+  </div>
+</div>
