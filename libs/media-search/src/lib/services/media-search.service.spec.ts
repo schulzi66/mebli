@@ -1,9 +1,9 @@
 /* tslint:disable:no-unused-variable */
 
-import { inject, TestBed } from '@angular/core/testing';
+import { TestBed, async, inject } from '@angular/core/testing';
 import { MediaSearchService } from './media-search.service';
 
-describe('Service: MediaSearchService', () => {
+describe('Service: MediaSearch', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [MediaSearchService]

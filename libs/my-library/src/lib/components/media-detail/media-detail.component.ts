@@ -14,7 +14,6 @@ import { MyLibraryService } from '../../services/my-library.service';
 export class MediaDetailComponent implements OnInit {
     public media: Media | undefined;
     public isNewMedia: boolean | undefined;
-    public selectedSeries: string[] | undefined;
     private initialMedia: Media | undefined;
 
     @ViewChild('commentTemplate') private commentTemplate!: TemplateRef<any>;

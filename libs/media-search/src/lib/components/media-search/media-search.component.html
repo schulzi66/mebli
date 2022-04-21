@@ -1,3 +1,82 @@
-<p>
-  media-search works!
-</p>
+<div class="flex flex-col items-center m-4 mb-14">
+  <h3 class="my-4 text-lg font-bold text-center">{{'media_search' | transloco}}</h3>
+  <input id="searchTerm"
+         name="searchTerm"
+         type="search"
+         (input)="clearSearch($event)"
+         class="w-full px-5 py-3 mb-2 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+         [placeholder]="'add_term_placeholder' | transloco"
+         [(ngModel)]="mediaSearchService.searchTerm"
+         (keyup.enter)="mediaSearchService.search()">
+
+  <div class="flex w-full">
+    <div class="flex flex-col w-full">
+      <div>{{'search_criteria' | transloco}}:</div>
+      <div class="flex justify-between w-full ">
+        <div>
+          <input id="includeMovie"
+                 name="includeMovie"
+                 type="checkbox"
+                 [(ngModel)]="mediaSearchService.includeMovies">
+          {{'movie' | transloco}}
+        </div>
+        <div>
+          <input id="includeSeries"
+                 name="includeSeries"
+                 type="checkbox"
+                 [(ngModel)]="mediaSearchService.includeSeries">
+          {{'serie' | transloco}}
+        </div>
+        <div>
+          <input id="includeBluray"
+                 name="includeBluray"
+                 type="checkbox"
+                 [(ngModel)]="mediaSearchService.includeBluRay">
+          {{'blueray' | transloco}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-between w-full m-4">
+    <div [ngClass]="{'font-bold' : mediaSearchService.currentSelection === 'Foreign'}"
+         (click)="mediaSearchService.switchSelection('Foreign')">{{'foreign_libraries' | transloco}}
+      ({{mediaSearchService.resultsForeignLibrary.length}})</div>
+    <div [ngClass]="{'font-bold' : mediaSearchService.currentSelection === 'Own'}"
+         (click)="mediaSearchService.switchSelection('Own')">{{'my_library' | transloco}}
+      ({{mediaSearchService.resultsOwnLibrary.length}})</div>
+  </div>
+
+  <div *ngIf="mediaSearchService.currentSelection === 'Foreign'"
+       class="flex flex-col justify-between w-full">
+    <div class="flex w-full mb-4 underline">
+      <div class="w-3/4">{{'name' | transloco}}</div>
+      <div class="w-1/4">{{'type' | transloco}}</div>
+      <div class="w-1/4">{{'owner' | transloco}}</div>
+    </div>
+    <div class="flex w-full mb-2 text-sm"
+         *ngFor="let result of mediaSearchService.resultsForeignLibrary"
+         [routerLink]="['/media-search/request', result.media.pathId]">
+      <div class="w-3/4 pr-2">{{result.media.title}}</div>
+      <div class="w-1/4 pr-2">{{result.media.blueray ? 'BluRay' : 'DvD'}}</div>
+      <div class="w-1/4 pr-2">{{result.release.accountName}}</div>
+    </div>
+  </div>
+
+  <div *ngIf="mediaSearchService.currentSelection === 'Own'"
+       class="flex flex-col justify-between w-full">
+    <div class="flex w-full mb-4 underline">
+      <div class="w-3/4">{{'name' | transloco}}</div>
+      <div class="w-1/4">{{'type' | transloco}}</div>
+      <div class="w-1/4">{{'comment' | transloco}}</div>
+    </div>
+    <div class="flex w-full mb-2 text-sm"
+         *ngFor="let media of mediaSearchService.resultsOwnLibrary"
+         [routerLink]="['/library/details', media.id]">
+      <div class="w-3/4 pr-2">{{media.title}}</div>
+      <div class="w-1/4 pr-2">{{media.blueray ? 'BluRay' : 'DvD'}}</div>
+      <div class="w-1/4 pr-2">{{media.comment}}</div>
+    </div>
+  </div>
+
+</div>

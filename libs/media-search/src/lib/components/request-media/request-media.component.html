@@ -1,0 +1,59 @@
+<div class="flex flex-col items-center m-4 mb-14">
+  <h3 class="my-4 text-lg font-bold text-center">{{media?.title}}</h3>
+
+  <div class="flex w-full h-32 py-2">
+    <img [src]="media?.image"
+         [alt]="media?.title"
+         class="max-h-32 max-w-20">
+    <div class="flex flex-col justify-around ml-4">
+      <div>{{media?.stars}}</div>
+      <div>{{media?.genres}}</div>
+      <div>{{media?.year}}</div>
+      <div>{{media?.contentRating}}</div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="media && media?.type === 'TVSeries'">
+    <span class="flex self-start py-2 italic">
+      {{'seasons' | transloco}}:
+    </span>
+    <div class="flex w-full overflow-auto">
+      <div *ngFor="let season of media.tvSeriesInfo?.seasons; index as i"
+           class="mr-2">
+        <input type="checkbox"
+               [id]="'checkbox' + season"
+               [name]="'checkbox' + season"
+               [disabled]="media.ownedSeasons[i] === false"
+               [ngModel]="selectedSeasons[i]"
+               (ngModelChange)="selectedSeasons[i] = $event">
+        {{season}}
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="w-full py-2 italic"
+       *ngIf="release">
+    {{'owner' | transloco}}:
+    {{release.accountName}}
+  </div>
+
+  <div class="w-full py-2 italic">
+    {{'blueray' | transloco}}:
+    <input type="checkbox"
+           name="blueray"
+           id="isBlueray"
+           disabled
+           class="ml-2"
+           *ngIf="media"
+           [(ngModel)]="media.blueray">
+  </div>
+
+  <div class="w-full py-2">
+    <div class="italic">
+      {{'plot' | transloco}}:
+    </div>
+    <p>
+      {{media?.plotLocal ?? media?.plot}}
+    </p>
+  </div>
+</div>

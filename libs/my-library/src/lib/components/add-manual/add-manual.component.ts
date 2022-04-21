@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ImdbApiService, MediaDetails, MediaSearchResult } from '@mebli/imdb-api';
 import { NavbarService } from '@mebli/nav';
 import { firstValueFrom } from 'rxjs';
-import { MediaSearchService } from '../../services/media-search.service';
+import { MediaInformationService } from '../../services/media-information.service';
 import { MyLibraryService } from '../../services/my-library.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class AddManualComponent implements OnInit {
         private readonly router: Router,
         private readonly imdbApiService: ImdbApiService,
         private readonly myLibraryService: MyLibraryService,
-        public readonly mediaSearchService: MediaSearchService
+        public readonly mediaInformationService: MediaInformationService
     ) {}
 
     public ngOnInit(): void {
@@ -46,7 +46,7 @@ export class AddManualComponent implements OnInit {
     public addSelection(): void {
         this.selectedMedia.forEach(async (mediaSearchResult: MediaSearchResult) => {
             const mediaDetails: MediaDetails = await firstValueFrom(
-                this.imdbApiService.getMediaDetails(mediaSearchResult.id)
+                this.mediaInformationService.searchMediaDetails(mediaSearchResult.id)
             );
             this.myLibraryService.addToLibrary(mediaDetails);
         });
@@ -71,7 +71,7 @@ export class AddManualComponent implements OnInit {
                       order: 1,
                       icon: 'search',
                       translationKey: 'search',
-                      action: () => this.mediaSearchService.searchMedia(),
+                      action: () => this.mediaInformationService.searchMedia(),
                   },
                   {
                       order: 2,
@@ -97,7 +97,7 @@ export class AddManualComponent implements OnInit {
                       order: 1,
                       icon: 'search',
                       translationKey: 'search',
-                      action: () => this.mediaSearchService.searchMedia(),
+                      action: () => this.mediaInformationService.searchMedia(),
                   },
               ]);
     }

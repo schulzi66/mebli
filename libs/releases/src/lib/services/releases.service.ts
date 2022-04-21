@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthService, Profile } from '@mebli/auth';
 import { DbPaths, DbService } from '@mebli/db';
+import { Subject } from 'rxjs';
 import { OwnRelease } from '../models/own-release';
 import { ReleaseSelection } from '../models/releaseSelection';
 import { UserReleases } from '../models/user-releases';
@@ -10,15 +11,24 @@ import { Release } from './../models/release';
     providedIn: 'root',
 })
 export class ReleasesService {
+    private isInitialized = false;
     public currentSelection: ReleaseSelection = 'Foreign';
     public userReleases: UserReleases | undefined;
+    public userReleases$: Subject<UserReleases | undefined> = new Subject<UserReleases | undefined>();
 
     public constructor(private readonly db: DbService, private readonly authService: AuthService) {
-        this.queryUserReleases();
+        if (!this.isInitialized) {
+            this.queryUserReleases();
+        }
     }
 
     public queryUserReleases(): void {
+        if (this.isInitialized) {
+            return;
+        }
+
         if (this.authService.uid) {
+            this.isInitialized = true;
             this.db
                 .getDoc$<UserReleases>(DbPaths.RELEASES, this.authService.uid)
                 .subscribe((userReleases: UserReleases | undefined) => {
@@ -27,6 +37,8 @@ export class ReleasesService {
                     if (this.userReleases === undefined && this.authService.uid) {
                         this.userReleases = { uid: this.authService.uid, foreignLibraryReleases: [], ownReleases: [] };
                     }
+
+                    this.userReleases$.next(userReleases);
                 });
         }
     }
