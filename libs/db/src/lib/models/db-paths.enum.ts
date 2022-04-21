@@ -3,5 +3,6 @@ export enum DbPaths {
     MEDIA = 'media',
     SEARCH = 'search',
     RENTALS = 'rentals',
+    RENTAL_REQUESTS = 'rental-requests',
     RELEASES = 'releases',
 }

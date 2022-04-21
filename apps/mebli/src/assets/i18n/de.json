@@ -58,7 +58,7 @@
     "name": "Name",
     "year": "Jahr",
     "genre": "Genre",
-    "is_blueray": "BlueRay",
+    "blueray": "BlueRay",
     "seasons": "Staffeln",
     "back": "Zurück",
     "comment": "Notiz",
@@ -69,5 +69,10 @@
     "add_manual_title": "Füge Medien anhand des Titels hinzu:",
     "privacy": "Datenschutz",
     "my_movies": "Meine Filme",
-    "my_series": "Meine Serien"
+    "my_series": "Meine Serien",
+    "search_criteria": "Suchkriterien",
+    "movie": "Film",
+    "serie": "Serie",
+    "owner": "Besitzer",
+    "request_media": "Medium anfragen"
 }

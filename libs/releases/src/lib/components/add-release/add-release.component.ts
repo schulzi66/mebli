@@ -24,6 +24,7 @@ export class AddReleaseComponent {
     ) {
         this.ownRelease = {
             accountName: '',
+            rating: '',
         };
         this.registerActions();
     }

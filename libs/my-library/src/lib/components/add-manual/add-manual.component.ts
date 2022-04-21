@@ -46,7 +46,7 @@ export class AddManualComponent implements OnInit {
     public addSelection(): void {
         this.selectedMedia.forEach(async (mediaSearchResult: MediaSearchResult) => {
             const mediaDetails: MediaDetails = await firstValueFrom(
-                this.imdbApiService.getMediaDetails(mediaSearchResult.id)
+                this.mediaInformationService.searchMediaDetails(mediaSearchResult.id)
             );
             this.myLibraryService.addToLibrary(mediaDetails);
         });

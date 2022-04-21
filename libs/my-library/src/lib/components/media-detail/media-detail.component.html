@@ -1,4 +1,4 @@
-<div class="flex flex-col items-center m-4">
+<div class="flex flex-col items-center m-4 mb-14">
   <h3 class="my-4 text-lg font-bold text-center">{{media?.title}}</h3>
 
   <div class="flex w-full h-32 py-2">
@@ -42,7 +42,7 @@
 
   <div *ngIf="!this.isNewMedia"
        class="w-full py-2 italic">
-    {{'is_blueray' | transloco}}:
+    {{'blueray' | transloco}}:
     <input type="checkbox"
            name="blueray"
            id="isBlueray"
@@ -110,7 +110,7 @@
       </ng-container>
 
       <div class="w-full py-3">
-        {{'is_blueray' | transloco}}:
+        {{'blueray' | transloco}}:
         <input type="checkbox"
                name="blueray"
                id="isBlueray"
