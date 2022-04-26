@@ -1,86 +1,256 @@
 <div class="flex flex-col m-4">
-  <h3 class="my-4 text-lg font-bold text-center">{{'profil' | transloco}}</h3>
+    <h3 class="my-4 text-lg font-bold text-center">{{ 'profil' | transloco }}</h3>
 
-  <div class="flex items-center w-full h-16 mb-4">
-    <img src="./assets/svg/user.svg"
-         class="w-8 h-8" />
-    <div class="flex flex-col justify-around flex-1 ml-4">
-      <div>{{'account_name' | transloco}}</div>
-      <div>{{(authService.profile$ | async)?.accountName}}</div>
+    <div class="flex items-center w-full h-16 mb-4">
+        <img src="./assets/svg/user.svg" class="w-8 h-8" />
+        <div class="flex flex-col justify-around flex-1 ml-4">
+            <div>{{ 'account_name' | transloco }}</div>
+            <div>{{ (authService.profile$ | async)?.accountName }}</div>
+        </div>
+        <img
+            src="./assets/svg/edit.svg"
+            class="flex w-6 h-6 justify-content:flex-end"
+            (click)="onChangeAccountName()"
+        />
     </div>
-    <img src="./assets/svg/edit.svg"
-         class="w-6 h-6"
-         (click)="onChangeAccountName()" />
-  </div>
 
-  <div class="flex items-center w-full h-16 mb-4">
-    <img src="./assets/svg/lock.svg"
-         class="w-8 h-8" />
-    <div class="flex flex-col justify-around flex-1 ml-4">
-      <div>{{'password' | transloco}}</div>
-      <div>***********</div>
+    <div class="flex items-center w-full h-16 mb-4">
+        <img src="./assets/svg/user.svg" class="w-8 h-8" />
+        <div class="flex flex-col justify-around flex-1 ml-4">
+            <div>{{ 'email' | transloco }}</div>
+            <div>{{ (authService.profile$ | async)?.email }}</div>
+        </div>
+        <img
+            src="./assets/svg/edit.svg"
+            class="flex w-6 h-6 justify-content:flex-end"
+            (click)="onChangeEmail()"
+        />
     </div>
-    <img src="./assets/svg/edit.svg"
-         class="w-6 h-6"
-         (click)="onChangePassword()" />
-  </div>
 
+    <div class="flex items-center w-full h-16 mb-4">
+        <img src="./assets/svg/lock.svg" class="w-8 h-8" />
+        <div class="flex flex-col justify-around flex-1 ml-4">
+            <div>{{ 'password' | transloco }}</div>
+            <div>***********</div>
+        </div>
+        <img src="./assets/svg/edit.svg" class="w-6 h-6 align-items:left" (click)="onChangePassword()" />
+    </div>
 
-  <div class="flex items-center w-full h-16 mb-4"
-       (click)="authService.logout()">
-    <img src="./assets/svg/logout.svg"
-         class="w-8 h-8" />
-    <div class="ml-4">{{'logout' | transloco}}</div>
-  </div>
+    <div class="flex items-center w-full h-16 mb-4" (click)="authService.logout()">
+        <img src="./assets/svg/logout.svg" class="w-8 h-8" />
+        <div class="ml-4">{{ 'logout' | transloco }}</div>
+    </div>
 
-<div class="flex items-center w-full h-16 mb-4"
-(click)="authService.deleteProfile()">
-<img src="./assets/svg/trash.svg"
-  class="w-8 h-8" />
-<div class="ml-4" >{{'delete' | transloco}}</div>
-<div class="ml-4 font-bold text-red-500" >{{'delete_info' | transloco}}</div>
+    <div class="flex items-center w-full h-16 mb-4" (click)="onChangeDeleteAccount()">
+        <img src="./assets/svg/trash.svg" class="w-8 h-8" />
+        <div class="ml-4">{{ 'delete' | transloco }}</div>
+    </div>
+
+    <ng-template #changeAccountNameTemplate let-data="data" let-close="close">
+        <div class="m-4">
+            <h2 class="mb-4 text-lg font-bold text-center">{{ 'account_name_new' | transloco }}</h2>
+            <input
+                #accountName
+                id="account"
+                name="account"
+                type="text"
+                class="w-full px-5 py-3 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+            />
+            <div class="flex items-center w-full">
+                <button
+                    class="w-full p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
+                    (click)="close({ newName: accountName.value })"
+                >
+                    {{ 'confirm' | transloco }}
+                </button>
+                <button
+                    class="w-full p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
+                    (click)="close({})"
+                >
+                    {{ 'cancel' | transloco }}
+                </button>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #changeEmailTemplate let-data="data" let-close="close">
+        <div class="m-4">
+            <h2 class="mb-4 text-lg font-bold text-center">{{ 'email' | transloco }}</h2>
+            <input
+                #newEmail
+                id="newEmail"
+                name="newEmail"
+                type="text"
+                class="w-full px-5 py-3 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+            />
+            <h2 class="mt-2 mb-0 text-lg font-bold text-center">{{ 'confPassword' | transloco }}</h2>
+            <input
+                #confPassword
+                id="confPassword"
+                name="confPassword"
+                type="password"
+                class="w-full px-5 py-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+            />
+            <div class="flex items-center w-full">
+                <button
+                    class="w-full p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
+                    (click)="close({ newEmail: newEmail.value, confPassword: confPassword.value })"
+                >
+                    {{ 'confirm' | transloco }}
+                </button>
+                <button
+                    class="w-full p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
+                    (click)="close({})"
+                >
+                    {{ 'cancel' | transloco }}
+                </button>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #changePasswordTemplateGmail let-data="data" let-close="close">
+        <div class="m-4">
+            <h2 class="mt-2 mb-0 text-lg font-bold text-center">{{ 'google_passwort' | transloco }}</h2>
+
+            <button
+                class="w-full p-3 my-1 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
+                (click)="close()"
+            >
+                {{ 'confirm' | transloco }}
+            </button>
+        </div>
+    </ng-template>
+
+    <ng-template #changePasswordTemplate let-data="data" let-confirm="confirm" let-close="close">
+        <div class="m-4">
+            <h2 class="mt-2 mb-0 text-lg font-bold text-center">{{ 'password_old' | transloco }}</h2>
+            <input
+                #oldpassword
+                id="oldassword"
+                name="oldpassword"
+                type="password"
+                class="w-full px-5 py-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+            />
+            <h2 class="mt-2 mb-0 text-lg font-bold text-center">{{ 'password_new' | transloco }}</h2>
+
+            <input
+                #newpassword
+                id="newpassword"
+                name="newpassword"
+                type="password"
+                class="w-full px-5 py-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+            />
+            <h2 class="mt-2 mb-0 text-lg font-bold text-center">{{ 'password_confirm' | transloco }}</h2>
+            <input
+                #newpasswordconfirm
+                id="newpasswordconfirm"
+                name="newpasswordconfirm"
+                type="password"
+                class="w-full px-5 py-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+            />
+            <div class="flex items-center w-full">
+                <button
+                    class="w-full p-3 my-1 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
+                    (click)="confirm({ oldPassword: oldpassword.value }, { newPassword: newpassword.value })"
+                >
+                    {{ 'confirm' | transloco }}
+                </button>
+                <button
+                    class="w-full p-3 my-1 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
+                    (click)="close()"
+                >
+                    {{ 'cancel' | transloco }}
+                </button>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #deleteAccountTemplate let-data="data" let-confirm="confirm" let-close="close">
+        <div class="m-4">
+            <h2 class="mb-4 text-lg font-bold text-center text-red-500">{{ 'delete_account' | transloco }}</h2>
+            <h3 class="mb-4 text-lg font-bold text-center text-red-500">
+                {{ 'delete_account_undone' | transloco }}
+            </h3>
+            <h3 class="mb-4 text-lg font-bold text-center text-red-500">
+                {{ 'delete_confirm_pw' | transloco }}
+            </h3>
+            <input
+                #confPassword
+                id="confPassword"
+                name="confPassword"
+                type="password"
+                class="w-full px-5 py-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+            />           
+            <div class="flex items-center w-full">
+                <button
+                    class="w-full p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
+                    (click)="confirm({ confPassword: confPassword.value })"
+                >
+                    {{ 'confirm' | transloco }}
+                </button>
+                <button
+                    class="w-full p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
+                    (click)="close()"
+                >
+                    {{ 'cancel' | transloco }}
+                </button>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #deleteAccountTemplateGmail let-data="data" let-confirm="confirm" let-close="close">
+        <div class="m-4">
+            <h2 class="mb-4 text-lg font-bold text-center text-red-500">{{ 'delete_account' | transloco }}</h2>
+            <h3 class="mb-4 text-lg font-bold text-center text-red-500">
+                {{ 'delete_account_undone' | transloco }}
+            </h3>
+            <h3 class="mb-4 text-lg font-bold text-center text-red-500">
+                {{ 'delete_confirm_gmail' | transloco }}
+            </h3>
+            <div>
+                <button type="button"
+                        (click)="onLoginWithGoogleForDelete()"
+                        class="w-full items-center block px-10 py-3.5 text-base font-medium text-center text-blue-600 transition duration-500 ease-in-out transform border-2 border-white shadow-md rounded-lg">
+                  <div class="flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                         class="w-6 h-6"
+                         viewBox="0 0 48 48">
+                      <defs>
+                        <path id="a"
+                              d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z">
+                        </path>
+                      </defs>
+                      <clipPath id="b">
+                        <use xlink:href="#a"
+                             overflow="visible"></use>
+                      </clipPath>
+                      <path clip-path="url(#b)"
+                            fill="#FBBC05"
+                            d="M0 37V11l17 13z"></path>
+                      <path clip-path="url(#b)"
+                            fill="#EA4335"
+                            d="M0 11l17 13 7-6.1L48 14V0H0z"></path>
+                      <path clip-path="url(#b)"
+                            fill="#34A853"
+                            d="M0 37l30-23 7.9 1L48 0v48H0z"></path>
+                      <path clip-path="url(#b)"
+                            fill="#4285F4"
+                            d="M48 48L17 24l-4-3 35-10z"></path>
+                    </svg>
+                    <span class="ml-4">{{'login_with_google' | transloco}}</span>
+                  </div>
+                </button>
+              </div>
+            <div class="flex items-center w-full">
+
+                <button
+                    class="w-full p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
+                    (click)="close()"
+                >
+                    {{ 'cancel' | transloco }}
+                </button>
+            </div>
+        </div>
+    </ng-template>
 </div>
-
-
-<ng-template #changeAccountNameTemplate
-             let-data="data"
-             let-close="close">
-  <div class="m-4">
-    <h2 class="mb-4 text-lg font-bold text-center">{{'account_name_new' | transloco}}</h2>
-    <input #accountName
-           id="account"
-           name="account"
-           type="text"
-           class="w-full px-5 py-3 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200">
-    <button class="w-full p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
-            (click)="close({newName: accountName.value})">
-      {{'confirm' | transloco}}
-    </button>
-  </div>
-</ng-template>
-
-<ng-template #changePasswordTemplate
-             let-data="data"
-             let-close="close">
-  <div class="m-4">
-    <h2 class="mb-4 text-lg font-bold text-center">{{'password_old' | transloco}}</h2>
-    <input #oldpassword
-           id="oldassword"
-           name="oldpassword"
-           type="password"
-           class="w-full px-5 py-3 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200">
-           <h2 class="mb-4 text-lg font-bold text-center">{{'password_new' | transloco}}</h2>
-          
-           <input #newpassword
-           id="newpassword"
-           name="newpassword"
-           type="password"
-           class="w-full px-5 py-3 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200">
-           <div class="flex items-center w-full h-4 mb-4">
-            Das Password muss diese Anforderungen erfüllen: </div>
-           <button class="w-full p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
-            (click)="close({oldPassword: oldpassword.value},{newPassword: newpassword.value})">
-      {{'confirm' | transloco}}
-    </button>
-  </div>
-</ng-template>

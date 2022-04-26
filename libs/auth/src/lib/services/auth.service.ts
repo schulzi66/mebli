@@ -4,10 +4,13 @@ import { GoogleAuthProvider } from '@angular/fire/auth'
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { DbPaths, DbService } from '@mebli/db';
+import { FunctionalTranspiler } from '@ngneat/transloco';
 import { FirebaseError } from 'firebase/app';
 import { EMPTY, filter, Observable } from 'rxjs';
 import { Profile } from '../models/profile';
 import { User } from '../models/user';
+import {EmailAuthProvider, getAuth, reauthenticateWithCredential} from 'firebase/auth';
+
 
 @Injectable({
     providedIn: 'root',
@@ -46,6 +49,7 @@ export class AuthService {
             this.router.navigate(['/']);
         } catch (error: unknown) {
             console.error((error as FirebaseError).code);
+
         }
     }
 
@@ -55,7 +59,7 @@ export class AuthService {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 if (errorCode == 'auth/wrong-password') {
-                    window.alert('The password is wrong');
+                    window.alert('Passwort oder E-Mail ungültig');
                     console.log("Wrong Passwort");
                 } else {
                     window.alert(errorMessage);
@@ -89,44 +93,98 @@ export class AuthService {
         location.reload();
     }
 
-    public async changeAccountName(newName: string): Promise<void> {
+    public async changeAccountName(newName: string): Promise<boolean> {
         if (this.uid && this.email) {
             await this.storeProfileData({
                 uid: this.uid,
                 email: this.email,
                 accountName: newName,
             });
+            return true;
         }
+        return false;
     }
 
-    public async changePassword(newPassword: string): Promise<void> {
+    public async isgmail(): Promise<boolean> {
+        if (this.email != null && this.email != 'undefined'){
+
+            if (this.email.endsWith("@gmail.com") || this.email.endsWith("@googlemail.com")){
+            return true;
+            }
+            else {
+            return false;
+            }
+        }
+        else return false;
+    }
+
+    public async changePassword(newPassword: string, oldPassword: string): Promise<void> {
+        //todo: Meldung gmail user. Please change your passwort on google 
+        //Profile löschen: Meldung wollen sie wirklich ihr profil löschen
         this.userAuth$.pipe(filter((user: User | null) => !!user?.uid)).subscribe(async (user: User | null) => {
-            if (!user?.uid) {
+            if (!user?.uid || !user?.email) {
                 return;
             }
-                     
+            await reauthenticateWithCredential(user,EmailAuthProvider.credential(user.email,oldPassword))
             user.updatePassword(newPassword);
+            
             if (user.getIdToken !== null) 
         console.log("user id: " + user.uid);
         console.log(user)
         });
     }
 
-    public async deleteProfile()
+    public async deleteProfile(confPassword: string): Promise<void>
     {
         this.userAuth$.pipe(filter((user: User | null) => !!user?.uid)).subscribe(async (user: User | null) => {
-            if (!user?.uid) {
+            if (!user?.uid|| !user?.email) {
                 return;
             }
-            user.delete();
+
+            if (await this.isgmail()){
+                try {
+                    const credentials = await this.auth.signInWithPopup(new GoogleAuthProvider());
+                    await this.storeProfileData({
+                        uid: credentials.user!.uid!,
+                        email: credentials.user!.email!,
+                       
+                    }); 
+                    user.delete();
+                } catch (error: unknown) {
+                    console.error((error as FirebaseError).code);
+                    
+                }
+            }
+            else {
+                await reauthenticateWithCredential(user,EmailAuthProvider.credential(user.email,confPassword))
+                user.delete();
+            }
+            
             console.log(user)
-            if (user.getIdToken == null) 
-        console.log("user delete ");
+            if (user.getIdToken == null) {
+        console.log("user delete");
         await this.router.navigate(['/login']);
+            }
         });
 }
 
     private async storeProfileData(data: Profile): Promise<void> {
         return this.db.setDoc<Profile>(DbPaths.PROFILES, data.uid, data, { merge: true });
+    }
+
+    
+    public async changeEmail(confPassword: string, newEmail: string): Promise<boolean>
+    {
+        this.userAuth$.pipe(filter((user: User | null) => !!user?.uid)).subscribe(async (user: User | null) => {
+            if (!user?.uid|| !user?.email) {  
+                return false;
+                }
+
+            await reauthenticateWithCredential(user,EmailAuthProvider.credential(user.email,confPassword))
+            await user.updateEmail(newEmail);
+            return true;
+            }         
+        );
+        return true;
     }
 }
