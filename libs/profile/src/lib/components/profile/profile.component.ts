@@ -10,7 +10,6 @@ import { user } from 'rxfire/auth';
 })
 export class ProfileComponent {
     @ViewChild('changeAccountNameTemplate') private changeAccountNameTemplate!: TemplateRef<any>;
-    @ViewChild('changeEmailTemplate') private changeEmailTemplate!: TemplateRef<any>;
     @ViewChild('changePasswordTemplate') private changePasswordTemplate!: TemplateRef<any>;
     @ViewChild('changePasswordTemplateGmail') private changePasswordTemplateGmail!: TemplateRef<any>;
     @ViewChild('deleteAccountTemplate') private deleteAccountTemplate!: TemplateRef<any>;
@@ -30,25 +29,16 @@ export class ProfileComponent {
         });
     }
 
-    public onChangeEmail(): void {
-        const ngPopoverRef = this.openPopup<void, { newEmail: string, confPassword: string }>(this.changeEmailTemplate);
-        ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ newEmail: string, confPassword: string }>) => {
-            if (result.data.newEmail&&result.data.confPassword) {
-                this.authService.changeEmail(result.data.confPassword, result.data.newEmail);
-            }
-        });
-    }
-
     public async onChangePassword(): Promise<void> {
 
         if (await this.authService.isgmail()){
             this.openPopup<void, { any: any }>(this.changePasswordTemplateGmail);
         }
         else {
-            const ngPopoverRef = this.openPopup<void, { newPassword: string, oldPasswort: string }>(this.changePasswordTemplate);
-            ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ newPassword: string , oldPasswort: string}>) => {
-                if (result.data.newPassword && result.data.oldPasswort) {
-                    this.authService.changePassword(result.data.newPassword, result.data.oldPasswort);
+            const ngPopoverRef = this.openPopup<void, { newPassword: string, oldPassword: string }>(this.changePasswordTemplate);
+            ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ newPassword: string , oldPassword: string}>) => {
+                if (result.data.newPassword && result.data.oldPassword) {
+                    this.authService.changePassword(result.data.newPassword, result.data.oldPassword);
                 }
             })
         };

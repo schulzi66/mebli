@@ -149,6 +149,7 @@ export class AuthService {
                         email: credentials.user!.email!,
                        
                     }); 
+
                     user.delete();
                 } catch (error: unknown) {
                     console.error((error as FirebaseError).code);
@@ -172,19 +173,4 @@ export class AuthService {
         return this.db.setDoc<Profile>(DbPaths.PROFILES, data.uid, data, { merge: true });
     }
 
-    
-    public async changeEmail(confPassword: string, newEmail: string): Promise<boolean>
-    {
-        this.userAuth$.pipe(filter((user: User | null) => !!user?.uid)).subscribe(async (user: User | null) => {
-            if (!user?.uid|| !user?.email) {  
-                return false;
-                }
-
-            await reauthenticateWithCredential(user,EmailAuthProvider.credential(user.email,confPassword))
-            await user.updateEmail(newEmail);
-            return true;
-            }         
-        );
-        return true;
-    }
 }
