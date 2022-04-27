@@ -138,7 +138,7 @@
             <div class="flex items-center w-full">
                 <button
                     class="w-full p-3 my-1 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
-                    (click)="confirm({ oldPassword: oldpassword.value }, { newPassword: newpassword.value })"
+                    (click)="close({ oldPassword: oldpassword.value, newPassword: newpassword.value })"
                 >
                     {{ 'confirm' | transloco }}
                 </button>
@@ -171,7 +171,7 @@
             <div class="flex items-center w-full">
                 <button
                     class="w-full p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
-                    (click)="confirm({ confPassword: confPassword.value })"
+                    (click)="close({ confPassword: confPassword.value })"
                 >
                     {{ 'confirm' | transloco }}
                 </button>

@@ -119,8 +119,7 @@ export class AuthService {
     }
 
     public async changePassword(newPassword: string, oldPassword: string): Promise<void> {
-        //todo: Meldung gmail user. Please change your passwort on google 
-        //Profile löschen: Meldung wollen sie wirklich ihr profil löschen
+        
         this.userAuth$.pipe(filter((user: User | null) => !!user?.uid)).subscribe(async (user: User | null) => {
             if (!user?.uid || !user?.email) {
                 return;
@@ -151,6 +150,7 @@ export class AuthService {
                     }); 
 
                     user.delete();
+                    await this.router.navigate(['/login']);
                 } catch (error: unknown) {
                     console.error((error as FirebaseError).code);
                     
@@ -159,6 +159,7 @@ export class AuthService {
             else {
                 await reauthenticateWithCredential(user,EmailAuthProvider.credential(user.email,confPassword))
                 user.delete();
+                await this.router.navigate(['/login']);
             }
             
             console.log(user)
