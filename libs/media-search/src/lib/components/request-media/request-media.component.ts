@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@mebli/auth';
@@ -18,7 +17,6 @@ export class RequestMediaComponent implements OnInit {
     public selectedSeasons: boolean[] = [];
 
     public constructor(
-        private readonly location: Location,
         private readonly navbarService: NavbarService,
         private readonly router: Router,
         private readonly activatedRoute: ActivatedRoute,
@@ -64,10 +62,18 @@ export class RequestMediaComponent implements OnInit {
         if (this.media && this.release && this.authService.uid) {
             const rentalRequest: RentalRequest = {
                 ownerUid: this.release.uid,
+                ownerName: this.release.accountName,
                 mediaId: this.media.id,
                 mediaTitle: this.media.title,
                 mediaPathId: this.media.pathId,
                 mediaType: this.media.type,
+                mediaImage: this.media.image,
+                mediaStars: this.media.stars,
+                mediaGenres: this.media.genres,
+                mediaYear: this.media.year,
+                mediaContentRating: this.media.contentRating,
+                mediaPlot: this.media.plot,
+                mediaPlotLocal: this.media.plotLocal,
                 requesterId: this.authService.uid,
                 requesterName: this.authService.accountName,
                 blueray: this.media.blueray ?? false,

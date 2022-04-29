@@ -6,7 +6,6 @@ import { ImdbApiModule } from '@mebli/imdb-api';
 import { TranslocoModule } from '@ngneat/transloco';
 import { NgOverlayContainerModule } from 'ng-overlay-container';
 import { AddManualComponent } from './components/add-manual/add-manual.component';
-import { LendComponent } from './components/lend/lend.component';
 import { MediaDetailComponent } from './components/media-detail/media-detail.component';
 import { MyLibraryComponent } from './components/my-library/my-library.component';
 import { MediaDetailsResolver } from './resolvers/media-details.resolver';
@@ -49,16 +48,9 @@ import { MediaResolver } from './resolvers/media.resolver';
                     media: MediaResolver,
                 },
             },
-            {
-                path: 'lend/:id',
-                component: LendComponent,
-                resolve: {
-                    media: MediaResolver,
-                },
-            },
         ]),
     ],
-    declarations: [MyLibraryComponent, AddManualComponent, MediaDetailComponent, LendComponent],
-    exports: [MyLibraryComponent, AddManualComponent, MediaDetailComponent, LendComponent],
+    declarations: [MyLibraryComponent, AddManualComponent, MediaDetailComponent],
+    exports: [MyLibraryComponent, AddManualComponent, MediaDetailComponent],
 })
 export class MyLibraryModule {}

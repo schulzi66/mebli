@@ -2,16 +2,17 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@mebli/auth';
+import { Media } from '@mebli/my-library';
 import { NavbarService } from '@mebli/nav';
-import { Rental, RentalService } from '@mebli/rentals';
-import { Media } from '../../models/media';
+import { Rental } from '../../models/rental';
+import { RentalService } from '../../services/rental.service';
 
 @Component({
-    selector: 'mebli-lend',
-    templateUrl: './lend.component.html',
-    styleUrls: ['./lend.component.css'],
+    selector: 'mebli-manual-lend',
+    templateUrl: './manual-lend.component.html',
+    styleUrls: ['./manual-lend.component.css'],
 })
-export class LendComponent implements OnInit {
+export class ManualLendComponent implements OnInit {
     public media: Media | undefined;
     public rental: Rental | undefined;
 
@@ -49,26 +50,24 @@ export class LendComponent implements OnInit {
 
         this.media = this.activatedRoute.snapshot.data['media'] as Media;
         this.rental = {
-            uid: this.authService.uid,
+            ownerUid: this.authService.uid,
+            ownerName: this.authService.accountName,
             mediaId: this.media.id,
-            mediaPathId: this.media.pathId,
             mediaTitle: this.media.title,
+            mediaPathId: this.media.pathId,
             mediaType: this.media.type,
+            mediaImage: this.media.image,
+            mediaStars: this.media.stars,
+            mediaGenres: this.media.genres,
+            mediaYear: this.media.year,
+            mediaContentRating: this.media.contentRating,
+            mediaPlot: this.media.plot,
+            mediaPlotLocal: this.media.plotLocal,
             borrowerName: '',
-            lendingDate: this.constructFormatedDate(),
+            lendingDate: this.rentalService.constructFormatedDate(),
             blueray: this.media.blueray ?? false,
+            // TODO Andi: lentSeasons befüllen für die die ausgewählt wurden
         };
-    }
-
-    private constructFormatedDate(): string {
-        const today = new Date();
-        return [today.getFullYear(), this.padTo2Digits(today.getMonth() + 1), this.padTo2Digits(today.getDate())].join(
-            '-'
-        );
-    }
-
-    private padTo2Digits(num: number) {
-        return num.toString().padStart(2, '0');
     }
 
     private async lend(): Promise<void> {

@@ -1,16 +1,26 @@
 import { MediaType } from '@mebli/imdb-api';
 
 export interface Rental {
-    uid?: string;
+    ownerUid?: string;
+    ownerName?: string;
+    ownerComment?: string;
     mediaId: string;
-    mediaPathId?: string;
     mediaTitle: string;
+    mediaPathId?: string;
     mediaType?: MediaType;
-    borrowerName: string;
+    mediaImage?: string;
+    mediaStars?: string;
+    mediaGenres?: string;
+    mediaYear?: string;
+    mediaContentRating?: string;
+    mediaPlot?: string;
+    mediaPlotLocal?: string;
     borrowerId?: string;
+    borrowerName?: string;
+    borrowerComment?: string;
     lendingDate: string;
     lendingDeadline?: string;
-    comment?: string;
     blueray?: boolean;
-    lentSeasons?: string[];
+    lentSeasons?: boolean[];
+    pathId?: string;
 }
