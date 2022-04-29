@@ -1,20 +1,97 @@
-<h3 class="w-full my-4 text-lg font-bold text-center">{{'rental' | transloco}}</h3>
-<div class="flex flex-col m-4">
-  <div class="flex w-full mb-4">
-    <div class="w-1/5">{{'name' | transloco}}</div>
-    <div class="w-1/5">{{'type' | transloco}}</div>
-    <div class="w-1/5">{{'to' | transloco}}</div>
-    <div class="w-1/5">{{'at' | transloco}}</div>
-    <div class="w-1/5">{{'deadline' | transloco}}</div>
-    <!-- <div class="w-1/6">{{'comment' | transloco}}</div> -->
+<div class="flex flex-col items-center m-4 mb-14">
+  <h3 class="w-full my-4 text-lg font-bold text-center">{{'rental' | transloco}}</h3>
+
+  <div class="flex justify-between w-full m-4">
+    <div [ngClass]="{'font-bold' : rentalService.currentSelection === 'Lent'}"
+         (click)="rentalService.switchSelection('Lent')">{{'lent' | transloco}}
+      ({{rentalService.rentals.length}})
+    </div>
+    <div [ngClass]="{'font-bold' : rentalService.currentSelection === 'Borrowed'}"
+         (click)="rentalService.switchSelection('Borrowed')">{{'borrowed' | transloco}}
+      ({{rentalService.borrows.length}})
+    </div>
+    <div [ngClass]="{'font-bold' : rentalService.currentSelection === 'Requests'}"
+         (click)="rentalService.switchSelection('Requests')">{{'requests' | transloco}}
+      ({{rentalService.rentalRequests.length}})
+    </div>
   </div>
-  <div class="flex w-full mb-2 text-sm"
-       *ngFor="let rental of rentalService.rentals">
-    <div class="w-1/5">{{rental.mediaTitle}}</div>
-    <div class="w-1/5">{{rental.blueray ? 'BluRay' : 'DvD'}}</div>
-    <div class="w-1/5">{{rental.borrowerName}}</div>
-    <div class="w-1/5">{{rental.lendingDate}}</div>
-    <div class="w-1/5">{{rental.lendingDeadline}}</div>
-    <!-- <div class="w-1/6">{{rental.comment}}</div> -->
+
+  <div *ngIf="rentalService.currentSelection === 'Lent'"
+       class="flex flex-col w-full">
+    <div class="flex mb-4 underline">
+      <div class="w-3/5">{{'name' | transloco}}</div>
+      <div class="w-1/5">{{'to' | transloco}}</div>
+      <div class="w-1/5">{{'deadline' | transloco}}</div>
+    </div>
+    <div class="flex mb-2 text-sm"
+         *ngFor="let rental of rentalService.rentals"
+         [routerLink]="['/rentals/lent/details', rental.pathId]">
+      <div class="w-3/5">
+        {{rental.mediaTitle}}
+        <span *ngIf="rental.mediaType === 'TVSeries' && rental.lentSeasons">
+          (
+          {{'seasons' | transloco}}
+          <span *ngFor="let lentSeason of rental.lentSeasons; index as i">
+            {{lentSeason ? i + 1 : ''}}
+          </span>
+          )
+        </span>
+      </div>
+      <div class="w-1/5">{{rental.borrowerName}}</div>
+      <div class="w-1/5">{{rental.lendingDeadline}}</div>
+    </div>
+  </div>
+
+  <div *ngIf="rentalService.currentSelection === 'Borrowed'"
+       class="flex flex-col w-full">
+    <div class="flex mb-4 underline">
+      <div class="w-3/5">{{'name' | transloco}}</div>
+      <div class="w-1/5">{{'from' | transloco}}</div>
+      <div class="w-1/5">{{'deadline' | transloco}}</div>
+    </div>
+    <div class="flex w-full mb-2 text-sm"
+         *ngFor="let borrow of rentalService.borrows"
+         [routerLink]="['/rentals/borrowed/details', borrow.pathId]">
+      <div class="w-3/5">
+        {{borrow.mediaTitle}}
+        <span *ngIf="borrow.mediaType === 'TVSeries' && borrow.lentSeasons">
+          (
+          {{'seasons' | transloco}}
+          <span *ngFor="let lentSeason of borrow.lentSeasons; index as i">
+            {{lentSeason ? i + 1 : ''}}
+          </span>
+          )
+        </span>
+      </div>
+      <div class="w-1/5">{{borrow.ownerName}}</div>
+      <div class="w-1/5">{{borrow.lendingDeadline}}</div>
+
+    </div>
+  </div>
+
+  <div *ngIf="rentalService.currentSelection === 'Requests'"
+       class="flex flex-col w-full">
+    <div class="flex mb-4 underline">
+      <div class="w-3/5">{{'name' | transloco}} ({{'seasons' | transloco}})</div>
+      <div class="w-1/5">{{'type' | transloco}}</div>
+      <div class="w-1/5">{{'from' | transloco}}</div>
+    </div>
+    <div class="flex mb-2 text-sm"
+         *ngFor="let request of rentalService.rentalRequests"
+         [routerLink]="['/rentals/request', request.pathId]">
+      <div class="w-3/5">
+        {{request.mediaTitle}}
+        <span *ngIf="request.mediaType === 'TVSeries' && request.requestedSeasons">
+          (
+          {{'seasons' | transloco}}
+          <span *ngFor="let seasonRequested of request.requestedSeasons; index as i">
+            {{seasonRequested ? i + 1 : ''}}
+          </span>
+          )
+        </span>
+      </div>
+      <div class="w-1/5">{{request.blueray ? 'BluRay' : 'DvD'}}</div>
+      <div class="w-1/5">{{request.requesterName}}</div>
+    </div>
   </div>
 </div>

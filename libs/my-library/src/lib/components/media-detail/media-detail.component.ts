@@ -150,7 +150,7 @@ export class MediaDetailComponent implements OnInit {
                     order: 1,
                     icon: 'up',
                     translationKey: 'lend',
-                    action: () => this.router.navigate(['./library/lend', this.media?.id]),
+                    action: () => this.router.navigate(['./rentals/manual-lend', this.media?.id]),
                 },
 
                 {
