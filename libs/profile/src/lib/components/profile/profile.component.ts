@@ -1,7 +1,6 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { AuthService } from '@mebli/auth';
 import { NgOverlayContainerService, NgPopoverCloseEvent, NgPopoverRef } from 'ng-overlay-container';
-import { user } from 'rxfire/auth';
 
 @Component({
     selector: 'mebli-profile',
@@ -30,37 +29,38 @@ export class ProfileComponent {
     }
 
     public async onChangePassword(): Promise<void> {
-
-        if (await this.authService.isgmail()){
+        if (await this.authService.isGmail()) {
             this.openPopup<void, { any: any }>(this.changePasswordTemplateGmail);
-        }
-        else {
-            const ngPopoverRef = this.openPopup<void, { newPassword: string, oldPassword: string }>(this.changePasswordTemplate);
-            ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ newPassword: string , oldPassword: string}>) => {
-                if (result.data.newPassword && result.data.oldPassword) {
-                    this.authService.changePassword(result.data.newPassword, result.data.oldPassword);
+        } else {
+            const ngPopoverRef = this.openPopup<void, { newPassword: string; oldPassword: string }>(
+                this.changePasswordTemplate
+            );
+            ngPopoverRef.afterClosed$.subscribe(
+                (result: NgPopoverCloseEvent<{ newPassword: string; oldPassword: string }>) => {
+                    if (result.data.newPassword && result.data.oldPassword) {
+                        this.authService.changePassword(result.data.newPassword, result.data.oldPassword);
+                    }
                 }
-            })
-        };
+            );
+        }
     }
 
     public async onLoginWithGoogleForDelete(): Promise<void> {
-        await this.authService.deleteProfile("gmail");
+        await this.authService.deleteProfile('gmail');
     }
 
-    public async onChangeDeleteAccount(): Promise<void> {
-        if (await this.authService.isgmail()){
+    public async onDeleteAccount(): Promise<void> {
+        if (await this.authService.isGmail()) {
             const ngPopoverRef = this.openPopup<void, { confPassword: string }>(this.deleteAccountTemplateGmail);
             ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ confPassword: string }>) => {
-                if (result.data.confPassword != null ) {
+                if (result.data.confPassword != null) {
                     this.authService.deleteProfile(result.data.confPassword);
                 }
             });
-        }
-        else {
+        } else {
             const ngPopoverRef = this.openPopup<void, { confPassword: string }>(this.deleteAccountTemplate);
             ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ confPassword: string }>) => {
-                if (result.data.confPassword != null ) {
+                if (result.data.confPassword != null) {
                     this.authService.deleteProfile(result.data.confPassword);
                 }
             });
@@ -83,4 +83,3 @@ export class ProfileComponent {
 function email(email: any) {
     throw new Error('Function not implemented.');
 }
-

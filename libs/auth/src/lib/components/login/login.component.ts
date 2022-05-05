@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { DefaultFallbackStrategy } from '@ngneat/transloco';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -24,21 +23,18 @@ export class LoginComponent {
         this.invalidEmail = false;
         const loginResult = await this.authService.loginWithEmail(this.email, this.password);
 
-        if(loginResult == 'auth/wrong-password'){          
+        if (loginResult == 'auth/wrong-password') {
             this.wrongPassword = true;
-        };
-        if(loginResult == 'auth/user-not-found'){          
+        }
+        if (loginResult == 'auth/user-not-found') {
             this.wrongEmail = true;
-        };
-        if(loginResult == 'auth/too-many-requests'){          
+        }
+        if (loginResult == 'auth/too-many-requests') {
             this.tooManyRequests = true;
-        };
-        if(loginResult == 'auth/invalid-email'){          
+        }
+        if (loginResult == 'auth/invalid-email') {
             this.invalidEmail = true;
-        };
-        
-        
-        
+        }
     }
 
     public async onLoginWithGoogle(): Promise<void> {
