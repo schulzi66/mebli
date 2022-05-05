@@ -63,7 +63,11 @@
                     "browserTarget": "mebli:build:development"
                 }
             },
-            "defaultConfiguration": "development"
+            "defaultConfiguration": "development",
+            "options": {
+                "browserTarget": "mebli:build",
+                "proxyConfig": "apps/mebli/proxy.config.json"
+            }
         },
         "extract-i18n": {
             "executor": "@angular-devkit/build-angular:extract-i18n",

@@ -1,0 +1,7 @@
+{
+    "/api2/*": {
+        "target": "https://altersfreigaben.de",
+        "secure": false,
+        "changeOrigin": true
+    }
+}
