@@ -10,6 +10,7 @@ import { EMPTY, filter, Observable } from 'rxjs';
 import { Profile } from '../models/profile';
 import { User } from '../models/user';
 import {EmailAuthProvider, getAuth, reauthenticateWithCredential} from 'firebase/auth';
+import { error } from '@angular/compiler/src/util';
 
 
 @Injectable({
@@ -21,6 +22,7 @@ export class AuthService {
     public uid: string | undefined;
     public accountName: string | undefined;
     private email: string | undefined | null;
+    private returnValue: string| undefined | null;
 
     public constructor(
         private readonly auth: AngularFireAuth,
@@ -53,24 +55,27 @@ export class AuthService {
         }
     }
 
-    public async loginWithEmail(email: string, password: string): Promise<void> {
+    public async loginWithEmail(email: string, password: string): Promise<string|undefined> {
+        
         try {
             await this.auth.signInWithEmailAndPassword(email, password).catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                if (errorCode == 'auth/wrong-password') {
-                    window.alert('Passwort oder E-Mail ungültig');
-                    console.log("Wrong Passwort");
-                } else {
-                    window.alert(errorMessage);
-                }  console.log(error);
-            }
+                //console.log(error);
+                console.log(error.code);
+                console.log('Ausgabe vor error.code Return');
+                this.returnValue = error.code;
+                }
             );
             this.router.navigate(['/']);
         } catch (error: unknown) {
             console.error((error as FirebaseError).code);
-            window.alert("Login Fehlgeschlagen");
+            console.log('Ausgabe vor Return Unknown');
+            return 'unknown';
+        } 
+
+        if (this.returnValue != undefined && this.returnValue != null){
+            return this.returnValue;
         }
+        else { return undefined}
     }
 
     public async registerUser(email: string, password: string, accountName: string): Promise<void> {
@@ -116,6 +121,19 @@ export class AuthService {
             }
         }
         else return false;
+    }
+    public async loginDataWrong(email: string, password: string):  Promise<any> {
+        if (await this.auth.signInWithEmailAndPassword(email, password).catch((error) => {
+                console.log(error);
+            const errorCode = error.code;
+            if (errorCode == 'auth/wrong-password') {
+                return 'invalidPassword';
+            }
+            return '0';
+            
+          
+        }  ))
+        return 'true';
     }
 
     public async changePassword(newPassword: string, oldPassword: string): Promise<void> {

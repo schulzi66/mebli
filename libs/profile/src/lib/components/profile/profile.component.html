@@ -60,41 +60,6 @@
         </div>
     </ng-template>
 
-    <ng-template #changeEmailTemplate let-data="data" let-close="close">
-        <div class="m-4">
-            <h2 class="mb-4 text-lg font-bold text-center">{{ 'email' | transloco }}</h2>
-            <input
-                #newEmail
-                id="newEmail"
-                name="newEmail"
-                type="text"
-                class="w-full px-5 py-3 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
-            />
-            <h2 class="mt-2 mb-0 text-lg font-bold text-center">{{ 'confPassword' | transloco }}</h2>
-            <input
-                #confPassword
-                id="confPassword"
-                name="confPassword"
-                type="password"
-                class="w-full px-5 py-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
-            />
-            <div class="flex items-center w-full">
-                <button
-                    class="w-full p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
-                    (click)="close({ newEmail: newEmail.value, confPassword: confPassword.value })"
-                >
-                    {{ 'confirm' | transloco }}
-                </button>
-                <button
-                    class="w-full p-4 my-4 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
-                    (click)="close({})"
-                >
-                    {{ 'cancel' | transloco }}
-                </button>
-            </div>
-        </div>
-    </ng-template>
-
     <ng-template #changePasswordTemplateGmail let-data="data" let-close="close">
         <div class="m-4">
             <h2 class="mt-2 mb-0 text-lg font-bold text-center">{{ 'google_passwort' | transloco }}</h2>
