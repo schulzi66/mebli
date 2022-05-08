@@ -20,6 +20,7 @@ export class AuthService {
     public accountName: string | undefined;
     private email: string | undefined | null;
     private returnValue: string | undefined | null;
+    private returnValueString!: string;
 
     public constructor(
         private readonly auth: AngularFireAuth,
@@ -102,7 +103,7 @@ export class AuthService {
     }
 
     public async isGmail(): Promise<boolean> {
-        if (this.email != null && this.email != 'undefined') {
+        if (this.email != null && this.email != undefined) {
             if (this.email.endsWith('@gmail.com') || this.email.endsWith('@googlemail.com')) {
                 return true;
             } else {
@@ -114,7 +115,6 @@ export class AuthService {
     public async loginDataWrong(email: string, password: string): Promise<any> {
         if (
             await this.auth.signInWithEmailAndPassword(email, password).catch((error) => {
-                console.log(error);
                 const errorCode = error.code;
                 if (errorCode == 'auth/wrong-password') {
                     return 'invalidPassword';
@@ -136,19 +136,39 @@ export class AuthService {
         });
     }
 
-    public async deleteProfile(confPassword: string): Promise<void> {
+    public async deleteProfile(confPassword: string): Promise<any> {
         this.userAuth$.pipe(filter((user: User | null) => !!user?.uid)).subscribe(async (user: User | null) => {
             if (!user?.uid || !user?.email) {
-                return;
+                return 'no_login';
             }
 
-        else {
-                await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, confPassword));
-                user.delete();
-                await this.router.navigate(['/login']);
-            }
+            else {
+                await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, confPassword)).catch(async (error) => {
+                    const errorCode = error.code;
+                    
+                    if (errorCode == 'auth/wrong-password') {
+                        this.returnValueString = 'invalidPassword';
+                    }
+                    if (errorCode == 'auth/too-many-requests') {
+                        this.returnValueString ='tooManyRequests';     
+                    }
+                    else {
+                        user.delete();
+                        this.returnValueString = 'success';
+                        await this.router.navigate(['/login']);
+                        
+                    }
+                    
+                })
+                
+            }            
+            console.log("reauth Antwort ist: "+this.returnValueString);
+            return this.returnValueString;
         });
+        //console.log("deleteProfil Antwort ist: "+this.returnValueString);
+        //return this.returnValueString
     }
+
     public async deleteProfileGmail(): Promise<void> {
         this.userAuth$.pipe(filter((user: User | null) => !!user?.uid)).subscribe(async (user: User | null) => {
         if (!user?.uid || !user?.email) {

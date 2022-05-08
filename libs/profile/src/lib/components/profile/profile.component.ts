@@ -13,6 +13,8 @@ export class ProfileComponent {
     @ViewChild('changePasswordTemplateGmail') private changePasswordTemplateGmail!: TemplateRef<any>;
     @ViewChild('deleteAccountTemplate') private deleteAccountTemplate!: TemplateRef<any>;
     @ViewChild('deleteAccountTemplateGmail') private deleteAccountTemplateGmail!: TemplateRef<any>;
+    public wrongPassword = false;
+    public tooManyRequests = false;
 
     public constructor(
         public readonly authService: AuthService,
@@ -46,6 +48,7 @@ export class ProfileComponent {
     }
 
     public async onDeleteAccount(): Promise<void> {
+         
         if (await this.authService.isGmail()) {
             const ngPopoverRef = this.openPopup< void, { action: string } >(this.deleteAccountTemplateGmail);
             ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ action: string }>) => {
@@ -54,10 +57,22 @@ export class ProfileComponent {
                 }
             });
         } else {
+            this.wrongPassword = false;
+            this.tooManyRequests = false;
+
             const ngPopoverRef = this.openPopup<void, { confPassword: string }>(this.deleteAccountTemplate);
-            ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ confPassword: string }>) => {
-                if (result.data.confPassword != null) {
-                    this.authService.deleteProfile(result.data.confPassword);
+            ngPopoverRef.afterClosed$.subscribe(async (result: NgPopoverCloseEvent<{ confPassword: string }>) => {
+                if (result.data.confPassword !== null && result.data.confPassword !=='') {
+                    const deleteResult=  await  this.authService.deleteProfile(result.data.confPassword);
+                    console.log("Delete Result ist: "+deleteResult);
+                    if ( deleteResult == 'invalidPassword') {
+                        console.log("Setze wrongPassword auf true");
+                        this.wrongPassword = true;
+                    }
+                    if ( deleteResult == 'tooManyRequests') {
+                        console.log("Setze tooManyRequests auf true");
+                        this.tooManyRequests = true;
+                    }
                 }
             });
         }

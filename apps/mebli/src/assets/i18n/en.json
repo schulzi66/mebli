@@ -18,6 +18,7 @@
     "delete_confirm_gmail": "In order to delete your account, please log in via Google.",
     "confPassword": "In order to delete your account, please enter your password.",
     "passwords_dont_match": "Passwords don't match",
+    "conf_password_wrong": "The passwort is incorrect - please try again.",
     "password_placeholder": "Enter your password",
     "password_invalid": "Your passwort is wrong.",
     "email_invalid": "Please insert the full email adress.",

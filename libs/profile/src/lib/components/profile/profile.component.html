@@ -32,7 +32,14 @@
         <img src="./assets/svg/trash.svg" class="w-8 h-8" />
         <div class="ml-4">{{ 'delete' | transloco }}</div>
     </div>
-
+    <div *ngIf="this.wrongPassword" class="flex items-center w-full h-16 mb-4 text-red-500">
+        {{ 'conf_password_wrong' | transloco }}
+    </div>
+    <div class="text-red-500">{{ this.wrongPassword }}</div>
+    <div *ngIf="this.tooManyRequests" class="flex items-center w-full h-16 mb-4 text-red-500">
+        {{ 'too_many_requests' | transloco }}
+    </div>
+    <div class="text-red-500">{{ this.tooManyRequests }}</div>
     <ng-template #changeAccountNameTemplate let-data="data" let-close="close">
         <div class="m-4">
             <h2 class="mb-4 text-lg font-bold text-center">{{ 'account_name_new' | transloco }}</h2>
