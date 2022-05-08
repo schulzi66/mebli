@@ -45,16 +45,12 @@ export class ProfileComponent {
         }
     }
 
-    public async onLoginWithGoogleForDelete(): Promise<void> {
-        await this.authService.deleteProfile('gmail');
-    }
-
     public async onDeleteAccount(): Promise<void> {
         if (await this.authService.isGmail()) {
-            const ngPopoverRef = this.openPopup<void, { confPassword: string }>(this.deleteAccountTemplateGmail);
-            ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ confPassword: string }>) => {
-                if (result.data.confPassword != null) {
-                    this.authService.deleteProfile(result.data.confPassword);
+            const ngPopoverRef = this.openPopup< void, { action: string } >(this.deleteAccountTemplateGmail);
+            ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ action: string }>) => {
+                if (result.data.action == 'delete' ){
+                    this.authService.deleteProfileGmail();
                 }
             });
         } else {

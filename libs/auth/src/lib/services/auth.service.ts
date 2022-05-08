@@ -54,14 +54,11 @@ export class AuthService {
     public async loginWithEmail(email: string, password: string): Promise<string | undefined> {
         try {
             await this.auth.signInWithEmailAndPassword(email, password).catch((error) => {
-                console.log(error.code);
-                console.log('Ausgabe vor error.code Return');
                 this.returnValue = error.code;
             });
             this.router.navigate(['/']);
         } catch (error: unknown) {
             console.error((error as FirebaseError).code);
-            console.log('Ausgabe vor Return Unknown');
             return 'unknown';
         }
 
@@ -136,8 +133,6 @@ export class AuthService {
             await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, oldPassword));
             user.updatePassword(newPassword);
 
-            if (user.getIdToken !== null) console.log('user id: ' + user.uid);
-            console.log(user);
         });
     }
 
@@ -147,31 +142,31 @@ export class AuthService {
                 return;
             }
 
-            if (await this.isGmail()) {
-                try {
-                    const credentials = await this.auth.signInWithPopup(new GoogleAuthProvider());
-                    await this.storeProfileData({
-                        uid: credentials.user!.uid!,
-                        email: credentials.user!.email!,
-                    });
-
-                    user.delete();
-                    await this.router.navigate(['/login']);
-                } catch (error: unknown) {
-                    console.error((error as FirebaseError).code);
-                }
-            } else {
+        else {
                 await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, confPassword));
                 user.delete();
                 await this.router.navigate(['/login']);
             }
-
-            console.log(user);
-            if (user.getIdToken == null) {
-                console.log('user delete');
-                await this.router.navigate(['/login']);
-            }
         });
+    }
+    public async deleteProfileGmail(): Promise<void> {
+        this.userAuth$.pipe(filter((user: User | null) => !!user?.uid)).subscribe(async (user: User | null) => {
+        if (!user?.uid || !user?.email) {
+            return;
+        }
+        if (await this.isGmail()) {
+            try {
+               await this.auth.signInWithPopup(new GoogleAuthProvider()).then (()=> {
+                    user.delete();
+                    this.router.navigate(['/login']);
+                
+            }); 
+          
+            } catch (error: unknown) {
+                console.error((error as FirebaseError).code);
+            }
+        } 
+    });
     }
 
     private async storeProfileData(data: Profile): Promise<void> {
