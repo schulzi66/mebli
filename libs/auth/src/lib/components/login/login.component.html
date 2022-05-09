@@ -5,10 +5,9 @@
       <form class="flex flex-col"
             (ngSubmit)="onLogin()"
             #loginForm="ngForm">
-
         <div class="flex flex-col m-4">
           <label for="email"
-                 class="block text-neutral-600">{{'email' | transloco}}</label>
+                 class="block text-neutral-600">{{ 'email' | transloco }}</label>
           <input #emailModel="ngModel"
                  id="email"
                  name="email"
@@ -17,15 +16,23 @@
                  required
                  autocomplete="email"
                  class="w-full px-5 py-3 mt-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
-                 [(ngModel)]="email">
+                 [(ngModel)]="email" />
           <div [hidden]="emailModel.valid || emailModel.pristine"
                class="w-full text-red-500">
-            {{'email' | transloco}} {{'is_required' | transloco}}
+            {{ 'email' | transloco }} {{ 'is_required' | transloco }}
+          </div>
+          <div *ngIf="this.invalidEmail"
+               class="text-red-500">
+            {{ 'email_invalid' | transloco }}
+          </div>
+          <div *ngIf="this.wrongEmail"
+               class="text-red-500">
+            {{ 'email_wrong' | transloco }}
           </div>
         </div>
         <div class="flex flex-col m-4">
           <label for="password"
-                 class="block text-neutral-600">{{'password' | transloco}}</label>
+                 class="block text-neutral-600">{{ 'password' | transloco }}</label>
           <input #passwordModel="ngModel"
                  id="password"
                  name="password"
@@ -34,22 +41,31 @@
                  required
                  autocomplete="password"
                  class="w-full px-5 py-3 mt-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
-                 [(ngModel)]="password">
+                 [(ngModel)]="password" />
           <div [hidden]="passwordModel.valid || passwordModel.pristine"
                class="w-full text-red-500">
-            {{'password' | transloco}} {{'is_required' | transloco}}
+            {{ 'password' | transloco }} {{ 'is_required' | transloco }}
+          </div>
+          <div *ngIf="this.wrongPassword"
+               class="text-red-500">
+            {{ 'password_invalid' | transloco }}
+          </div>
+          <div *ngIf="this.tooManyRequests"
+               class="text-red-500">
+            {{ 'too_many_requests' | transloco }}
           </div>
         </div>
+
         <div class="flex items-center w-full">
           <button type="submit"
                   [disabled]="!loginForm.valid"
                   class="w-1/2 px-5 py-3 m-4 text-center text-white transition duration-500 ease-in-out transform bg-blue-600 border border-white rounded-lg disabled:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200">
-            {{'login' | transloco}}
+            {{ 'login' | transloco }}
           </button>
           <button type="button"
                   [routerLink]="['/register']"
                   class="w-1/2 px-5 py-3 m-4 text-center text-white transition duration-500 ease-in-out transform bg-blue-600 border border-white rounded-lg disabled:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200">
-            {{'register' | transloco}}
+            {{ 'register' | transloco }}
           </button>
         </div>
       </form>
@@ -58,7 +74,9 @@
           <div class="w-full border-t border-gray-300"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="px-2 bg-white text-neutral-600"> {{'login_alternative_seperator' | transloco}} </span>
+          <span class="px-2 bg-white text-neutral-600">
+            {{ 'login_alternative_seperator' | transloco }}
+          </span>
         </div>
       </div>
       <div>
@@ -92,7 +110,7 @@
                     fill="#4285F4"
                     d="M48 48L17 24l-4-3 35-10z"></path>
             </svg>
-            <span class="ml-4">{{'login_with_google' | transloco}}</span>
+            <span class="ml-4">{{ 'login_with_google' | transloco }}</span>
           </div>
         </button>
       </div>
