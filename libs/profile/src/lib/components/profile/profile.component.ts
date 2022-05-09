@@ -1,4 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '@mebli/auth';
 import { NgOverlayContainerService, NgPopoverCloseEvent, NgPopoverRef } from 'ng-overlay-container';
 
@@ -18,7 +19,8 @@ export class ProfileComponent {
 
     public constructor(
         public readonly authService: AuthService,
-        private readonly ngOverlayContainerService: NgOverlayContainerService
+        private readonly ngOverlayContainerService: NgOverlayContainerService,
+        private readonly router: Router
     ) {}
 
     public onChangeAccountName(): void {
@@ -32,14 +34,26 @@ export class ProfileComponent {
 
     public async onChangePassword(): Promise<void> {
         if (await this.authService.isGmail()) {
-            this.openPopup<void, { any: any }>(this.changePasswordTemplateGmail);
+            this.openPopup<void, void>(this.changePasswordTemplateGmail);
         } else {
-            const ngPopoverRef = this.openPopup<void, { newPassword: string; oldPassword: string }>(
-                this.changePasswordTemplate
-            );
+            const ngPopoverRef = this.openPopup<
+                void,
+                { oldPassword: string; newPassword: string; newPasswordConfirm: string }
+            >(this.changePasswordTemplate);
             ngPopoverRef.afterClosed$.subscribe(
-                (result: NgPopoverCloseEvent<{ newPassword: string; oldPassword: string }>) => {
-                    if (result.data.newPassword && result.data.oldPassword) {
+                (
+                    result: NgPopoverCloseEvent<{
+                        oldPassword: string;
+                        newPassword: string;
+                        newPasswordConfirm: string;
+                    }>
+                ) => {
+                    if (
+                        result.data.newPassword &&
+                        result.data.oldPassword &&
+                        result.data.newPasswordConfirm &&
+                        result.data.newPassword === result.data.newPasswordConfirm
+                    ) {
                         this.authService.changePassword(result.data.newPassword, result.data.oldPassword);
                     }
                 }
@@ -48,11 +62,10 @@ export class ProfileComponent {
     }
 
     public async onDeleteAccount(): Promise<void> {
-         
         if (await this.authService.isGmail()) {
-            const ngPopoverRef = this.openPopup< void, { action: string } >(this.deleteAccountTemplateGmail);
+            const ngPopoverRef = this.openPopup<void, { action: string }>(this.deleteAccountTemplateGmail);
             ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ action: string }>) => {
-                if (result.data.action == 'delete' ){
+                if (result.data.action === 'delete') {
                     this.authService.deleteProfileGmail();
                 }
             });
@@ -62,16 +75,31 @@ export class ProfileComponent {
 
             const ngPopoverRef = this.openPopup<void, { confPassword: string }>(this.deleteAccountTemplate);
             ngPopoverRef.afterClosed$.subscribe(async (result: NgPopoverCloseEvent<{ confPassword: string }>) => {
-                if (result.data.confPassword !== null && result.data.confPassword !=='') {
-                    const deleteResult=  await  this.authService.deleteProfile(result.data.confPassword);
-                    console.log("Delete Result ist: "+deleteResult);
-                    if ( deleteResult == 'invalidPassword') {
-                        console.log("Setze wrongPassword auf true");
-                        this.wrongPassword = true;
-                    }
-                    if ( deleteResult == 'tooManyRequests') {
-                        console.log("Setze tooManyRequests auf true");
-                        this.tooManyRequests = true;
+                if (result.data.confPassword !== null && result.data.confPassword !== '') {
+                    const deleteResult:
+                        | 'invalidPassword'
+                        | 'success'
+                        | 'unknown_error'
+                        | 'no_login'
+                        | 'tooManyRequests' = await this.authService.deleteProfile(result.data.confPassword);
+
+                    switch (deleteResult) {
+                        case 'invalidPassword':
+                            this.wrongPassword = true;
+                            break;
+                        case 'tooManyRequests':
+                            this.tooManyRequests = true;
+                            break;
+                        case 'unknown_error':
+                        case 'no_login':
+                            console.error(deleteResult);
+                            break;
+                        case 'success':
+                            this.router.navigate(['/login']);
+                            break;
+                        default:
+                            console.log('Unhandled deleteResult', deleteResult);
+                            break;
                     }
                 }
             });
@@ -90,7 +118,4 @@ export class ProfileComponent {
             },
         });
     }
-}
-function email(email: any) {
-    throw new Error('Function not implemented.');
 }
