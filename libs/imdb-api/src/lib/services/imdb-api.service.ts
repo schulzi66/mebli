@@ -25,12 +25,4 @@ export class ImdbApiService {
     public getMediaDetails(id: string): Observable<MediaDetails> {
         return this.http.get<MediaDetails>(`${this.api}/de/${ImdbApiActions.DETAILS}/${this.apiKey}/${id}`);
     }
-
-    public getFsk(fskId?:string){
-        let requestHttp = "/api2/s/"+fskId+"/de";
-        console.log(requestHttp);
-        return this.http.get(requestHttp);
-    }
 }
-
-//tt2015381

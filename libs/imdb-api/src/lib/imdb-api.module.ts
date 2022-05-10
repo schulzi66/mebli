@@ -6,7 +6,6 @@ import { IMBD_API_KEY } from './models/imdb-api-key';
 @NgModule({
     imports: [CommonModule],
     providers: [
-        // ImdbApiService,
         {
             provide: IMBD_API,
             useValue: 'https://imdb-api.com',
@@ -18,7 +17,3 @@ import { IMBD_API_KEY } from './models/imdb-api-key';
     ],
 })
 export class ImdbApiModule {}
-
-// https://imdb-api.com/de/API/Title/k_1ootjkg5/tt0325980
-
-// https://imdb-api.com/API/SearchMovie/k_1ootjkg5/Fluch Der Karibik

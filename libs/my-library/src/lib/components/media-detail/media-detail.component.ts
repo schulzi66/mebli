@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ImdbApiService } from '@mebli/imdb-api';
+import { FskRatingService } from '@mebli/imdb-api';
 import { NavbarService } from '@mebli/nav';
 import { NgOverlayContainerService, NgPopoverCloseEvent } from 'ng-overlay-container';
 import { Media } from '../../models/media';
@@ -16,7 +16,6 @@ export class MediaDetailComponent implements OnInit {
     public media: Media | undefined;
     public isNewMedia: boolean | undefined;
     private initialMedia: Media | undefined;
-    public fskRating: string | undefined;
 
     @ViewChild('commentTemplate') private commentTemplate!: TemplateRef<any>;
     @ViewChild('addTemplate') private addTemplate!: TemplateRef<any>;
@@ -28,7 +27,7 @@ export class MediaDetailComponent implements OnInit {
         private readonly activatedRoute: ActivatedRoute,
         private readonly ngOverlayContainerService: NgOverlayContainerService,
         public readonly myLibraryService: MyLibraryService,
-        private fsk:ImdbApiService
+        public readonly fskRatingService: FskRatingService
     ) {}
 
     public ngOnInit(): void {
@@ -60,10 +59,10 @@ export class MediaDetailComponent implements OnInit {
 
         this.initialMedia = { ...this.media };
 
-        this.uskToFsk();
-        
+        if (this.isNewMedia && this.media && !this.media.fskRating) {
+            this.uskToFsk();
+        }
     }
-
 
     public openCommentPopup(): void {
         this.ngOverlayContainerService.open<Media | undefined, void>({
@@ -169,21 +168,20 @@ export class MediaDetailComponent implements OnInit {
         }
     }
 
-    public uskToFsk(){
-        this.fsk.getFsk(this.media?.id).subscribe((result)=>{
-            let data = result;
-            let fsk:string
-            if (result == "100") {
-                fsk = "Rating nicht Vorhanden"
-            } else if (result == "300") {
-                fsk = ""
-            } else if (result == "310") {
-                fsk = ""
-            } else {
-                fsk = "FSK-"+data;
-            }
-            console.log(fsk);
-            this.fskRating = fsk;
-        });
+    private uskToFsk() {
+        if (this.media) {
+            this.fskRatingService.getFsk(this.media.id).subscribe((result: number) => {
+                let fskRating = '';
+                if (result !== 100 && result !== 300 && result !== 310) {
+                    fskRating = `FSK-${result}`;
+                } else {
+                    console.log('FSK Rating Error', result);
+                }
+
+                if (this.media) {
+                    this.media.fskRating = fskRating;
+                }
+            });
+        }
     }
 }

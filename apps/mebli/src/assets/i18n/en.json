@@ -83,6 +83,7 @@
     "comment": "Note",
     "plot": "Plot",
     "add_comment_title": "Add a note",
+    "add_fsk_rating": "Add a FSK-Rating",
     "lend": "Lend",
     "delete": "Delete",
     "add_manual_title": "Add media by title:",
