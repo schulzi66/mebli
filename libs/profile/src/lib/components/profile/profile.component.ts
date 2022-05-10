@@ -16,6 +16,15 @@ export class ProfileComponent {
     @ViewChild('deleteAccountTemplateGmail') private deleteAccountTemplateGmail!: TemplateRef<any>;
     public wrongPassword = false;
     public tooManyRequests = false;
+    public number = false;
+    public length = false;
+    public uppercase = false;
+    public lowercase = false;
+    public newPasswordConfirm = '';
+    public passwordsMatch = true;
+    public specialcase = false;
+    public passwordInvalid = false;
+    public newpassword = '';
 
     public constructor(
         public readonly authService: AuthService,
@@ -34,9 +43,9 @@ export class ProfileComponent {
 
     public async onChangePassword(): Promise<void> {
         if (await this.authService.isGmail()) {
-            this.openPopup<void, void>(this.changePasswordTemplateGmail);
+            this.openPopupChangePasswort<void, void>(this.changePasswordTemplateGmail);
         } else {
-            const ngPopoverRef = this.openPopup<
+            const ngPopoverRef = this.openPopupChangePasswort<
                 void,
                 { oldPassword: string; newPassword: string; newPasswordConfirm: string }
             >(this.changePasswordTemplate);
@@ -56,6 +65,12 @@ export class ProfileComponent {
                     ) {
                         this.authService.changePassword(result.data.newPassword, result.data.oldPassword);
                     }
+                    else {
+                        if (result.data.newPassword !== result.data.newPasswordConfirm)
+                        {
+                        this.passwordsMatch = false
+                        }
+                    }
                 }
             );
         }
@@ -63,7 +78,7 @@ export class ProfileComponent {
 
     public async onDeleteAccount(): Promise<void> {
         if (await this.authService.isGmail()) {
-            const ngPopoverRef = this.openPopup<void, { action: string }>(this.deleteAccountTemplateGmail);
+            const ngPopoverRef = this.openPopupDeleteProfile<void, { action: string }>(this.deleteAccountTemplateGmail);
             ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ action: string }>) => {
                 if (result.data.action === 'delete') {
                     this.authService.deleteProfileGmail();
@@ -73,7 +88,7 @@ export class ProfileComponent {
             this.wrongPassword = false;
             this.tooManyRequests = false;
 
-            const ngPopoverRef = this.openPopup<void, { confPassword: string }>(this.deleteAccountTemplate);
+            const ngPopoverRef = this.openPopupDeleteProfile<void, { confPassword: string }>(this.deleteAccountTemplate);
             ngPopoverRef.afterClosed$.subscribe(async (result: NgPopoverCloseEvent<{ confPassword: string }>) => {
                 if (result.data.confPassword !== null && result.data.confPassword !== '') {
                     const deleteResult:
@@ -112,10 +127,62 @@ export class ProfileComponent {
             configuration: {
                 useGlobalPositionStrategy: true,
                 width: '90vw',
+                height: '30vh',
+                isResizable: false,
+                backdropClass: 'cdk-overlay-dark-backdrop',
+            },
+        });
+    }
+    private openPopupChangePasswort<T, R>(template: TemplateRef<any>): NgPopoverRef<T, R> {
+        return this.ngOverlayContainerService.open<T, R>({
+            content: template,
+            configuration: {
+                useGlobalPositionStrategy: true,
+                width: '90vw',
+                height: '60vh',
+                isResizable: false,
+                backdropClass: 'cdk-overlay-dark-backdrop',
+            },
+        });
+    }
+
+    private openPopupDeleteProfile<T, R>(template: TemplateRef<any>): NgPopoverRef<T, R> {
+        return this.ngOverlayContainerService.open<T, R>({
+            content: template,
+            configuration: {
+                useGlobalPositionStrategy: true,
+                width: '90vw',
                 height: '40vh',
                 isResizable: false,
                 backdropClass: 'cdk-overlay-dark-backdrop',
             },
         });
     }
+
+    public onKey(): void {
+        if (this.newpassword.length > 7) {
+            this.length = true;
+        } else this.length = false;
+
+        if (this.newpassword.match('(?=.*[0-9])')) {
+            this.number = true;
+        } else this.number = false;
+
+        if (this.newpassword.match('(?=.*[A-Z])')) {
+            this.uppercase = true;
+        } else this.uppercase = false;
+
+        if (this.newpassword.match('(?=.*[a-z])')) {
+            this.lowercase = true;
+        } else this.lowercase = false;
+
+        if (this.newpassword.match('(?=.*\\W)')) {
+            this.specialcase = true;
+        } else this.specialcase = false;
+
+        if (this.newpassword === this.newPasswordConfirm) {
+            this.passwordsMatch = true;
+        } else this.passwordsMatch = false;
+    }
+
 }

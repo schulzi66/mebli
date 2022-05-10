@@ -20,6 +20,7 @@
     "passwords_dont_match": "Passwords don't match",
     "conf_password_wrong": "The passwort is incorrect - please try again.",
     "password_placeholder": "Enter your password",
+    "password_placeholder_old": "Enter your actual passwort",
     "password_invalid": "Your passwort is wrong.",
     "email_invalid": "Please insert the full email adress.",
     "email_wrong": "Your email adress is unknown.",

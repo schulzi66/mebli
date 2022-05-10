@@ -20,6 +20,7 @@
     "passwords_dont_match": "Passwörter stimmen nicht überein",
     "conf_password_wrong": "Das eingegebene Passwort stimmt nicht - bitte das richtige Passwort eingeben.",
     "password_placeholder": "Gib dein Passwort ein",
+    "password_placeholder_old": "Gib dein aktuelles Passwort ein",
     "password_invalid": "Dein Passwort ist falsch.",
     "email_invalid": "Bitte vollständige E-Mail eingeben.",
     "email_wrong": "Deine E-Mail ist nicht bekannt.",
