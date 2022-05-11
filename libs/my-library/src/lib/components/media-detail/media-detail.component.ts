@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FskRatingService } from '@mebli/imdb-api';
 import { NavbarService } from '@mebli/nav';
 import { NgOverlayContainerService, NgPopoverCloseEvent } from 'ng-overlay-container';
 import { Media } from '../../models/media';
@@ -25,7 +26,8 @@ export class MediaDetailComponent implements OnInit {
         private readonly navbarService: NavbarService,
         private readonly activatedRoute: ActivatedRoute,
         private readonly ngOverlayContainerService: NgOverlayContainerService,
-        public readonly myLibraryService: MyLibraryService
+        public readonly myLibraryService: MyLibraryService,
+        public readonly fskRatingService: FskRatingService
     ) {}
 
     public ngOnInit(): void {
@@ -56,7 +58,10 @@ export class MediaDetailComponent implements OnInit {
         }
 
         this.initialMedia = { ...this.media };
-        console.log(this.media);
+
+        if (this.isNewMedia && this.media && !this.media.fskRating) {
+            this.uskToFsk();
+        }
     }
 
     public openCommentPopup(): void {
@@ -160,6 +165,23 @@ export class MediaDetailComponent implements OnInit {
                     action: () => this.myLibraryService.deleteFromLibrary(this.media),
                 },
             ]);
+        }
+    }
+
+    private uskToFsk() {
+        if (this.media) {
+            this.fskRatingService.getFsk(this.media.id).subscribe((result: number) => {
+                let fskRating = '';
+                if (result !== 100 && result !== 300 && result !== 310) {
+                    fskRating = `FSK-${result}`;
+                } else {
+                    console.log('FSK Rating Error', result);
+                }
+
+                if (this.media) {
+                    this.media.fskRating = fskRating;
+                }
+            });
         }
     }
 }

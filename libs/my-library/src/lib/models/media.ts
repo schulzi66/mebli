@@ -6,4 +6,5 @@ export interface Media extends MediaDetails {
     comment?: string;
     blueray?: boolean;
     ownedSeasons: boolean[];
+    fskRating?: string;
 }

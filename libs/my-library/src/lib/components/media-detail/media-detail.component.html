@@ -9,7 +9,7 @@
       <div>{{media?.stars}}</div>
       <div>{{media?.genres}}</div>
       <div>{{media?.year}}</div>
-      <div>{{media?.contentRating}}</div>
+      <div>{{media?.contentRating}} <span *ngIf="media?.fskRating">| {{ media?.fskRating }}</span></div>
     </div>
   </div>
 
@@ -91,6 +91,13 @@
              type="text"
              class="w-full px-5 py-3 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
              [(ngModel)]="data.comment">
+
+      <div class="my-2">{{'add_fsk_rating' | transloco}}:</div>
+      <input id="rating"
+             name="rating"
+             type="text"
+             class="w-full px-5 py-3 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+             [(ngModel)]="data.fskRating">
 
       <ng-container *ngIf="data && data?.type === 'TVSeries'">
         <span class="flex self-start py-2">
