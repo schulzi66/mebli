@@ -31,7 +31,6 @@ export class MediaInformationService {
     }
 
     public searchMediaDetails(id: string): Observable<MediaDetails> {
-        console.log("Test");
         return this.imdbApiService.getMediaDetails(id).pipe(
             tap((details: MediaDetails) => {
                 this.mediaSearch?.results.map((result) => {
