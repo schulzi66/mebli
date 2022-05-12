@@ -50,22 +50,23 @@ export class ManualLendComponent implements OnInit {
 
         this.media = this.activatedRoute.snapshot.data['media'] as Media;
         this.rental = {
-            ownerUid: this.authService.uid,
-            ownerName: this.authService.accountName,
-            mediaId: this.media.id,
-            mediaTitle: this.media.title,
-            mediaPathId: this.media.pathId,
-            mediaType: this.media.type,
-            mediaImage: this.media.image,
-            mediaStars: this.media.stars,
-            mediaGenres: this.media.genres,
-            mediaYear: this.media.year,
-            mediaContentRating: this.media.contentRating,
-            mediaPlot: this.media.plot,
-            mediaPlotLocal: this.media.plotLocal,
+            blueray: this.media.blueray ?? false,
+            fskRating: this.media.fskRating ?? '',
             borrowerName: '',
             lendingDate: this.rentalService.constructFormatedDate(),
-            blueray: this.media.blueray ?? false,
+            mediaContentRating: this.media.contentRating,
+            mediaGenres: this.media.genres,
+            mediaId: this.media.id,
+            mediaImage: this.media.image,
+            mediaPathId: this.media.pathId,
+            mediaPlot: this.media.plot,
+            mediaPlotLocal: this.media.plotLocal,
+            mediaStars: this.media.stars,
+            mediaTitle: this.media.title,
+            mediaType: this.media.type,
+            mediaYear: this.media.year,
+            ownerName: this.authService.accountName,
+            ownerUid: this.authService.uid,
             // TODO Andi: lentSeasons befüllen für die die ausgewählt wurden
         };
     }

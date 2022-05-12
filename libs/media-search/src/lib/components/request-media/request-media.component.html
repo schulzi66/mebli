@@ -9,7 +9,7 @@
       <div>{{media?.stars}}</div>
       <div>{{media?.genres}}</div>
       <div>{{media?.year}}</div>
-      <div>{{media?.contentRating}}</div>
+      <div>{{media?.contentRating}} <span *ngIf="media?.fskRating">| {{ media?.fskRating }}</span></div>
     </div>
   </div>
 

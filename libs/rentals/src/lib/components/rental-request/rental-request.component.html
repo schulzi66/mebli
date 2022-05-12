@@ -10,7 +10,7 @@
       <div>{{rental?.mediaStars}}</div>
       <div>{{rental?.mediaGenres}}</div>
       <div>{{rental?.mediaYear}}</div>
-      <div>{{rental?.mediaContentRating}}</div>
+      <div>{{rental?.mediaContentRating}} <span *ngIf="rental?.fskRating">| {{ rental?.fskRating }}</span></div>
     </div>
   </div>
 
