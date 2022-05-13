@@ -16,6 +16,8 @@ export class ProfileComponent {
     @ViewChild('deleteAccountTemplateGmail') private deleteAccountTemplateGmail!: TemplateRef<any>;
     public wrongPassword = false;
     public tooManyRequests = false;
+    public wrongPasswordpwc = false;
+    public tooManyRequestspwc = false;
     public number = false;
     public length = false;
     public uppercase = false;
@@ -24,7 +26,9 @@ export class ProfileComponent {
     public passwordsMatch = true;
     public specialcase = false;
     public passwordInvalid = false;
+    public passwordnotempty = false;
     public newpassword = '';
+    public oldpassword = '';
 
     public constructor(
         public readonly authService: AuthService,
@@ -42,6 +46,8 @@ export class ProfileComponent {
     }
 
     public async onChangePassword(): Promise<void> {
+        this.wrongPasswordpwc = false;
+        this.tooManyRequestspwc = false;
         if (await this.authService.isGmail()) {
             this.openPopupChangePasswort<void, void>(this.changePasswordTemplateGmail);
         } else {
@@ -50,7 +56,7 @@ export class ProfileComponent {
                 { oldPassword: string; newPassword: string; newPasswordConfirm: string }
             >(this.changePasswordTemplate);
             ngPopoverRef.afterClosed$.subscribe(
-                (
+                async (
                     result: NgPopoverCloseEvent<{
                         oldPassword: string;
                         newPassword: string;
@@ -63,7 +69,21 @@ export class ProfileComponent {
                         result.data.newPasswordConfirm &&
                         result.data.newPassword === result.data.newPasswordConfirm
                     ) {
-                        this.authService.changePassword(result.data.newPassword, result.data.oldPassword);
+                        const deleteResultpw:
+                        | 'invalidPassword'
+                        | 'no_login'
+                        | 'unknown_error' 
+                        | 'tooManyRequests' 
+                        | 'success'
+                       = await this.authService.changePassword(result.data.newPassword, result.data.oldPassword);
+                       switch (deleteResultpw) {
+                            case 'invalidPassword':
+                                this.wrongPasswordpwc = true;
+                                break;
+                            case 'tooManyRequests':
+                                this.tooManyRequestspwc = true;
+                                break;
+                        }
                     }
                     else {
                         if (result.data.newPassword !== result.data.newPasswordConfirm)
@@ -159,7 +179,7 @@ export class ProfileComponent {
         });
     }
 
-    public onKey(): void {
+    public onKeyNewPw(): void {
         if (this.newpassword.length > 7) {
             this.length = true;
         } else this.length = false;
@@ -183,6 +203,17 @@ export class ProfileComponent {
         if (this.newpassword === this.newPasswordConfirm) {
             this.passwordsMatch = true;
         } else this.passwordsMatch = false;
+
+        if (this.oldpassword !== '') {
+            this.passwordnotempty = true;
+        } else this.passwordnotempty = false;
+    
+    }
+
+    public onKeyOldPw(): void {
+        if (this.oldpassword !== '') {
+            this.passwordnotempty = true;
+        } else this.passwordnotempty = false;
     }
 
 }

@@ -123,17 +123,36 @@ export class AuthService {
         )
             return 'true';
     }
-
-    public async changePassword(newPassword: string, oldPassword: string): Promise<void> {
+                                                                           
+    public async changePassword(newPassword: string, oldPassword: string): Promise<'invalidPassword' | 'no_login' |'unknown_error' | 'tooManyRequests'  | 'success'> {
         if (!this.currentUser?.uid || !this.currentUser?.email) {
-            return;
+            return 'no_login';
         }
-        // Todo: Handle if wrong oldPassword is provided
-        await reauthenticateWithCredential(
+        else{  
+            return reauthenticateWithCredential(
             this.currentUser,
             EmailAuthProvider.credential(this.currentUser.email, oldPassword)
-        );
-        this.currentUser.updatePassword(newPassword);
+            )
+            .then(() => {
+                if (this.currentUser) {
+                    this.currentUser.updatePassword(newPassword);  
+                    return 'success';
+                } 
+            else return 'unknown_error'
+        })
+        
+        .catch((error: any) => {
+            const errorCode = error.code;
+            console.log(errorCode)
+            if (error.code === 'auth/wrong-password') {
+                return 'invalidPassword';
+            } else if (error.code === 'auth/too-many-requests') {
+                return 'tooManyRequests';
+            } else {
+                return 'unknown_error';
+            }
+        });   
+        }
     }
 
     public async deleteProfile(
