@@ -15,6 +15,7 @@ export class AddReleaseComponent {
     public ownRelease: OwnRelease;
     public accountFound: boolean | undefined;
     private foundProfile: Profile | undefined;
+    public yourownuser = false;
 
     public constructor(
         public readonly releasesService: ReleasesService,
@@ -41,6 +42,15 @@ export class AddReleaseComponent {
     public async searchAccountName(): Promise<void> {
         this.foundProfile = undefined;
         this.foundProfile = await this.releasesService.searchAccountName(this.ownRelease.accountName);
+        const itsMyAccount:
+        'account_free' 
+        |'already_exists'
+       = await this.releasesService.searchAccountNameAlreadyTaken(this.ownRelease.accountName);
+       switch (itsMyAccount) {
+            case 'already_exists':
+                this.yourownuser = true;
+                break;
+        }
         this.accountFound = !!this.foundProfile;
         this.registerActions();
     }

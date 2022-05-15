@@ -4,6 +4,7 @@
     "account_name": "Account Name",
     "account_name_new": "Neuer Account Name",
     "account_name_exists": "Account Name existiert bereits",
+    "own_account_name_exists": "Eigener Account nicht wählbar",
     "email_exists": "E-Mail existiert bereits",
     "account_placeholder": "Wähle einen Account Namen",
     "password": "Passwort",
