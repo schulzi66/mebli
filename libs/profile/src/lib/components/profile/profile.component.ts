@@ -16,6 +16,22 @@ export class ProfileComponent {
     @ViewChild('deleteAccountTemplateGmail') private deleteAccountTemplateGmail!: TemplateRef<any>;
     public wrongPassword = false;
     public tooManyRequests = false;
+    public wrongPasswordPwc = false;
+    public tooManyRequestsPwc = false;
+    public number = false;
+    public length = false;
+    public upperCase = false;
+    public lowerCase = false;
+    public newPasswordConfirm = '';
+    public passwordsMatch = true;
+    public specialCase = false;
+    public passwordInvalid = false;
+    public passwordNotEmpty = false;
+    public newPassword = '';
+    public oldPassword = '';
+    public accountName = '';
+    public accountNamevalid = '';
+    public accountNameExists = false;
 
     public constructor(
         public readonly authService: AuthService,
@@ -24,24 +40,33 @@ export class ProfileComponent {
     ) {}
 
     public onChangeAccountName(): void {
+        this.accountNameExists = false;
         const ngPopoverRef = this.openPopup<void, { newName: string }>(this.changeAccountNameTemplate);
-        ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ newName: string }>) => {
+        ngPopoverRef.afterClosed$.subscribe(async (result: NgPopoverCloseEvent<{ newName: string }>) => {
             if (result.data.newName) {
-                this.authService.changeAccountName(result.data.newName);
+                const accountResult: 'account_exists' | 'unknown_error' | 'success' =
+                    await this.authService.changeAccountName(result.data.newName);
+
+                if (accountResult === 'account_exists') {
+                    this.accountNameExists = true;
+                    //return;
+                }
             }
         });
     }
 
     public async onChangePassword(): Promise<void> {
+        this.wrongPasswordPwc = false;
+        this.tooManyRequestsPwc = false;
         if (await this.authService.isGmail()) {
-            this.openPopup<void, void>(this.changePasswordTemplateGmail);
+            this.openPopupChangePasswort<void, void>(this.changePasswordTemplateGmail);
         } else {
-            const ngPopoverRef = this.openPopup<
+            const ngPopoverRef = this.openPopupChangePasswort<
                 void,
                 { oldPassword: string; newPassword: string; newPasswordConfirm: string }
             >(this.changePasswordTemplate);
             ngPopoverRef.afterClosed$.subscribe(
-                (
+                async (
                     result: NgPopoverCloseEvent<{
                         oldPassword: string;
                         newPassword: string;
@@ -54,7 +79,28 @@ export class ProfileComponent {
                         result.data.newPasswordConfirm &&
                         result.data.newPassword === result.data.newPasswordConfirm
                     ) {
-                        this.authService.changePassword(result.data.newPassword, result.data.oldPassword);
+                        const deleteResultPw:
+                            | 'invalidPassword'
+                            | 'no_login'
+                            | 'unknown_error'
+                            | 'tooManyRequests'
+                            | 'success' = await this.authService.changePassword(
+                            result.data.newPassword,
+                            result.data.oldPassword
+                        );
+
+                        switch (deleteResultPw) {
+                            case 'invalidPassword':
+                                this.wrongPasswordPwc = true;
+                                break;
+                            case 'tooManyRequests':
+                                this.tooManyRequestsPwc = true;
+                                break;
+                        }
+                    } else {
+                        if (result.data.newPassword !== result.data.newPasswordConfirm) {
+                            this.passwordsMatch = false;
+                        }
                     }
                 }
             );
@@ -63,7 +109,7 @@ export class ProfileComponent {
 
     public async onDeleteAccount(): Promise<void> {
         if (await this.authService.isGmail()) {
-            const ngPopoverRef = this.openPopup<void, { action: string }>(this.deleteAccountTemplateGmail);
+            const ngPopoverRef = this.openPopupDeleteProfile<void, { action: string }>(this.deleteAccountTemplateGmail);
             ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ action: string }>) => {
                 if (result.data.action === 'delete') {
                     this.authService.deleteProfileGmail();
@@ -73,7 +119,10 @@ export class ProfileComponent {
             this.wrongPassword = false;
             this.tooManyRequests = false;
 
-            const ngPopoverRef = this.openPopup<void, { confPassword: string }>(this.deleteAccountTemplate);
+            const ngPopoverRef = this.openPopupDeleteProfile<void, { confPassword: string }>(
+                this.deleteAccountTemplate
+            );
+
             ngPopoverRef.afterClosed$.subscribe(async (result: NgPopoverCloseEvent<{ confPassword: string }>) => {
                 if (result.data.confPassword !== null && result.data.confPassword !== '') {
                     const deleteResult:
@@ -112,10 +161,70 @@ export class ProfileComponent {
             configuration: {
                 useGlobalPositionStrategy: true,
                 width: '90vw',
+                height: '30vh',
+                isResizable: false,
+                backdropClass: 'cdk-overlay-dark-backdrop',
+            },
+        });
+    }
+    private openPopupChangePasswort<T, R>(template: TemplateRef<any>): NgPopoverRef<T, R> {
+        return this.ngOverlayContainerService.open<T, R>({
+            content: template,
+            configuration: {
+                useGlobalPositionStrategy: true,
+                width: '90vw',
+                height: '60vh',
+                isResizable: false,
+                backdropClass: 'cdk-overlay-dark-backdrop',
+            },
+        });
+    }
+
+    private openPopupDeleteProfile<T, R>(template: TemplateRef<any>): NgPopoverRef<T, R> {
+        return this.ngOverlayContainerService.open<T, R>({
+            content: template,
+            configuration: {
+                useGlobalPositionStrategy: true,
+                width: '90vw',
                 height: '40vh',
                 isResizable: false,
                 backdropClass: 'cdk-overlay-dark-backdrop',
             },
         });
+    }
+
+    public onKeyNewPw(): void {
+        if (this.newPassword.length > 7) {
+            this.length = true;
+        } else this.length = false;
+
+        if (this.newPassword.match('(?=.*[0-9])')) {
+            this.number = true;
+        } else this.number = false;
+
+        if (this.newPassword.match('(?=.*[A-Z])')) {
+            this.upperCase = true;
+        } else this.upperCase = false;
+
+        if (this.newPassword.match('(?=.*[a-z])')) {
+            this.lowerCase = true;
+        } else this.lowerCase = false;
+
+        if (this.newPassword.match('(?=.*\\W)')) {
+            this.specialCase = true;
+        } else this.specialCase = false;
+
+        if (this.newPassword === this.newPasswordConfirm) {
+            this.passwordsMatch = true;
+        } else this.passwordsMatch = false;
+
+        if (this.oldPassword !== '') {
+            this.passwordNotEmpty = true;
+        } else this.passwordNotEmpty = false;
+    }
+    public onKeyOldPw(): void {
+        if (this.oldPassword !== '') {
+            this.passwordNotEmpty = true;
+        } else this.passwordNotEmpty = false;
     }
 }

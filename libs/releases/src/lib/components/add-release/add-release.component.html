@@ -8,8 +8,13 @@
            type="search"
            (input)="clearSearch($event)"
            class="px-5 py-3 mb-2 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
-           [ngClass]="{'border-green-500': accountFound === true, 'border-red-500': accountFound === false}"
+           [ngClass]="{'border-green-500': accountFound === true && !ownUserSelected, 'border-red-500': accountFound === false && ownUserSelected}"
            [(ngModel)]="ownRelease.accountName">
+
+    <div *ngIf="ownUserSelected"
+         class="flex items-center w-full text-red-500">
+      {{ 'own_account_name_selected' | transloco }}
+    </div>
     <span *ngIf="accountFound">{{'account_found' | transloco}}</span>
     <span *ngIf="accountFound === false">{{'account_not_found' | transloco}}</span>
   </div>

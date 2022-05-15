@@ -46,6 +46,21 @@
        class="flex items-center w-full h-16 mb-4 text-red-500">
     {{ 'too_many_requests' | transloco }}
   </div>
+  <div *ngIf="this.wrongPasswordPwc"
+       class="flex items-center w-full h-16 mb-4 text-red-500">
+    {{ 'conf_password_wrong' | transloco }}
+  </div>
+  <div *ngIf="this.tooManyRequestsPwc"
+       class="flex items-center w-full h-16 mb-4 text-red-500">
+    {{ 'conf_password_wrong' | transloco }}
+  </div>
+  <div *ngIf="this.accountNameExists"
+       class="flex items-center w-full h-16 mb-4 text-red-500">
+    {{ 'account_name_exists' | transloco }}
+  </div>
+
+
+
   <ng-template #changeAccountNameTemplate
                let-data="data"
                let-close="close">
@@ -87,31 +102,120 @@
                let-close="close">
     <div class="m-4">
       <h2 class="mt-2 mb-0 text-lg font-bold text-center">{{ 'password_old' | transloco }}</h2>
-      <input #oldpassword
+      <input #passwordModel="ngModel"
              id="oldpassword"
              name="oldpassword"
              type="password"
-             class="w-full px-5 py-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200" />
+             (keyup)="onKeyOldPw()"
+             [placeholder]="'password_placeholder_old' | transloco"
+             class="w-full px-5 py-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+             [(ngModel)]="oldPassword" />
       <h2 class="mt-2 mb-0 text-lg font-bold text-center">{{ 'password_new' | transloco }}</h2>
 
-      <input #newpassword
+      <input #passwordModel="ngModel"
              id="newpassword"
              name="newpassword"
              type="password"
-             class="w-full px-5 py-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200" />
+             (keyup)="onKeyNewPw()"
+             class="w-full px-5 py-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+             [(ngModel)]="newPassword" />
+      <div class="flex flex-col my-4">
+
+        <div *ngIf="number; else one_number_false"
+             class="flex items-center w-full h-2 mb-4">
+          <img src="./assets/svg/badge-check-true.svg"
+               class="w-6 h-6" />
+          <div class="ml-4 text-green-500">{{ 'one_number' | transloco }}</div>
+        </div>
+
+        <ng-template #one_number_false>
+          <div class="flex items-center w-full h-2 mb-4">
+            <img src="./assets/svg/badge-check.svg"
+                 class="w-6 h-6" />
+            <div class="ml-4">{{ 'one_number' | transloco }}</div>
+          </div>
+        </ng-template>
+
+        <div *ngIf="upperCase; else one_upper_false"
+             class="flex items-center w-full h-2 mb-4">
+          <img src="./assets/svg/badge-check-true.svg"
+               class="w-6 h-6" />
+          <div class="ml-4 text-green-500">{{ 'one_upper' | transloco }}</div>
+        </div>
+
+        <ng-template #one_upper_false>
+          <div class="flex items-center w-full h-2 mb-4">
+            <img src="./assets/svg/badge-check.svg"
+                 class="w-6 h-6" />
+            <div class="ml-4">{{ 'one_upper' | transloco }}</div>
+          </div>
+        </ng-template>
+
+        <div *ngIf="lowerCase; else one_lower_false"
+             class="flex items-center w-full h-2 mb-4">
+          <img src="./assets/svg/badge-check-true.svg"
+               class="w-6 h-6" />
+          <div class="ml-4 text-green-500">{{ 'one_lower' | transloco }}</div>
+        </div>
+
+        <ng-template #one_lower_false>
+          <div class="flex items-center w-full h-2 mb-4">
+            <img src="./assets/svg/badge-check.svg"
+                 class="w-6 h-6" />
+            <div class="ml-4">{{ 'one_lower' | transloco }}</div>
+          </div>
+        </ng-template>
+
+        <div *ngIf="length; else length_false"
+             class="flex items-center w-full h-2 mb-4">
+          <img src="./assets/svg/badge-check-true.svg"
+               class="w-6 h-6" />
+          <div class="ml-4 text-green-500">{{ 'eight_chars' | transloco }}</div>
+        </div>
+
+        <ng-template #length_false>
+          <div class="flex items-center w-full h-2 mb-4">
+            <img src="./assets/svg/badge-check.svg"
+                 class="w-6 h-6" />
+            <div class="ml-4">{{ 'eight_chars' | transloco }}</div>
+          </div>
+        </ng-template>
+
+        <div *ngIf="specialCase; else specialcase_false"
+             class="flex items-center w-full h-2 mb-0">
+          <img src="./assets/svg/badge-check-true.svg"
+               class="w-6 h-6" />
+          <div class="ml-4 text-green-500">{{ 'special_char' | transloco }}</div>
+        </div>
+
+        <ng-template #specialcase_false>
+          <div class="flex items-center w-full h-2 mb-0">
+            <img src="./assets/svg/badge-check.svg"
+                 class="w-6 h-6" />
+            <div class="ml-4">{{ 'special_char' | transloco }}</div>
+          </div>
+        </ng-template>
+      </div>
       <h2 class="mt-2 mb-0 text-lg font-bold text-center">{{ 'password_confirm' | transloco }}</h2>
-      <input #newpasswordconfirm
-             id="newpasswordconfirm"
-             name="newpasswordconfirm"
+      <input #newPasswordConfirmModel="ngModel"
+             id="newPasswordConfirm"
+             name="newPasswordConfirm"
              type="password"
-             class="w-full px-5 py-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200" />
+             (keyup)="onKeyNewPw()"
+             class="w-full px-5 py-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+             [(ngModel)]="newPasswordConfirm" />
+      <div *ngIf="!newPasswordConfirmModel.pristine && !passwordsMatch"
+           class="flex items-center w-full mb-4">
+        <div class="ml-4 text-red-500">{{ 'passwords_dont_match' | transloco }}</div>
+      </div>
       <div class="flex items-center w-full">
-        <button class="w-full p-3 my-1 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
+        <button [disabled]="!(this.number && this.length && this.upperCase && this.lowerCase && this.passwordsMatch && this.specialCase && this.passwordNotEmpty)"
+                class="w-full p-3 my-1 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 disabled:text-gray-400 focus:ring-offset-blue-300"
                 (click)="
                         close({
-                            oldPassword: oldpassword.value,
-                            newPassword: newpassword.value,
-                            newPasswordConfirm: newpasswordconfirm.value
+                            oldPassword: oldPassword,
+                            newPassword: newPassword,
+                            newPasswordConfirm: newPasswordConfirm
                         })
                     ">
           {{ 'confirm' | transloco }}

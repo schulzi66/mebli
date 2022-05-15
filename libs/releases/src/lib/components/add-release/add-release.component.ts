@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Profile } from '@mebli/auth';
+import { AuthService, Profile } from '@mebli/auth';
 import { NavbarService } from '@mebli/nav';
 import { OwnRelease } from '../../models/own-release';
 import { ReleasesService } from '../../services/releases.service';
@@ -14,10 +14,12 @@ import { ReleasesService } from '../../services/releases.service';
 export class AddReleaseComponent {
     public ownRelease: OwnRelease;
     public accountFound: boolean | undefined;
+    public ownUserSelected = false;
     private foundProfile: Profile | undefined;
 
     public constructor(
         public readonly releasesService: ReleasesService,
+        public readonly authService: AuthService,
         private readonly navbarService: NavbarService,
         private readonly router: Router,
         private readonly location: Location
@@ -39,9 +41,18 @@ export class AddReleaseComponent {
     }
 
     public async searchAccountName(): Promise<void> {
+        if (this.ownRelease.accountName.toLowerCase() === this.authService.accountName?.toLowerCase()) {
+            this.ownUserSelected = true;
+            return;
+        } else {
+            this.ownUserSelected = false;
+        }
+
         this.foundProfile = undefined;
         this.foundProfile = await this.releasesService.searchAccountName(this.ownRelease.accountName);
+
         this.accountFound = !!this.foundProfile;
+
         this.registerActions();
     }
 
@@ -57,7 +68,7 @@ export class AddReleaseComponent {
 
     private registerActions(): void {
         this.navbarService.resetActions();
-        if (this.accountFound) {
+        if (this.accountFound && !this.ownUserSelected) {
             this.navbarService.registerActions([
                 {
                     order: -1,

@@ -20,6 +20,7 @@ export class AuthService {
     public accountName: string | undefined;
     private returnValue: string | undefined | null;
     private currentUser: User | null | undefined;
+    public newName = '';
 
     public constructor(
         private readonly auth: AngularFireAuth,
@@ -89,16 +90,27 @@ export class AuthService {
         location.reload();
     }
 
-    public async changeAccountName(newName: string): Promise<boolean> {
-        if (this.currentUser && this.uid && this.currentUser.email) {
+    public async changeAccountName(newName: string): Promise<'account_exists' | 'unknown_error' | 'success'> {
+        const accountNameAlreadyTaken = await this.db.docExists<Profile>(
+            DbPaths.PROFILES,
+            'accountName',
+            '==',
+            newName
+        );
+
+        if (this.currentUser && this.uid && this.currentUser.email && !accountNameAlreadyTaken) {
             await this.storeProfileData({
                 uid: this.uid,
                 email: this.currentUser.email,
                 accountName: newName,
             });
-            return true;
+
+            return 'success';
+        } else if (accountNameAlreadyTaken) {
+            return 'account_exists';
+        } else {
+            return 'unknown_error';
         }
-        return false;
     }
 
     public async isGmail(): Promise<boolean> {
@@ -124,16 +136,33 @@ export class AuthService {
             return 'true';
     }
 
-    public async changePassword(newPassword: string, oldPassword: string): Promise<void> {
+    public async changePassword(
+        newPassword: string,
+        oldPassword: string
+    ): Promise<'invalidPassword' | 'no_login' | 'unknown_error' | 'tooManyRequests' | 'success'> {
         if (!this.currentUser?.uid || !this.currentUser?.email) {
-            return;
+            return 'no_login';
+        } else {
+            return reauthenticateWithCredential(
+                this.currentUser,
+                EmailAuthProvider.credential(this.currentUser.email, oldPassword)
+            )
+                .then(() => {
+                    if (this.currentUser) {
+                        this.currentUser.updatePassword(newPassword);
+                        return 'success';
+                    } else return 'unknown_error';
+                })
+                .catch((error: any) => {
+                    if (error.code === 'auth/wrong-password') {
+                        return 'invalidPassword';
+                    } else if (error.code === 'auth/too-many-requests') {
+                        return 'tooManyRequests';
+                    } else {
+                        return 'unknown_error';
+                    }
+                });
         }
-        // Todo: Handle if wrong oldPassword is provided
-        await reauthenticateWithCredential(
-            this.currentUser,
-            EmailAuthProvider.credential(this.currentUser.email, oldPassword)
-        );
-        this.currentUser.updatePassword(newPassword);
     }
 
     public async deleteProfile(

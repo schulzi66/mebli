@@ -18,6 +18,10 @@
                  autocomplete="email"
                  class="w-full px-5 py-2 mt-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
                  [(ngModel)]="email" />
+          <div *ngIf="eMailExist"
+               class="flex items-center w-full text-red-500">
+            {{ 'email_exists' | transloco }}
+          </div>
           <div [hidden]="emailModel.valid || emailModel.pristine"
                class="w-full text-red-500">
             {{ 'valid' | transloco }} {{ 'email' | transloco }} {{ 'is_required' | transloco }}
@@ -25,17 +29,32 @@
         </div>
         <div class="flex flex-col m-4 mt-0">
           <label for="accountName"
-                 class="block text-neutral-600">{{ 'account_name' | transloco }} {{ 'optional' | transloco }}
+                 class="block text-neutral-600">{{ 'account_name' | transloco }} {{ 'optional' |
+            transloco }}
           </label>
           <input #accountModel="ngModel"
                  id="accountName"
                  name="accountName"
                  type="text"
+                 (keyup)="onKeyAccount()"
                  [placeholder]="'account_placeholder' | transloco"
                  autocomplete="account-name"
                  class="w-full px-5 py-2 mt-1 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
                  [(ngModel)]="accountName" />
+          <div *ngIf="accountExist"
+               class="flex items-center w-full text-red-500">
+            {{ 'account_name_exists' | transloco }}
+          </div>
+          <div *ngIf="!restrictedFeatures"
+               class="flex items-center w-full text-red-500">
+            {{ 'without_Account' | transloco }}
+          </div>
+          <div *ngIf="!restrictedFeatures"
+               class="flex items-center w-full text-red-500">
+            {{ 'restricted_Features' | transloco }}
+          </div>
         </div>
+
         <div class="flex flex-col m-4 mt-0">
           <label for="password"
                  class="block text-neutral-600">{{ 'password' | transloco }}</label>
