@@ -21,8 +21,8 @@ export class RegisterComponent {
     public specialcase = false;
     public passwordInvalid = false;
     public accountExist = false;
-    public EMailExist = false;
-    public restrictedFeatures=false;
+    public eMailExist = false;
+    public restrictedFeatures = false;
 
     public constructor(private readonly authService: AuthService, private readonly db: DbService) {}
 
@@ -35,12 +35,8 @@ export class RegisterComponent {
         } else {
             this.passwordInvalid = false;
         }
-        const EMailAlreadyTaken = await this.db.docExists<Profile>(
-            DbPaths.PROFILES,
-            'email',
-            '==',
-            this.email
-        );
+
+        const eMailAlreadyTaken = await this.db.docExists<Profile>(DbPaths.PROFILES, 'email', '==', this.email);
 
         const accountNameAlreadyTaken = await this.db.docExists<Profile>(
             DbPaths.PROFILES,
@@ -48,23 +44,19 @@ export class RegisterComponent {
             '==',
             this.accountName
         );
-        if (!accountNameAlreadyTaken && !EMailAlreadyTaken ) {
-            this.accountExist=false;
-            this.EMailExist=false;
+
+        if (!accountNameAlreadyTaken && !eMailAlreadyTaken) {
+            this.accountExist = false;
+            this.eMailExist = false;
             await this.authService.registerUser(this.email, this.password, this.accountName);
-        }
-        else if (accountNameAlreadyTaken && !EMailAlreadyTaken)
-        {
-            this.accountExist=true;
-        } 
-        else if (!accountNameAlreadyTaken && EMailAlreadyTaken)
-        {
-            this.EMailExist=true;
-        } 
-        else {
+        } else if (accountNameAlreadyTaken && !eMailAlreadyTaken) {
+            this.accountExist = true;
+        } else if (!accountNameAlreadyTaken && eMailAlreadyTaken) {
+            this.eMailExist = true;
+        } else {
             console.error('Account already taken', this.accountName);
-            this.accountExist=true;
-            this.EMailExist=true;
+            this.accountExist = true;
+            this.eMailExist = true;
         }
     }
 
@@ -89,12 +81,13 @@ export class RegisterComponent {
             this.specialcase = true;
         } else this.specialcase = false;
     }
+
     public onKeyAccount(): void {
-         if (this.accountName!=='')
-        {
-            this.restrictedFeatures=true;
-        }  else this.restrictedFeatures = false;
-     
+        if (this.accountName !== '') {
+            this.restrictedFeatures = true;
+        } else {
+            this.restrictedFeatures = false;
+        }
     }
 
     public async onLoginWithGoogle(): Promise<void> {

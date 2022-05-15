@@ -12,7 +12,6 @@ import { Release } from './../models/release';
 })
 export class ReleasesService {
     private isInitialized = false;
-    public already_exists =false;
     public currentSelection: ReleaseSelection = 'Foreign';
     public userReleases: UserReleases | undefined;
     public userReleases$: Subject<UserReleases | undefined> = new Subject<UserReleases | undefined>();
@@ -149,17 +148,7 @@ export class ReleasesService {
     }
 
     public async searchAccountName(accountName: string): Promise<Profile | undefined> {
-      
-            return this.db.getDocBy<Profile>(DbPaths.PROFILES, 'accountName', '==', accountName);     
-    }
-    public async searchAccountNameAlreadyTaken(accountName: string): Promise<'account_free' |'already_exists'> {
-        console.log(this.authService.accountName)
-        if (accountName==this.authService.accountName)
-        {
-                   return 'already_exists';
-        }   
-        else
-        return 'account_free';
+        return this.db.getDocBy<Profile>(DbPaths.PROFILES, 'accountName', '==', accountName);
     }
 
     public switchSelection(selection: ReleaseSelection) {

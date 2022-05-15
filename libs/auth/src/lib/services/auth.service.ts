@@ -21,7 +21,6 @@ export class AuthService {
     private returnValue: string | undefined | null;
     private currentUser: User | null | undefined;
     public newName = '';
-   
 
     public constructor(
         private readonly auth: AngularFireAuth,
@@ -91,7 +90,7 @@ export class AuthService {
         location.reload();
     }
 
-    public async changeAccountName(newName: string): Promise<'account_exists' |'unknown_error'  | 'success'> {   
+    public async changeAccountName(newName: string): Promise<'account_exists' | 'unknown_error' | 'success'> {
         const accountNameAlreadyTaken = await this.db.docExists<Profile>(
             DbPaths.PROFILES,
             'accountName',
@@ -105,16 +104,13 @@ export class AuthService {
                 email: this.currentUser.email,
                 accountName: newName,
             });
+
             return 'success';
-        }
-        else if( accountNameAlreadyTaken)
-        {
+        } else if (accountNameAlreadyTaken) {
             return 'account_exists';
+        } else {
+            return 'unknown_error';
         }
-        else{
-               return 'unknown_error';
-        }
-     
     }
 
     public async isGmail(): Promise<boolean> {
@@ -139,35 +135,33 @@ export class AuthService {
         )
             return 'true';
     }
-                                                                           
-    public async changePassword(newPassword: string, oldPassword: string): Promise<'invalidPassword' | 'no_login' |'unknown_error' | 'tooManyRequests'  | 'success'> {
+
+    public async changePassword(
+        newPassword: string,
+        oldPassword: string
+    ): Promise<'invalidPassword' | 'no_login' | 'unknown_error' | 'tooManyRequests' | 'success'> {
         if (!this.currentUser?.uid || !this.currentUser?.email) {
             return 'no_login';
-        }
-        else{  
+        } else {
             return reauthenticateWithCredential(
-            this.currentUser,
-            EmailAuthProvider.credential(this.currentUser.email, oldPassword)
+                this.currentUser,
+                EmailAuthProvider.credential(this.currentUser.email, oldPassword)
             )
-            .then(() => {
-                if (this.currentUser) {
-                    this.currentUser.updatePassword(newPassword);  
-                    return 'success';
-                } 
-            else return 'unknown_error'
-        })
-        
-        .catch((error: any) => {
-            const errorCode = error.code;
-            console.log(errorCode)
-            if (error.code === 'auth/wrong-password') {
-                return 'invalidPassword';
-            } else if (error.code === 'auth/too-many-requests') {
-                return 'tooManyRequests';
-            } else {
-                return 'unknown_error';
-            }
-        });   
+                .then(() => {
+                    if (this.currentUser) {
+                        this.currentUser.updatePassword(newPassword);
+                        return 'success';
+                    } else return 'unknown_error';
+                })
+                .catch((error: any) => {
+                    if (error.code === 'auth/wrong-password') {
+                        return 'invalidPassword';
+                    } else if (error.code === 'auth/too-many-requests') {
+                        return 'tooManyRequests';
+                    } else {
+                        return 'unknown_error';
+                    }
+                });
         }
     }
 

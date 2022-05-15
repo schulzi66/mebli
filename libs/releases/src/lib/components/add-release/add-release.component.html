@@ -3,13 +3,17 @@
 
   <div class="flex flex-col w-full mb-2">
     <div>{{'user' | transloco}}:</div>
-    <input id="accountName" name="accountName" type="search" (input)="clearSearch($event)"
-      class="px-5 py-3 mb-2 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
-      [ngClass]="{'border-green-500': accountFound === true, 'border-red-500': accountFound === false}"
-      [(ngModel)]="ownRelease.accountName">
+    <input id="accountName"
+           name="accountName"
+           type="search"
+           (input)="clearSearch($event)"
+           class="px-5 py-3 mb-2 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+           [ngClass]="{'border-green-500': accountFound === true && !ownUserSelected, 'border-red-500': accountFound === false && ownUserSelected}"
+           [(ngModel)]="ownRelease.accountName">
 
-    <div *ngIf="this.yourownuser" class="flex items-center w-full h-16 mb-4 text-red-500">
-      {{ 'own_account_name_exists' | transloco }}
+    <div *ngIf="ownUserSelected"
+         class="flex items-center w-full text-red-500">
+      {{ 'own_account_name_selected' | transloco }}
     </div>
     <span *ngIf="accountFound">{{'account_found' | transloco}}</span>
     <span *ngIf="accountFound === false">{{'account_not_found' | transloco}}</span>
@@ -17,15 +21,19 @@
 
   <div class="flex flex-col w-full mb-2">
     <div>{{'rating' | transloco}}:</div>
-    <input id="rating" name="rating" type="text"
-      class="px-5 py-3 mb-2 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
-      [(ngModel)]="ownRelease.rating">
+    <input id="rating"
+           name="rating"
+           type="text"
+           class="px-5 py-3 mb-2 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+           [(ngModel)]="ownRelease.rating">
   </div>
 
   <div class="flex flex-col w-full mb-2">
     <div>{{'comment' | transloco}}:</div>
-    <input id="comment" name="comment" type="text"
-      class="px-5 py-3 mb-2 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
-      [(ngModel)]="ownRelease.comment">
+    <input id="comment"
+           name="comment"
+           type="text"
+           class="px-5 py-3 mb-2 text-base placeholder-gray-300 transition duration-500 ease-in-out transform border border-blue-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:ring-offset-blue-200"
+           [(ngModel)]="ownRelease.comment">
   </div>
 </div>
