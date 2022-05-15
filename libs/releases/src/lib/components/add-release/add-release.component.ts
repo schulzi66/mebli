@@ -51,7 +51,7 @@ export class AddReleaseComponent {
                 this.yourownuser = true;
                 break;
         }
-        this.accountFound = !!this.foundProfile;
+        this.accountFound = !!this.foundProfile && itsMyAccount!= 'already_exists';
         this.registerActions();
     }
 
