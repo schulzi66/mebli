@@ -20,6 +20,9 @@ export class RegisterComponent {
     public passwordsMatch = true;
     public specialcase = false;
     public passwordInvalid = false;
+    public accountExist = false;
+    public EMailExist = false;
+    public restrictedFeatures=false;
 
     public constructor(private readonly authService: AuthService, private readonly db: DbService) {}
 
@@ -32,6 +35,12 @@ export class RegisterComponent {
         } else {
             this.passwordInvalid = false;
         }
+        const EMailAlreadyTaken = await this.db.docExists<Profile>(
+            DbPaths.PROFILES,
+            'email',
+            '==',
+            this.email
+        );
 
         const accountNameAlreadyTaken = await this.db.docExists<Profile>(
             DbPaths.PROFILES,
@@ -39,10 +48,23 @@ export class RegisterComponent {
             '==',
             this.accountName
         );
-        if (!accountNameAlreadyTaken) {
+        if (!accountNameAlreadyTaken && !EMailAlreadyTaken ) {
+            this.accountExist=false;
+            this.EMailExist=false;
             await this.authService.registerUser(this.email, this.password, this.accountName);
-        } else {
+        }
+        else if (accountNameAlreadyTaken && !EMailAlreadyTaken)
+        {
+            this.accountExist=true;
+        } 
+        else if (!accountNameAlreadyTaken && EMailAlreadyTaken)
+        {
+            this.EMailExist=true;
+        } 
+        else {
             console.error('Account already taken', this.accountName);
+            this.accountExist=true;
+            this.EMailExist=true;
         }
     }
 
@@ -66,6 +88,13 @@ export class RegisterComponent {
         if (this.password.match('(?=.*\\W)')) {
             this.specialcase = true;
         } else this.specialcase = false;
+    }
+    public onKeyAccount(): void {
+         if (this.accountName!=='')
+        {
+            this.restrictedFeatures=true;
+        }  else this.restrictedFeatures = false;
+     
     }
 
     public async onLoginWithGoogle(): Promise<void> {

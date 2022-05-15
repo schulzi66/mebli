@@ -29,6 +29,10 @@ export class ProfileComponent {
     public passwordnotempty = false;
     public newpassword = '';
     public oldpassword = '';
+    public accountName = '';
+    public accountNamevalid = '';
+    public accountNameExists = false;
+    
 
     public constructor(
         public readonly authService: AuthService,
@@ -37,10 +41,24 @@ export class ProfileComponent {
     ) {}
 
     public onChangeAccountName(): void {
+        console.log('start der funktion')
+        this.accountNameExists = false;
         const ngPopoverRef = this.openPopup<void, { newName: string }>(this.changeAccountNameTemplate);
-        ngPopoverRef.afterClosed$.subscribe((result: NgPopoverCloseEvent<{ newName: string }>) => {
+        ngPopoverRef.afterClosed$.subscribe(async (result: NgPopoverCloseEvent<{ newName: string }>) => {
             if (result.data.newName) {
-                this.authService.changeAccountName(result.data.newName);
+                const AccountResult:
+                | 'account_exists'  
+                | 'unknown_error'
+                | 'success'
+                    = 
+                    await this.authService.changeAccountName(result.data.newName);
+                switch (AccountResult) {
+                   
+                    case 'account_exists':
+                        this.accountNameExists = true;
+                        break;
+                }
+
             }
         });
     }
@@ -209,7 +227,6 @@ export class ProfileComponent {
         } else this.passwordnotempty = false;
     
     }
-
     public onKeyOldPw(): void {
         if (this.oldpassword !== '') {
             this.passwordnotempty = true;

@@ -20,6 +20,8 @@ export class AuthService {
     public accountName: string | undefined;
     private returnValue: string | undefined | null;
     private currentUser: User | null | undefined;
+    public newName = '';
+   
 
     public constructor(
         private readonly auth: AngularFireAuth,
@@ -89,16 +91,30 @@ export class AuthService {
         location.reload();
     }
 
-    public async changeAccountName(newName: string): Promise<boolean> {
-        if (this.currentUser && this.uid && this.currentUser.email) {
+    public async changeAccountName(newName: string): Promise<'account_exists' |'unknown_error'  | 'success'> {   
+        const accountNameAlreadyTaken = await this.db.docExists<Profile>(
+            DbPaths.PROFILES,
+            'accountName',
+            '==',
+            newName
+        );
+
+        if (this.currentUser && this.uid && this.currentUser.email && !accountNameAlreadyTaken) {
             await this.storeProfileData({
                 uid: this.uid,
                 email: this.currentUser.email,
                 accountName: newName,
             });
-            return true;
+            return 'success';
         }
-        return false;
+        else if( accountNameAlreadyTaken)
+        {
+            return 'account_exists';
+        }
+        else{
+               return 'unknown_error';
+        }
+     
     }
 
     public async isGmail(): Promise<boolean> {

@@ -40,6 +40,11 @@
   <div *ngIf="this.tooManyRequestspwc" class="flex items-center w-full h-16 mb-4 text-red-500">
     {{ 'conf_password_wrong' | transloco }}
   </div>
+  <div *ngIf="this.accountNameExists" class="flex items-center w-full h-16 mb-4 text-red-500">
+    {{ 'account_name_exists' | transloco }}
+  </div>
+
+
 
   <ng-template #changeAccountNameTemplate let-data="data" let-close="close">
     <div class="m-4">
