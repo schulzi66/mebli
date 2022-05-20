@@ -161,7 +161,7 @@ export class ProfileComponent {
             configuration: {
                 useGlobalPositionStrategy: true,
                 width: '90vw',
-                height: '30vh',
+                height: 'auto',
                 isResizable: false,
                 backdropClass: 'cdk-overlay-dark-backdrop',
             },
@@ -173,7 +173,7 @@ export class ProfileComponent {
             configuration: {
                 useGlobalPositionStrategy: true,
                 width: '90vw',
-                height: '60vh',
+                height: 'auto',
                 isResizable: false,
                 backdropClass: 'cdk-overlay-dark-backdrop',
             },
@@ -186,7 +186,7 @@ export class ProfileComponent {
             configuration: {
                 useGlobalPositionStrategy: true,
                 width: '90vw',
-                height: '40vh',
+                height: 'auto',
                 isResizable: false,
                 backdropClass: 'cdk-overlay-dark-backdrop',
             },
