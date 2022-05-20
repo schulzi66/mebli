@@ -71,7 +71,7 @@ export class MediaDetailComponent implements OnInit {
             configuration: {
                 useGlobalPositionStrategy: true,
                 width: '90vw',
-                height: '25vh',
+                height: 'auto',
                 isResizable: false,
                 backdropClass: 'cdk-overlay-dark-backdrop',
             },
