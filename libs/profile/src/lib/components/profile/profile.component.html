@@ -208,9 +208,9 @@
            class="flex items-center w-full mb-4">
         <div class="ml-4 text-red-500">{{ 'passwords_dont_match' | transloco }}</div>
       </div>
-      <div class="flex items-center w-full">
+      <div class="flex items-center w-full mt-2">
         <button [disabled]="!(this.number && this.length && this.upperCase && this.lowerCase && this.passwordsMatch && this.specialCase && this.passwordNotEmpty)"
-                class="w-full p-3 my-1 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 disabled:text-gray-400 focus:ring-offset-blue-300"
+                class="w-full p-3 my-1 mr-1 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 disabled:text-gray-400 focus:ring-offset-blue-300"
                 (click)="
                         close({
                             oldPassword: oldPassword,
@@ -220,7 +220,7 @@
                     ">
           {{ 'confirm' | transloco }}
         </button>
-        <button class="w-full p-3 my-1 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
+        <button class="w-full p-3 my-1 ml-1 text-center border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-300"
                 (click)="close()">
           {{ 'cancel' | transloco }}
         </button>

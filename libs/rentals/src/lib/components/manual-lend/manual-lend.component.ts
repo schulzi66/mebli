@@ -50,7 +50,7 @@ export class ManualLendComponent implements OnInit {
 
         this.media = this.activatedRoute.snapshot.data['media'] as Media;
         this.rental = {
-            blueray: this.media.blueray ?? false,
+            bluray: this.media.bluray ?? false,
             fskRating: this.media.fskRating ?? '',
             borrowerName: '',
             lendingDate: this.rentalService.constructFormatedDate(),

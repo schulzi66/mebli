@@ -34,7 +34,7 @@ export class MediaSearchService {
             if (this.includeMovies) {
                 this.myLibraryService.movies.forEach((media: Media) => {
                     if (
-                        (this.includeBluRay ? true : !media.blueray ?? false) &&
+                        (this.includeBluRay ? true : !media.bluray ?? false) &&
                         (media.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
                             media.description?.toLowerCase().includes(this.searchTerm.toLowerCase()))
                     ) {
@@ -46,7 +46,7 @@ export class MediaSearchService {
                     library.media.forEach((media: Media) => {
                         if (
                             media.type === 'Movie' &&
-                            (this.includeBluRay ? true : !media.blueray ?? false) &&
+                            (this.includeBluRay ? true : !media.bluray ?? false) &&
                             (media.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
                                 media.description?.toLowerCase().includes(this.searchTerm.toLowerCase()))
                         ) {
@@ -59,7 +59,7 @@ export class MediaSearchService {
             if (this.includeSeries) {
                 this.myLibraryService.series.forEach((media: Media) => {
                     if (
-                        (this.includeBluRay ? true : !media.blueray ?? false) &&
+                        (this.includeBluRay ? true : !media.bluray ?? false) &&
                         (media.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
                             media.description?.toLowerCase().includes(this.searchTerm.toLowerCase()))
                     ) {
@@ -71,7 +71,7 @@ export class MediaSearchService {
                     library.media.forEach((media: Media) => {
                         if (
                             media.type === 'TVSeries' &&
-                            (this.includeBluRay ? true : !media.blueray ?? false) &&
+                            (this.includeBluRay ? true : !media.bluray ?? false) &&
                             (media.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
                                 media.description?.toLowerCase().includes(this.searchTerm.toLowerCase()))
                         ) {

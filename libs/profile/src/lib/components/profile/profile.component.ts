@@ -44,12 +44,12 @@ export class ProfileComponent {
         const ngPopoverRef = this.openPopup<void, { newName: string }>(this.changeAccountNameTemplate);
         ngPopoverRef.afterClosed$.subscribe(async (result: NgPopoverCloseEvent<{ newName: string }>) => {
             if (result.data.newName) {
+                result.data.newName.trim();
                 const accountResult: 'account_exists' | 'unknown_error' | 'success' =
                     await this.authService.changeAccountName(result.data.newName);
 
                 if (accountResult === 'account_exists') {
                     this.accountNameExists = true;
-                    //return;
                 }
             }
         });

@@ -42,13 +42,13 @@
 
   <div *ngIf="!this.isNewMedia"
        class="w-full py-2 italic">
-    {{'blueray' | transloco}}:
+    {{'bluray' | transloco}}:
     <input type="checkbox"
-           name="blueray"
-           id="isBlueray"
+           name="bluray"
+           id="isBluray"
            class="ml-2"
            *ngIf="media"
-           [(ngModel)]="media.blueray">
+           [(ngModel)]="media.bluray">
   </div>
 
   <div class="w-full py-2">
@@ -117,13 +117,13 @@
       </ng-container>
 
       <div class="w-full py-3">
-        {{'blueray' | transloco}}:
+        {{'bluray' | transloco}}:
         <input type="checkbox"
-               name="blueray"
-               id="isBlueray"
+               name="bluray"
+               id="isBluray"
                class="ml-2"
                *ngIf="media"
-               [(ngModel)]="data.blueray">
+               [(ngModel)]="data.bluray">
       </div>
     </div>
     <div class="flex justify-between">

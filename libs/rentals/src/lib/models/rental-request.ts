@@ -1,7 +1,7 @@
 import { MediaType } from '@mebli/imdb-api';
 
 export interface RentalRequest {
-    blueray?: boolean;
+    bluray?: boolean;
     fskRating?: string;
     mediaContentRating?: string;
     mediaGenres?: string;

@@ -61,7 +61,7 @@ export class RentalRequestComponent implements OnInit {
             this.navigateBack();
         } else {
             this.rental = {
-                blueray: this.rentalRequest.blueray,
+                bluray: this.rentalRequest.bluray,
                 fskRating: this.rentalRequest.fskRating,
                 borrowerId: this.rentalRequest.requesterId,
                 borrowerName: this.rentalRequest.requesterName,
