@@ -41,6 +41,7 @@ export class AddReleaseComponent {
     }
 
     public async searchAccountName(): Promise<void> {
+        this.ownRelease.accountName.trim();
         if (this.ownRelease.accountName.toLowerCase() === this.authService.accountName?.toLowerCase()) {
             this.ownUserSelected = true;
             return;

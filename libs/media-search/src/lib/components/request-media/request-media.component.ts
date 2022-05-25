@@ -61,7 +61,7 @@ export class RequestMediaComponent implements OnInit {
     public async requestMedia(): Promise<void> {
         if (this.media && this.release && this.authService.uid) {
             const rentalRequest: RentalRequest = {
-                blueray: this.media.blueray ?? false,
+                bluray: this.media.bluray ?? false,
                 fskRating: this.media.fskRating ?? '',
                 mediaContentRating: this.media.contentRating,
                 mediaGenres: this.media.genres,

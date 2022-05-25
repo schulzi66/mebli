@@ -22,7 +22,14 @@ export class MyLibraryComponent {
                 order: -1,
                 icon: 'search',
                 translationKey: 'search',
-                action: () => this.searchMode = !this.searchMode,
+                action: () => {
+                    if (this.searchMode) {
+                        this.searchTerm = '';
+                        this.myLibraryService.clearSearch();
+                    }
+
+                    this.searchMode = !this.searchMode;
+                },
             },
             {
                 order: 1,
@@ -40,7 +47,7 @@ export class MyLibraryComponent {
     public clearSearch(event: any): void {
         // Clear Button Event has no inputType
         if (!event.inputType) {
-           this.myLibraryService.clearSearch();
+            this.myLibraryService.clearSearch();
         }
     }
 }
