@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { DbPaths, DbService } from '@mebli/db';
-import { ImdbApiService, MediaDetails, MediaSearch, MediaSearchResult } from '@mebli/imdb-api';
+import { DbService } from '@mebli/db';
+import { ImdbApiService, MediaDetails, MediaSearch } from '@mebli/imdb-api';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -18,11 +18,12 @@ export class MediaInformationService {
             this.imdbApiService.getMediaByTitle(this.term).subscribe((mediaSearch: MediaSearch) => {
                 this.mediaSearch = mediaSearch;
 
-                if (mediaSearch.results) {
-                    mediaSearch.results.forEach((searchResult: MediaSearchResult) => {
-                        this.db.setDoc(DbPaths.SEARCH, searchResult.id, searchResult, { merge: true });
-                    });
-                } else {
+                // if (mediaSearch.results) {
+                // mediaSearch.results.forEach((searchResult: MediaSearchResult) => {
+                //     this.db.setDoc(DbPaths.SEARCH, searchResult.id, searchResult, { merge: true });
+                // });
+                // }
+                if (!mediaSearch.results) {
                     console.error('Service currently unavailable');
                     console.error(mediaSearch.errorMessage);
                 }
@@ -41,7 +42,6 @@ export class MediaInformationService {
 
                 if (!this.mediaDetailsBuffer.includes(details)) {
                     this.mediaDetailsBuffer.push(details);
-                    
                 }
             })
         );
