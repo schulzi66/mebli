@@ -67,8 +67,11 @@ export class ManualLendComponent implements OnInit {
             mediaYear: this.media.year,
             ownerName: this.authService.accountName,
             ownerUid: this.authService.uid,
-            // TODO Andi: lentSeasons befüllen für die die ausgewählt wurden
+            lentSeasons: [],
         };
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.media.tvSeriesInfo?.seasons?.forEach((_, i) => (this.rental!.lentSeasons![i] = false));
     }
 
     private async lend(): Promise<void> {
